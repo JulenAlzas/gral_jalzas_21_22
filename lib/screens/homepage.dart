@@ -14,7 +14,7 @@ class Homepage extends StatelessWidget {
       title: 'Home',
       home: Scaffold(
         body: Stack(
-          children: [
+          children: const [
             Background(),
             OngiEtorri()
           ],
@@ -29,18 +29,31 @@ class OngiEtorri extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
     return SingleChildScrollView(
       child: Column(
         children: [
            SafeArea(
              child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
+               crossAxisAlignment: CrossAxisAlignment.center,
                children: [
-                 Text('YouPlay4You', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white, overflow: TextOverflow.ellipsis)),
-                //  ImageLayout(),
-                 Text("last"),
+                 const Text('YouPlay4You', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white, overflow: TextOverflow.ellipsis),),
+                 const SizedBox(height: 20),
+                 CardImage(screenWidth: screenWidth) ,
+                 const SizedBox(height: 20),
+                 
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                     CustomButton(myname: 'login', myiconName: Icons.login, mycolor: Colors.pink),
+                     CustomButton(myname: 'register', myiconName: Icons.app_registration, mycolor: Colors.pink),
+                   ],
+                 ),
+
                ]
              ),
            )
@@ -50,20 +63,60 @@ class OngiEtorri extends StatelessWidget {
   }
 }
 
+class CustomButton extends StatelessWidget {
+  final String myname;
+  final IconData myiconName;
+  final MaterialColor mycolor;
 
-class ImageLayout extends StatelessWidget{
+   CustomButton({Key? key, 
+   required this.myname, required this.myiconName, required this.mycolor,
+  }) : super(key: key);
+
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/ruleta.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: const Text('Proba') /* add child content here */,
-      ),
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        print('Go to loginPage');
+      },
+      label: Text(myname),
+      icon:  Icon(myiconName),
+      backgroundColor: mycolor,
     );
+  }
+}
+
+class CardImage extends StatelessWidget {
+  const CardImage({
+    Key? key,
+    required this.screenWidth,
+  }) : super(key: key);
+
+  final double screenWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+     clipBehavior: Clip.antiAlias,
+     shape:  RoundedRectangleBorder(
+       borderRadius: BorderRadius.circular(20)
+     ),
+     elevation: 10,
+     child: Column(
+     children:  [
+       FadeInImage(
+         width: screenWidth ,
+         placeholder: const AssetImage('assets/loading2.gif'), 
+         image: const AssetImage('assets/ruleta.jpg'),
+         fit: BoxFit.cover,
+         fadeInDuration: const Duration(milliseconds: 200),
+         ),
+         Container(
+           alignment: AlignmentDirectional.centerEnd,
+           padding: const EdgeInsets.all(10),
+           child: const Text("Ondo pasatzeko momentua da")
+         )
+     ],
+     ),
+                );
   }
 }
