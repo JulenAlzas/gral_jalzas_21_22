@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 void main() {
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: 'homepage',
       routes: {
-        'homepage': (BuildContext context ) => const Homepage()
+        'homepage': (BuildContext context ) => const Homepage(),
+        'login'   : (BuildContext context ) => const LoginScreen()
       },
     );
   }
