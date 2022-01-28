@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
+import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
 
 import 'Background.dart';
 
@@ -81,7 +82,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      heroTag: 'login',
+      heroTag: myname,
       onPressed: () {
         if(myname == 'login'){
           Navigator.push(
@@ -89,7 +90,10 @@ class CustomButton extends StatelessWidget {
               MaterialPageRoute(builder: (context) => const LoginScreen()),
             );
         }else{
-          print('Sartu erregistratzera');
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RegisterScreen()),
+            );
         }
       },
       label: Text(myname),
