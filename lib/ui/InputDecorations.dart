@@ -5,8 +5,10 @@ class InputDecorations {
       {required String hintText,
       required String labelText,
       required Color textStyleColor,
+      int? errorMaxLines,
       IconData? prefixIcon}) {
     return InputDecoration(
+        errorMaxLines: errorMaxLines,
         enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.purple, width: 2.0)),
         focusedBorder: const UnderlineInputBorder(

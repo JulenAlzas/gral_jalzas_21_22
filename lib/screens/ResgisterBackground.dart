@@ -9,12 +9,10 @@ import 'Background.dart';
 
 // ignore: use_key_in_widget_constructors, camel_case_types
 class RegisterBackground extends StatelessWidget {
-  final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  final TextEditingController _pass = TextEditingController();
-  final TextEditingController _confirmPass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
     final loginFormProvider = Provider.of<RegisterProvider>(context);
 
     final screenSize = MediaQuery.of(context).size;
@@ -27,12 +25,12 @@ class RegisterBackground extends StatelessWidget {
         SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: screenSize.height * 0.2),
+              SizedBox(height: screenSize.height * 0.19),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: boxPadding),
                 child: Container(
                     padding: const EdgeInsets.all(15),
-                    height: 560,
+                    height: loginFormProvider.formHeight,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color: const Color.fromRGBO(255, 199, 237, 1),
@@ -50,8 +48,8 @@ class RegisterBackground extends StatelessWidget {
                             style: Theme.of(context).textTheme.headline4),
                         const SizedBox(height: 5),
                         Form(
-                          key: loginForm.formKey,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          key: loginFormProvider.formKey,
+                          // autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
                             children: [
                               TextFormField(
@@ -75,7 +73,8 @@ class RegisterBackground extends StatelessWidget {
                                 height: 5,
                               ),
                               TextFormField(
-                                onChanged: (value) => loginFormProvider.email = value,
+                                onChanged: (value) =>
+                                    loginFormProvider.email = value,
                                 autocorrect: false,
                                 decoration:
                                     InputDecorations.loginInputDecoration(
@@ -125,11 +124,13 @@ class RegisterBackground extends StatelessWidget {
                                 height: 5,
                               ),
                               TextFormField(
-                                onChanged: (value) => loginFormProvider.pass = value;,
+                                onChanged: (value) =>
+                                    loginFormProvider.pass = value,
                                 obscureText: true,
                                 autocorrect: false,
                                 decoration:
                                     InputDecorations.loginInputDecoration(
+                                        errorMaxLines : 2,
                                         hintText: '********',
                                         labelText: 'Sartu zure pasahitza',
                                         textStyleColor: Colors.purple,
@@ -152,11 +153,13 @@ class RegisterBackground extends StatelessWidget {
                               Column(
                                 children: [
                                   TextFormField(
-                                    controller: loginFormProvider.getConfirmPass,
+                                    onChanged: (value) =>
+                                        loginFormProvider.confirmPass = value,
                                     obscureText: true,
                                     autocorrect: false,
                                     decoration:
                                         InputDecorations.loginInputDecoration(
+                                            errorMaxLines: 2,
                                             hintText: '********',
                                             labelText: 'Pasahitza berretsi',
                                             textStyleColor: Colors.purple,
@@ -164,16 +167,17 @@ class RegisterBackground extends StatelessWidget {
                                                 Icons.password_outlined),
                                     validator: (value) {
                                       String pattern =
-                                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`^\(\)\-\_+={}\[\]:;“‘<>\\\/@$!%*?&])[A-Za-z\d~`^\(\)\-\_+={}\[\]:;“‘<>\\\/@$!%*?&]{8,}$S';
+                                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
 
                                       RegExp regExp = RegExp(pattern);
-                                      final zerda= _confirmPass.value == _pass.value;
-                                      print('Pasahitza:  $_confirmPass.value');
-                                      print('Pass2 $_pass.value');
-                                      print('ZER DA: $zerda');
+                                      String pasahitz1 = loginFormProvider.pass;
+                                      String pasahitz2 =
+                                          loginFormProvider.confirmPass;
+                                      print(
+                                          'Pasahitzak: -> $pasahitz1 -------- $pasahitz2');
                                       if (value != null &&
                                           regExp.hasMatch(value) &&
-                                          _confirmPass.value == _pass.value) {
+                                          pasahitz1 == pasahitz2) {
                                         return null;
                                       } else {
                                         return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
@@ -187,7 +191,7 @@ class RegisterBackground extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(
-                                height: 5,
+                                height: 10,
                               ),
                               TextButton(
                                 style: TextButton.styleFrom(
@@ -197,7 +201,16 @@ class RegisterBackground extends StatelessWidget {
                                   backgroundColor: Colors.deepPurple,
                                 ),
                                 onPressed: () {
-                                  loginFormProvider.isValidForm;
+                                  print('Entered to onpressed');
+                                  if (loginFormProvider.isValidForm()) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LoginScreen()),
+                                    );
+                                    
+                                  }
                                 },
                                 child: const Text('Sartu'),
                               ),
@@ -207,7 +220,7 @@ class RegisterBackground extends StatelessWidget {
                       ],
                     )),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -221,9 +234,9 @@ class RegisterBackground extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
+                        context,  MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LoginScreen()),
                       );
                     },
                     child: const Text(' Logeatu'),
@@ -237,6 +250,7 @@ class RegisterBackground extends StatelessWidget {
       ],
     );
   }
+
 }
 
 class TopRegisterIcon extends StatelessWidget {
@@ -287,3 +301,4 @@ class TopRegisterBox extends StatelessWidget {
     );
   }
 }
+

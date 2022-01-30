@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
 import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
@@ -33,6 +35,7 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> formKeylogin = GlobalKey<FormState>();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -56,8 +59,9 @@ class LoginForm extends StatelessWidget {
                 child: Column(
                   children: [
                     Text('Login', style: Theme.of(context).textTheme.headline4),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     Form(
+                      key: formKeylogin,
                       child: Column(
                         children: [
                           TextFormField(
@@ -65,25 +69,50 @@ class LoginForm extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecorations.loginInputDecoration(
                                 hintText: 'izena.abizena@gmail.com',
-                                labelText: 'E-posta',
+                                labelText: 'Sartu zure e-posta',
                                 textStyleColor: Colors.purple,
                                 prefixIcon: Icons.email),
+                            validator: (value) {
+                              String pattern =
+                                  r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$';
+
+                              RegExp regExp = RegExp(pattern);
+                              if (value != null &&
+                                  regExp.hasMatch(value) &&
+                                  value.length <= 254) {
+                                return null;
+                              } else {
+                                return 'E-posta ez da zuzena';
+                              }
+                            },
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 5,
                           ),
                           TextFormField(
                             obscureText: true,
                             autocorrect: false,
-                            keyboardType: TextInputType.visiblePassword,
                             decoration: InputDecorations.loginInputDecoration(
-                                hintText: '*******',
-                                labelText: 'Pasahitza',
+                                errorMaxLines: 2,
+                                hintText: '********',
+                                labelText: 'Sartu pasahitza',
                                 textStyleColor: Colors.purple,
-                                prefixIcon: Icons.password),
+                                prefixIcon: Icons.password_outlined),
+                            validator: (value) {
+                              String pattern =
+                                  r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
+
+                              RegExp regExp = RegExp(pattern);
+
+                              if (value != null && regExp.hasMatch(value)) {
+                                return null;
+                              } else {
+                                return 'Pasahitz desegokia';
+                              }
+                            },
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 3,
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
@@ -93,7 +122,8 @@ class LoginForm extends StatelessWidget {
                               backgroundColor: Colors.deepPurple,
                             ),
                             onPressed: () {
-                              print('pressed to login');
+                              formKeylogin.currentState?.validate();
+                              
                             },
                             child: const Text('Sartu'),
                           ),
