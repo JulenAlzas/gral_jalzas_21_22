@@ -1,42 +1,33 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:gral_jalzas_21_22/Provider/LoginProvider.dart';
 import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
 import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
+import 'package:provider/provider.dart';
+import 'dart:developer';
 
 import 'Background.dart';
 
 // ignore: use_key_in_widget_constructors, camel_case_types
-class LoginBackground extends StatelessWidget {
+class LoginBackground extends StatefulWidget {
+  @override
+  State<LoginBackground> createState() => _LoginBackgroundState();
+}
+
+class _LoginBackgroundState extends State<LoginBackground> {
+   bool _isHidden = true;
   @override
   Widget build(BuildContext context) {
+    final loginFormProvider = Provider.of<LoginProvider>(context);
+    
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
+
     return Stack(
       children: [
         const Background(),
         TopLoginBox(screenSize: screenSize),
         TopLoginIcon(screenSize: screenSize),
-        LoginForm(screenSize: screenSize, boxPadding: boxPadding)
-      ],
-    );
-  }
-}
-
-class LoginForm extends StatelessWidget {
-  const LoginForm({
-    Key? key,
-    required this.screenSize,
-    required this.boxPadding,
-  }) : super(key: key);
-
-  final Size screenSize;
-  final double boxPadding;
-
-  @override
-  Widget build(BuildContext context) {
-    GlobalKey<FormState> formKeylogin = GlobalKey<FormState>();
-    return SingleChildScrollView(
+        SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(height: screenSize.height * 0.25),
@@ -44,7 +35,7 @@ class LoginForm extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: boxPadding),
             child: Container(
                 padding: const EdgeInsets.all(15),
-                height: 300,
+                height: loginFormProvider.formHeight,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(255, 199, 237, 1),
@@ -61,10 +52,12 @@ class LoginForm extends StatelessWidget {
                     Text('Login', style: Theme.of(context).textTheme.headline4),
                     const SizedBox(height: 5),
                     Form(
-                      key: formKeylogin,
+                      key: loginFormProvider.formKey,
                       child: Column(
                         children: [
                           TextFormField(
+                            onChanged: (value) =>
+                                    loginFormProvider.email = value,
                             autocorrect: false,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecorations.loginInputDecoration(
@@ -90,14 +83,11 @@ class LoginForm extends StatelessWidget {
                             height: 5,
                           ),
                           TextFormField(
-                            obscureText: true,
+                            onChanged: (value) =>
+                                    loginFormProvider.pass = value,
+                            obscureText: _isHidden,
                             autocorrect: false,
-                            decoration: InputDecorations.loginInputDecoration(
-                                errorMaxLines: 2,
-                                hintText: '********',
-                                labelText: 'Sartu pasahitza',
-                                textStyleColor: Colors.purple,
-                                prefixIcon: Icons.password_outlined),
+                            decoration: passDecoration('Sartu zure pasahitza'),
                             validator: (value) {
                               String pattern =
                                   r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
@@ -112,7 +102,7 @@ class LoginForm extends StatelessWidget {
                             },
                           ),
                           const SizedBox(
-                            height: 3,
+                            height: 10,
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
@@ -122,7 +112,9 @@ class LoginForm extends StatelessWidget {
                               backgroundColor: Colors.deepPurple,
                             ),
                             onPressed: () {
-                              formKeylogin.currentState?.validate();
+                              if(loginFormProvider.isValidForm()){
+                                log('Is valid form');
+                              }
                               
                             },
                             child: const Text('Sartu'),
@@ -159,8 +151,39 @@ class LoginForm extends StatelessWidget {
           const SizedBox(height: 40),
         ],
       ),
+    ),
+      ],
     );
   }
+  InputDecoration passDecoration(String labelText) {
+    return InputDecoration(
+        errorMaxLines: 2,
+        enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.purple, width: 2.0)),
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.purple)),
+        hintText: '********',
+        labelText: labelText,
+        labelStyle: const TextStyle(color: Colors.purple),
+        suffix: InkWell(
+          onTap: _togglePasswordView,
+          child: Icon(
+            _isHidden ? Icons.visibility : Icons.visibility_off,
+          ),
+        ),
+        prefixIcon: const Icon(
+          Icons.password,
+          color: Colors.purple,
+        ));
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+}
+
+
 }
 
 class TopLoginIcon extends StatelessWidget {

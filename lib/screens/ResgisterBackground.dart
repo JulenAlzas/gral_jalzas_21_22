@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/Provider/RegisterProvider.dart';
-import 'package:gral_jalzas_21_22/screens/LoginBackground.dart';
 import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
 import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
 import 'package:provider/provider.dart';
@@ -8,15 +7,19 @@ import 'package:provider/provider.dart';
 import 'Background.dart';
 
 // ignore: use_key_in_widget_constructors, camel_case_types
-class RegisterBackground extends StatelessWidget {
+class RegisterBackground extends StatefulWidget {
+  @override
+  State<RegisterBackground> createState() => _RegisterBackgroundState();
+}
 
+class _RegisterBackgroundState extends State<RegisterBackground> {
+  bool _isHidden = true;
   @override
   Widget build(BuildContext context) {
-
-    final loginFormProvider = Provider.of<RegisterProvider>(context);
-
+    final registerFormProvider = Provider.of<RegisterProvider>(context);
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
+    
     return Stack(
       children: [
         const Background(),
@@ -30,7 +33,7 @@ class RegisterBackground extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: boxPadding),
                 child: Container(
                     padding: const EdgeInsets.all(15),
-                    height: loginFormProvider.formHeight,
+                    height: registerFormProvider.formHeight,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color: const Color.fromRGBO(255, 199, 237, 1),
@@ -48,7 +51,7 @@ class RegisterBackground extends StatelessWidget {
                             style: Theme.of(context).textTheme.headline4),
                         const SizedBox(height: 5),
                         Form(
-                          key: loginFormProvider.formKey,
+                          key: registerFormProvider.formKey,
                           // autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
                             children: [
@@ -74,7 +77,7 @@ class RegisterBackground extends StatelessWidget {
                               ),
                               TextFormField(
                                 onChanged: (value) =>
-                                    loginFormProvider.email = value,
+                                    registerFormProvider.email = value,
                                 autocorrect: false,
                                 decoration:
                                     InputDecorations.loginInputDecoration(
@@ -125,16 +128,10 @@ class RegisterBackground extends StatelessWidget {
                               ),
                               TextFormField(
                                 onChanged: (value) =>
-                                    loginFormProvider.pass = value,
-                                obscureText: true,
+                                    registerFormProvider.pass = value,
+                                obscureText: _isHidden,
                                 autocorrect: false,
-                                decoration:
-                                    InputDecorations.loginInputDecoration(
-                                        errorMaxLines : 2,
-                                        hintText: '********',
-                                        labelText: 'Sartu zure pasahitza',
-                                        textStyleColor: Colors.purple,
-                                        prefixIcon: Icons.password),
+                                decoration: passDecoration('Sartu zure pasahitza'),
                                 validator: (value) {
                                   String pattern =
                                       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
@@ -153,26 +150,20 @@ class RegisterBackground extends StatelessWidget {
                               Column(
                                 children: [
                                   TextFormField(
-                                    onChanged: (value) =>
-                                        loginFormProvider.confirmPass = value,
-                                    obscureText: true,
+                                    onChanged: (value) => registerFormProvider
+                                        .confirmPass = value,
+                                    obscureText: _isHidden,
                                     autocorrect: false,
-                                    decoration:
-                                        InputDecorations.loginInputDecoration(
-                                            errorMaxLines: 2,
-                                            hintText: '********',
-                                            labelText: 'Pasahitza berretsi',
-                                            textStyleColor: Colors.purple,
-                                            prefixIcon:
-                                                Icons.password_outlined),
+                                    decoration: passDecoration('Pasahitza berretsi'),
                                     validator: (value) {
                                       String pattern =
                                           r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
 
                                       RegExp regExp = RegExp(pattern);
-                                      String pasahitz1 = loginFormProvider.pass;
+                                      String pasahitz1 =
+                                          registerFormProvider.pass;
                                       String pasahitz2 =
-                                          loginFormProvider.confirmPass;
+                                          registerFormProvider.confirmPass;
                                       print(
                                           'Pasahitzak: -> $pasahitz1 -------- $pasahitz2');
                                       if (value != null &&
@@ -184,14 +175,10 @@ class RegisterBackground extends StatelessWidget {
                                       }
                                     },
                                   ),
-                                  // const TextButton(
-                                  //     onPressed: null,
-                                  //     child: Text(
-                                  //         /*_obscureText ? "Show" : "Hide"*/ 'hi'))
                                 ],
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 5,
                               ),
                               TextButton(
                                 style: TextButton.styleFrom(
@@ -201,15 +188,13 @@ class RegisterBackground extends StatelessWidget {
                                   backgroundColor: Colors.deepPurple,
                                 ),
                                 onPressed: () {
-                                  print('Entered to onpressed');
-                                  if (loginFormProvider.isValidForm()) {
+                                  if (registerFormProvider.isValidForm()) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const LoginScreen()),
                                     );
-                                    
                                   }
                                 },
                                 child: const Text('Sartu'),
@@ -220,7 +205,6 @@ class RegisterBackground extends StatelessWidget {
                       ],
                     )),
               ),
-              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -234,9 +218,9 @@ class RegisterBackground extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.push(
-                        context,  MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginScreen()),
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
                       );
                     },
                     child: const Text(' Logeatu'),
@@ -251,6 +235,33 @@ class RegisterBackground extends StatelessWidget {
     );
   }
 
+  InputDecoration passDecoration(String labelText) {
+    return InputDecoration(
+        errorMaxLines: 2,
+        enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.purple, width: 2.0)),
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.purple)),
+        hintText: '********',
+        labelText: labelText,
+        labelStyle: const TextStyle(color: Colors.purple),
+        suffix: InkWell(
+          onTap: _togglePasswordView,
+          child: Icon(
+            _isHidden ? Icons.visibility : Icons.visibility_off,
+          ),
+        ),
+        prefixIcon: const Icon(
+          Icons.password,
+          color: Colors.purple,
+        ));
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
 }
 
 class TopRegisterIcon extends StatelessWidget {
@@ -301,4 +312,3 @@ class TopRegisterBox extends StatelessWidget {
     );
   }
 }
-

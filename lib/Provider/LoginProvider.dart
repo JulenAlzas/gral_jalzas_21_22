@@ -1,11 +1,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-class RegisterProvider extends ChangeNotifier{
+class LoginProvider extends ChangeNotifier{
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  
   String _pass = '';
-  String _confirmPass = '';
 
   String get pass{
     return _pass;
@@ -16,25 +16,19 @@ class RegisterProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-   String get confirmPass{
-    return _confirmPass;
-  }
-  set confirmPass(String confirmpass){
-    _confirmPass = confirmpass;
-    notifyListeners();
-  }
-  
   String email = '';
-  double formHeight = 475;
+  double formHeight = 275;
+  bool seePassButton = false;
+
 
   bool isValidForm(){
     print(formKey.currentState?.validate());
 
     if(formKey.currentState != null && formKey.currentState!.validate()){
-      formHeight = 475;
+      formHeight = 275;
     }
     else if(formKey.currentState != null){
-      formHeight = 610;
+      formHeight = 320;
     }
   notifyListeners();
 
