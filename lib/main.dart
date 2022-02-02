@@ -3,7 +3,15 @@ import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
 import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firebase_options.dart';
+
+// import 'package:firebase_core/firebase_core.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -37,4 +45,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
