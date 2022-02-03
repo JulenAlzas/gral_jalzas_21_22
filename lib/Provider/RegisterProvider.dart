@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class RegisterProvider extends ChangeNotifier{
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+   String name = '';
+  String telepNum = '';
   String _pass = '';
   String _confirmPass = '';
 

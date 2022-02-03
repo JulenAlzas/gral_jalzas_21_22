@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
 import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
@@ -11,7 +12,23 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  
+  // if(kIsWeb){
+  //   await Firebase.initializeApp(
+  //     options: const FirebaseOptions(
+  //       apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
+  //       authDomain: "gral-jalzas.firebaseapp.com",
+  //       projectId: "gral-jalzas",
+  //       storageBucket: "gral-jalzas.appspot.com",
+  //       messagingSenderId: "312983830076",
+  //       appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
+  //       measurementId: "G-5D6PWQE0L1"
+  //     )
+  //   );
+  // }else{
+    await Firebase.initializeApp();
+  // }
+  
   runApp(const MyApp());
 }
 

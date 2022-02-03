@@ -5,6 +5,7 @@ import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
 import 'package:provider/provider.dart';
 
 import 'Background.dart';
+import 'RegisterAuth.dart';
 
 // ignore: use_key_in_widget_constructors, camel_case_types
 class RegisterBackground extends StatefulWidget {
@@ -57,6 +58,8 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                             children: [
                               TextFormField(
                                 autocorrect: false,
+                                onChanged: (value) =>
+                                    registerFormProvider.name = value,
                                 keyboardType: TextInputType.name,
                                 decoration:
                                     InputDecorations.loginInputDecoration(
@@ -78,6 +81,7 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                               TextFormField(
                                 onChanged: (value) =>
                                     registerFormProvider.email = value,
+                                keyboardType: TextInputType.emailAddress,
                                 autocorrect: false,
                                 decoration:
                                     InputDecorations.loginInputDecoration(
@@ -104,6 +108,9 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                               ),
                               TextFormField(
                                 autocorrect: false,
+                                onChanged: (value) =>
+                                    registerFormProvider.telepNum = value,
+                                keyboardType: TextInputType.number,
                                 decoration:
                                     InputDecorations.loginInputDecoration(
                                         hintText: '612345678',
@@ -189,6 +196,8 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                                 ),
                                 onPressed: () {
                                   if (registerFormProvider.isValidForm()) {
+
+                                    RegisterAuth.registerUsingEmailPassword(name: registerFormProvider.name, email: registerFormProvider.email, password: registerFormProvider.pass, telepNum: registerFormProvider.telepNum);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
