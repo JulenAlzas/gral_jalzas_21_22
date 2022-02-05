@@ -141,7 +141,7 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                                 decoration: passDecoration('Sartu zure pasahitza'),
                                 validator: (value) {
                                   String pattern =
-                                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
+                                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
                                   RegExp regExp = RegExp(pattern);
                                   if (value != null && regExp.hasMatch(value)) {
@@ -164,7 +164,7 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                                     decoration: passDecoration('Pasahitza berretsi'),
                                     validator: (value) {
                                       String pattern =
-                                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
+                                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
                                       RegExp regExp = RegExp(pattern);
                                       String pasahitz1 =

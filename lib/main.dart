@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gral_jalzas_21_22/screens/LoginHome.dart';
 import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
 import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
@@ -53,11 +54,12 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      initialRoute: 'homepage',
+      initialRoute: 'loginhome',
       routes: {
         'homepage': (BuildContext context ) => const Homepage(),
         'login'   : (BuildContext context ) => const LoginScreen(),
-        'register': (BuildContext context ) => const RegisterScreen()
+        'register': (BuildContext context ) => const RegisterScreen(),
+        'loginhome': (BuildContext context ) => const LoginHome(),
       },
     );
   }

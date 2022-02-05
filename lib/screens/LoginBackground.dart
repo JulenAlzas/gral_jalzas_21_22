@@ -18,6 +18,7 @@ class LoginBackground extends StatefulWidget {
 
 class _LoginBackgroundState extends State<LoginBackground> {
   bool _isHidden = true;
+  bool _showError = false;
   @override
   Widget build(BuildContext context) {
     final loginFormProvider = Provider.of<LoginProvider>(context);
@@ -96,7 +97,7 @@ class _LoginBackgroundState extends State<LoginBackground> {
                                     passDecoration('Sartu zure pasahitza'),
                                 validator: (value) {
                                   String pattern =
-                                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$';
+                                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
                                   RegExp regExp = RegExp(pattern);
 
@@ -131,17 +132,23 @@ class _LoginBackgroundState extends State<LoginBackground> {
                                                   const LoginHome()),
                                         );
                                       } else {
-                                        AlertDialog(
-                                          title: const Text('Errorea'),
-                                          content: Text('loginResult'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, 'OK'),
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Error'),
+                                                content: Text(loginResult),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                            });
                                       }
                                     });
                                   }
