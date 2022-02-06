@@ -46,23 +46,34 @@ class OngiEtorri extends StatelessWidget {
                   const SizedBox(height: 20),
                   CardImage(screenWidth: screenWidth),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      CustomButton(
-                          myname: 'login',
-                          myiconName: Icons.login,
-                          mycolor: Colors.pink),
-                      CustomButton(
-                          myname: 'register',
-                          myiconName: Icons.app_registration,
-                          mycolor: Colors.pink),
-                    ],
-                  ),
+                  const CustomButtons(),
                 ]),
           )
         ],
       ),
+    );
+  }
+}
+
+class CustomButtons extends StatelessWidget {
+  const CustomButtons({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        CustomButton(
+            myname: 'login',
+            myiconName: Icons.login,
+            mycolor: Colors.pink),
+        CustomButton(
+            myname: 'register',
+            myiconName: Icons.app_registration,
+            mycolor: Colors.pink),
+      ],
     );
   }
 }

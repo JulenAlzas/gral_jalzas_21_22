@@ -1,15 +1,24 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-class RegisterProvider extends ChangeNotifier{
 
+class RegisterProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-   String name = '';
+  String name = '';
   String telepNum = '';
   String _pass = '';
   String _confirmPass = '';
+  bool _isHidden = true;
 
-  String get pass{
+  bool get isHidden {
+    return _isHidden;
+  }
+
+  set isHidden(bool isHidden) {
+    _isHidden = isHidden;
+    notifyListeners();
+  }
+
+  String get pass {
     return _pass;
   }
 
@@ -18,30 +27,31 @@ class RegisterProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-   String get confirmPass{
+  String get confirmPass {
     return _confirmPass;
   }
-  set confirmPass(String confirmpass){
+
+  set confirmPass(String confirmpass) {
     _confirmPass = confirmpass;
     notifyListeners();
   }
-  
+
   String email = '';
   double formHeight = 475;
 
-  bool isValidForm(){
-    print(formKey.currentState?.validate());
-
-    if(formKey.currentState != null && formKey.currentState!.validate()){
+  bool isValidForm() {
+    if (formKey.currentState != null && formKey.currentState!.validate()) {
       formHeight = 475;
-    }
-    else if(formKey.currentState != null){
+    } else if (formKey.currentState != null) {
       formHeight = 610;
     }
-  notifyListeners();
+    notifyListeners();
 
-    return formKey.currentState?.validate()??false;
+    return formKey.currentState?.validate() ?? false;
   }
 
-
+  void togglePasswordView() {
+    _isHidden = !_isHidden;
+    notifyListeners();
+  }
 }

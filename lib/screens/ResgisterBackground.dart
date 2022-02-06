@@ -8,19 +8,13 @@ import 'Background.dart';
 import 'RegisterAuth.dart';
 
 // ignore: use_key_in_widget_constructors, camel_case_types
-class RegisterBackground extends StatefulWidget {
-  @override
-  State<RegisterBackground> createState() => _RegisterBackgroundState();
-}
-
-class _RegisterBackgroundState extends State<RegisterBackground> {
-  bool _isHidden = true;
+class RegisterBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final registerFormProvider = Provider.of<RegisterProvider>(context);
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
-    
+
     return Stack(
       children: [
         const Background(),
@@ -136,9 +130,11 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                               TextFormField(
                                 onChanged: (value) =>
                                     registerFormProvider.pass = value,
-                                obscureText: _isHidden,
+                                obscureText: registerFormProvider.isHidden,
                                 autocorrect: false,
-                                decoration: passDecoration('Sartu zure pasahitza'),
+                                decoration: passDecoration(
+                                    'Sartu zure pasahitza',
+                                    registerFormProvider),
                                 validator: (value) {
                                   String pattern =
                                       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
@@ -159,12 +155,14 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                                   TextFormField(
                                     onChanged: (value) => registerFormProvider
                                         .confirmPass = value,
-                                    obscureText: _isHidden,
+                                    obscureText: registerFormProvider.isHidden,
                                     autocorrect: false,
-                                    decoration: passDecoration('Pasahitza berretsi'),
+                                    decoration: passDecoration(
+                                        'Pasahitza berretsi',
+                                        registerFormProvider),
                                     validator: (value) {
                                       String pattern =
-                                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
+                                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
                                       RegExp regExp = RegExp(pattern);
                                       String pasahitz1 =
@@ -196,8 +194,12 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
                                 ),
                                 onPressed: () {
                                   if (registerFormProvider.isValidForm()) {
-
-                                    RegisterAuth.registerUsingEmailPassword(name: registerFormProvider.name, email: registerFormProvider.email, password: registerFormProvider.pass, telepNum: registerFormProvider.telepNum);
+                                    RegisterAuth.registerUsingEmailPassword(
+                                        name: registerFormProvider.name,
+                                        email: registerFormProvider.email,
+                                        password: registerFormProvider.pass,
+                                        telepNum:
+                                            registerFormProvider.telepNum);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -244,7 +246,8 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
     );
   }
 
-  InputDecoration passDecoration(String labelText) {
+  InputDecoration passDecoration(
+      String labelText, RegisterProvider registerFormProvider) {
     return InputDecoration(
         errorMaxLines: 2,
         enabledBorder: const UnderlineInputBorder(
@@ -255,21 +258,17 @@ class _RegisterBackgroundState extends State<RegisterBackground> {
         labelText: labelText,
         labelStyle: const TextStyle(color: Colors.purple),
         suffix: InkWell(
-          onTap: _togglePasswordView,
+          onTap: registerFormProvider.togglePasswordView,
           child: Icon(
-            _isHidden ? Icons.visibility : Icons.visibility_off,
+            registerFormProvider.isHidden
+                ? Icons.visibility
+                : Icons.visibility_off,
           ),
         ),
         prefixIcon: const Icon(
           Icons.password,
           color: Colors.purple,
         ));
-  }
-
-  void _togglePasswordView() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
   }
 }
 
