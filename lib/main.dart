@@ -6,30 +6,27 @@ import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_options.dart';
 
-// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firedart/firedart.dart';
+import 'dart:io' show Platform;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // if(kIsWeb){
-  //   await Firebase.initializeApp(
-  //     options: const FirebaseOptions(
-  //       apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
-  //       authDomain: "gral-jalzas.firebaseapp.com",
-  //       projectId: "gral-jalzas",
-  //       storageBucket: "gral-jalzas.appspot.com",
-  //       messagingSenderId: "312983830076",
-  //       appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
-  //       measurementId: "G-5D6PWQE0L1"
-  //     )
-  //   );
-  // }else{
+
+  if (kIsWeb || Platform.isLinux || Platform.isWindows) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
+            authDomain: "gral-jalzas.firebaseapp.com",
+            projectId: "gral-jalzas",
+            storageBucket: "gral-jalzas.appspot.com",
+            messagingSenderId: "312983830076",
+            appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
+            measurementId: "G-5D6PWQE0L1"));
+  } else if ((Platform.isAndroid)) {
     await Firebase.initializeApp();
-  // }
-  
+  }
+
   runApp(const MyApp());
 }
 
@@ -41,7 +38,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Game',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -56,10 +53,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: 'register',
       routes: {
-        'homepage': (BuildContext context ) => const Homepage(),
-        'login'   : (BuildContext context ) => const LoginScreen(),
-        'register': (BuildContext context ) => const RegisterScreen(),
-        'loginhome': (BuildContext context ) => const LoginHome(),
+        'homepage': (BuildContext context) => const Homepage(),
+        'login': (BuildContext context) => const LoginScreen(),
+        'register': (BuildContext context) => const RegisterScreen(),
+        'loginhome': (BuildContext context) => const LoginHome(),
       },
     );
   }
