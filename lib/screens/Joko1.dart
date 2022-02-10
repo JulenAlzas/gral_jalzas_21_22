@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:gral_jalzas_21_22/screens/LoginAuth.dart';
+import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 class Joko1 extends StatefulWidget {
   const Joko1({Key? key}) : super(key: key);
@@ -18,6 +20,24 @@ class _Joko1State extends State<Joko1> {
     final screenSize = MediaQuery.of(context).size;
     double heighthRoulette = screenSize.width- screenSize.width*0.05;
     return Scaffold(
+      appBar: AppBar(
+            backgroundColor: Colors.pink,
+            title: const Text('Lehen jokoa'),
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            actions: [
+              TextButton.icon(
+                  onPressed: () {
+                    LoginAuth.signOut();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Homepage()),
+                    );
+                  },
+                  icon: const Icon(Icons.logout, color: Colors.white,),
+                  label: const Text('Atera',style: TextStyle(color: Colors.white),))
+            ],
+          ),
       body: Center(
         child: Container(
           width: heighthRoulette,

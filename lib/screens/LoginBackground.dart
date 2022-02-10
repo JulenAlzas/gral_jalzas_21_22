@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/Provider/LoginProvider.dart';
 import 'package:gral_jalzas_21_22/screens/LoginAuth.dart';
@@ -16,9 +17,18 @@ class LoginBackground extends StatefulWidget {
 
 class _LoginBackgroundState extends State<LoginBackground> {
   bool _isHidden = true;
+
   @override
   Widget build(BuildContext context) {
     final loginFormProvider = Provider.of<LoginProvider>(context);
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginHome()),
+        );
+      }
+    });
 
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
@@ -133,8 +143,7 @@ class _LoginBackgroundState extends State<LoginBackground> {
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
-                                                title: const Text(
-                                                    'Error'),
+                                                title: const Text('Error'),
                                                 content: Text(loginResult),
                                                 actions: <Widget>[
                                                   TextButton(
