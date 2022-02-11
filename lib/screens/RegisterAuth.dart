@@ -13,18 +13,16 @@ class RegisterAuth {
     try {
       //Register new user
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: email,
-              password: password);
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       //Add user other filds
-      
+
       _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'username' : name,
+        'username': name,
         'email': email,
         'telepNum': telepNum,
-        'uid' : userCredential.user!.uid 
-        });
+        'uid': userCredential.user!.uid
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('Pasahitza ahulegia da');

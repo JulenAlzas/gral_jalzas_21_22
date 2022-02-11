@@ -10,13 +10,10 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ChangeNotifierProvider(
-          create: (_) => RegisterProvider(),
-          child: RegisterBackground(
-          
-        ),
-        )
-      ),
+          child: ChangeNotifierProvider(
+        create: (_) => RegisterProvider(),
+        child: RegisterBackground(),
+      )),
     );
   }
 }

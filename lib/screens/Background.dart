@@ -11,12 +11,12 @@ class Background extends StatelessWidget {
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
-          end: Alignment(0.4,0.5),
+          end: Alignment(0.4, 0.5),
           colors: <Color>[
-            Color.fromARGB(255,153,0,76),
-            Color.fromARGB(255, 204,0,102)
-          ], 
-          tileMode: TileMode.repeated, 
+            Color.fromARGB(255, 153, 0, 76),
+            Color.fromARGB(255, 204, 0, 102)
+          ],
+          tileMode: TileMode.repeated,
         ),
       ),
     );

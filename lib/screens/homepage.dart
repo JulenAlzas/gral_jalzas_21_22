@@ -39,9 +39,10 @@ class OngiEtorri extends StatelessWidget {
                 children: [
                   Text(
                     'YouPlay4You',
-                    style: Theme.of(context).textTheme.headline2?.copyWith(
-                      color: Colors.white
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2
+                        ?.copyWith(color: Colors.white),
                   ),
                   const SizedBox(height: 20),
                   CardImage(screenWidth: screenWidth),
@@ -66,9 +67,7 @@ class CustomButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
         CustomButton(
-            myname: 'login',
-            myiconName: Icons.login,
-            mycolor: Colors.pink),
+            myname: 'login', myiconName: Icons.login, mycolor: Colors.pink),
         CustomButton(
             myname: 'register',
             myiconName: Icons.app_registration,
@@ -95,16 +94,16 @@ class CustomButton extends StatelessWidget {
     return FloatingActionButton.extended(
       heroTag: myname,
       onPressed: () {
-        if(myname == 'login'){
+        if (myname == 'login') {
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-            );
-        }else{
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        } else {
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const RegisterScreen()),
-            );
+            context,
+            MaterialPageRoute(builder: (context) => const RegisterScreen()),
+          );
         }
       },
       label: Text(myname),
