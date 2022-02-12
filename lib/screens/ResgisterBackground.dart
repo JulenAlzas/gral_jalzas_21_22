@@ -5,7 +5,7 @@ import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
 import 'package:provider/provider.dart';
 
 import 'Background.dart';
-import 'RegisterAuth.dart';
+import '../logic/RegisterAuth.dart';
 
 // ignore: use_key_in_widget_constructors, camel_case_types
 class RegisterBackground extends StatelessWidget {

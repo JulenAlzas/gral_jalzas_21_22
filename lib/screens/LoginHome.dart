@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/Joko1.dart';
-import 'package:gral_jalzas_21_22/screens/LoginAuth.dart';
+import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 class LoginHome extends StatelessWidget {
