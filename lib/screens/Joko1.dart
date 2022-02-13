@@ -17,8 +17,8 @@ class Joko1 extends StatefulWidget {
 
 class _Joko1State extends State<Joko1> {
   StreamController<int> selected = StreamController<int>();
-  int selectedInt = 0;
-  int selectedIndex = -1;
+  int selectedRandomInt = 0;
+  int selectedIndexOfFruits = -1;
   Color spinColor = Colors.grey;
   @override
   void dispose() {
@@ -36,14 +36,12 @@ class _Joko1State extends State<Joko1> {
       'assets/orange.png',
       'assets/raspberry.png'
     ];
-
     const colorizeColors = [
       Colors.white,
       Colors.pink,
       Colors.yellow,
       Colors.purple,
     ];
-
     const colorizeTextStyle = TextStyle(
         fontSize: 50.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold);
 
@@ -66,41 +64,20 @@ class _Joko1State extends State<Joko1> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: const Text('Lehen jokoa'),
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        actions: [
-          TextButton.icon(
-              onPressed: () {
-                LoginAuth.signOut();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Homepage()),
-                );
-              },
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
-              label: const Text(
-                'Atera',
-                style: TextStyle(color: Colors.white),
-              ))
+      appBar: appBarInfo(context),
+      body: Stack(
+        children: [
+        const gameBackground(),
+        gameContent(widthRoullette, colorizeTextStyle, colorizeColors, widthBuilder, heightBuilder, fruitImages, screenSize, heightRoullette, context)
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: screenSize.height,
-          width: screenSize.width,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/background_games.jpg"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(children: <Widget>[
+    );
+  }
+
+  SingleChildScrollView gameContent(double widthRoullette, TextStyle colorizeTextStyle, List<Color> colorizeColors, double widthBuilder, double heightBuilder, List<String> fruitImages, Size screenSize, double heightRoullette, BuildContext context) {
+    return SingleChildScrollView(
+          child: Column(
+          children: <Widget>[
             Container(
               width: widthRoullette,
               alignment: Alignment.topCenter,
@@ -144,7 +121,7 @@ class _Joko1State extends State<Joko1> {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                selectedIndex = index;
+                                selectedIndexOfFruits = index;
                                 spinColor = Colors.pink;
                               });
                             },
@@ -153,15 +130,15 @@ class _Joko1State extends State<Joko1> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Container(
-                                  color: selectedIndex == index
+                                  color: selectedIndexOfFruits == index
                                       ? Colors.blue.withOpacity(0.5)
                                       : Colors.transparent,
                                   width: screenSize.height * 0.1,
                                   height: screenSize.height * 0.1,
                                   margin: const EdgeInsets.all(10),
                                   child: FadeInImage(
-                                    placeholder:
-                                        const AssetImage('assets/no-image.jpg'),
+                                    placeholder: const AssetImage(
+                                        'assets/no-image.jpg'),
                                     image: AssetImage(fruitImages[index]),
                                     fit: BoxFit.cover,
                                   ),
@@ -177,14 +154,14 @@ class _Joko1State extends State<Joko1> {
               ),
             ),
             Align(
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
               child: Container(
                 alignment: Alignment.topCenter,
                 height: heightRoullette,
                 width: widthRoullette,
                 child: FortuneWheel(
                   onAnimationEnd: () {
-                    if (selectedInt == selectedIndex) {
+                    if (selectedRandomInt == selectedIndexOfFruits) {
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -333,11 +310,12 @@ class _Joko1State extends State<Joko1> {
               icon: const Icon(Icons.restart_alt),
               backgroundColor: spinColor,
               onPressed: () {
-                if (selectedIndex != -1) {
+                if (selectedIndexOfFruits != -1) {
                   setState(() {
                     spinColor = Colors.pink;
                     selected.add(
-                      selectedInt = Fortune.randomInt(0, fruitImages.length),
+                      selectedRandomInt =
+                          Fortune.randomInt(0, fruitImages.length),
                     );
                   });
                 } else {
@@ -346,8 +324,52 @@ class _Joko1State extends State<Joko1> {
                   // });
                 }
               },
-            )
-          ]),
+            ),
+          ],
+                ),
+        );
+  }
+
+  AppBar appBarInfo(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.pink,
+      title: const Text('Lehen jokoa'),
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      actions: [
+        TextButton.icon(
+            onPressed: () {
+              LoginAuth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Homepage()),
+              );
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            label: const Text(
+              'Atera',
+              style: TextStyle(color: Colors.white),
+            ))
+      ],
+    );
+  }
+}
+
+class gameBackground extends StatelessWidget {
+  const gameBackground({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/background_games.jpg"),
+          fit: BoxFit.cover,
         ),
       ),
     );

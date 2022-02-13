@@ -9,71 +9,78 @@ class LoginHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Loginera bueltatzeko atera sesiotik')));
-          return false;
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.pink,
-            title: const Text('Lehen jokoa'),
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            actions: [
-              TextButton.icon(
-                  onPressed: () {
-                    LoginAuth.signOut();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Homepage()),
-                    );
-                  },
-                  icon: const Icon(Icons.logout, color: Colors.white,),
-                  label: const Text('Atera',style: TextStyle(color: Colors.white),))
-            ],
-          ),
-          body: Stack(
-            children: [
-              // const BackgroundHome(),
-
-              Center(
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Joko1()),
-                        );
-                      },
-                      child: const Text('Joko1'),
+      onWillPop: () async {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Loginera bueltatzeko atera sesiotik')));
+        return false;
+      },
+      child: Scaffold(
+        appBar: appBarDetails(context),
+        body: Stack(
+          children: [
+            const BackgroundHome(),
+            Center(
+              child: SingleChildScrollView(
+                  child: Column(
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
-                    const SizedBox(height: 30),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Joko1()),
-                        );
-                      },
-                      child: const Text('Joko2'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Joko1()),
+                      );
+                    },
+                    child: const Text('Joko1'),
+                  ),
+                  const SizedBox(height: 30),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
-                  ],
-                )),
-              )
-            ],
-          ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Joko1()),
+                      );
+                    },
+                    child: const Text('Joko2'),
+                  ),
+                ],
+              )),
+            )
+          ],
         ),
+      ),
+    );
+  }
+
+  AppBar appBarDetails(BuildContext context) {
+    return AppBar(
+        backgroundColor: Colors.pink,
+        title: const Text('Lehen jokoa'),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          TextButton.icon(
+              onPressed: () {
+                LoginAuth.signOut();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Homepage()),
+                );
+              },
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              label: const Text(
+                'Atera',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
       );
   }
 }
