@@ -81,253 +81,269 @@ class _Joko1State extends State<Joko1> {
             Container(
               width: widthRoullette,
               alignment: Alignment.topCenter,
-              child: AnimatedTextKit(
-                animatedTexts: [
-                  ColorizeAnimatedText(
-                    'ERRULETA',
-                    textStyle: colorizeTextStyle,
-                    colors: colorizeColors,
-                    speed: const Duration(milliseconds: 700),
-                  ),
-                ],
-                totalRepeatCount: 1,
-              ),
+              child: testuAnimatua(colorizeTextStyle, colorizeColors),
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                width: widthBuilder,
-                height: heightBuilder,
-                color: Colors.red,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'Hautatu fruitu bat',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: fruitImages.length,
-                        itemBuilder: (_, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedIndexOfFruits = index;
-                                spinColor = Colors.pink;
-                              });
-                            },
-                            child: Hero(
-                              tag: fruitImages[index],
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  color: selectedIndexOfFruits == index
-                                      ? Colors.blue.withOpacity(0.5)
-                                      : Colors.transparent,
-                                  width: screenSize.height * 0.1,
-                                  height: screenSize.height * 0.1,
-                                  margin: const EdgeInsets.all(10),
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage(
-                                        'assets/no-image.jpg'),
-                                    image: AssetImage(fruitImages[index]),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                alignment: Alignment.topCenter,
-                height: heightRoullette,
-                width: widthRoullette,
-                child: FortuneWheel(
-                  onAnimationEnd: () {
-                    if (selectedRandomInt == selectedIndexOfFruits) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Text('IRABAZI DUZU!!',
-                                  style: TextStyle(
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold)),
-                            );
-                          });
-                    } else {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Text('GALDU DUZU!!',
-                                  style: TextStyle(
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold)),
-                            );
-                          });
-                    }
-                  },
-                  animateFirst: false,
-                  selected: selected.stream,
-                  indicators: const <FortuneIndicator>[
-                    FortuneIndicator(
-                      alignment: Alignment.topCenter,
-                      child: TriangleIndicator(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                  physics: CircularPanPhysics(
-                    duration: const Duration(seconds: 2),
-                    curve: Curves.decelerate,
-                  ),
-                  // selected: controller.stream,
-                  items: [
-                    FortuneItem(
-                      child: Transform.rotate(
-                        angle: -11,
-                        child: Image.asset(
-                          fruitImages[0],
-                          height: screenSize.height * 0.1,
-                          width: screenSize.height * 0.1,
-                        ),
-                      ),
-                      style: const FortuneItemStyle(
-                        color: Colors.yellow,
-                        borderWidth: 5,
-                        borderColor: Colors.black,
-                      ),
-                    ),
-                    FortuneItem(
-                      child: Transform.rotate(
-                        angle: -11,
-                        child: Image.asset(
-                          fruitImages[1],
-                          height: screenSize.height * 0.1,
-                          width: screenSize.height * 0.1,
-                        ),
-                      ),
-                      style: const FortuneItemStyle(
-                        color: Colors.red,
-                        borderWidth: 5,
-                        borderColor: Colors.black,
-                      ),
-                    ),
-                    FortuneItem(
-                      child: Transform.rotate(
-                        angle: -5.2,
-                        child: Image.asset(
-                          fruitImages[2],
-                          height: screenSize.height * 0.1,
-                          width: screenSize.height * 0.1,
-                        ),
-                      ),
-                      style: const FortuneItemStyle(
-                        color: Colors.green,
-                        borderWidth: 5,
-                        borderColor: Colors.black,
-                      ),
-                    ),
-                    FortuneItem(
-                      child: Transform.rotate(
-                        angle: -11,
-                        child: Image.asset(
-                          fruitImages[3],
-                          height: screenSize.height * 0.1,
-                          width: screenSize.height * 0.1,
-                        ),
-                      ),
-                      style: const FortuneItemStyle(
-                        color: Colors.orange,
-                        borderWidth: 5,
-                        borderColor: Colors.black,
-                      ),
-                    ),
-                    FortuneItem(
-                      child: Transform.rotate(
-                        angle: -5.2,
-                        child: Image.asset(
-                          fruitImages[4],
-                          height: screenSize.height * 0.1,
-                          width: screenSize.height * 0.1,
-                        ),
-                      ),
-                      style: const FortuneItemStyle(
-                        color: Colors.blue,
-                        borderWidth: 5,
-                        borderColor: Colors.black,
-                      ),
-                    ),
-                    FortuneItem(
-                      child: Transform.rotate(
-                        angle: -11,
-                        child: Image.asset(
-                          fruitImages[5],
-                          height: screenSize.height * 0.1,
-                          width: screenSize.height * 0.1,
-                        ),
-                      ),
-                      style: const FortuneItemStyle(
-                        color: Colors.yellow,
-                        borderWidth: 5,
-                        borderColor: Colors.black,
-                      ),
-                    ),
-                  ],
-                  styleStrategy: const UniformStyleStrategy(
-                    borderWidth: 100,
-                    borderColor: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            FloatingActionButton.extended(
-              label: const Text('SPIN'),
-              icon: const Icon(Icons.restart_alt),
-              backgroundColor: spinColor,
-              onPressed: () {
-                if (selectedIndexOfFruits != -1) {
-                  setState(() {
-                    spinColor = Colors.pink;
-                    selected.add(
-                      selectedRandomInt =
-                          Fortune.randomInt(0, fruitImages.length),
-                    );
-                  });
-                } else {
-                  // setState(() {
-                  //   spinColor=Colors.grey;
-                  // });
-                }
-              },
-            ),
+            fruituAukeraketa(widthBuilder, heightBuilder, fruitImages, screenSize),
+            erruletaInplementazioa(heightRoullette, widthRoullette, context, fruitImages, screenSize),
+            botoiInplementazioa(fruitImages),
           ],
                 ),
         );
+  }
+
+  FloatingActionButton botoiInplementazioa(List<String> fruitImages) {
+    return FloatingActionButton.extended(
+            label: const Text('SPIN'),
+            icon: const Icon(Icons.restart_alt),
+            backgroundColor: spinColor,
+            onPressed: () {
+              if (selectedIndexOfFruits != -1) {
+                setState(() {
+                  spinColor = Colors.pink;
+                  selected.add(
+                    selectedRandomInt =
+                        Fortune.randomInt(0, fruitImages.length),
+                  );
+                });
+              } else {
+                // setState(() {
+                //   spinColor=Colors.grey;
+                // });
+              }
+            },
+          );
+  }
+
+  Align erruletaInplementazioa(double heightRoullette, double widthRoullette, BuildContext context, List<String> fruitImages, Size screenSize) {
+    return Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              alignment: Alignment.topCenter,
+              height: heightRoullette,
+              width: widthRoullette,
+              child: FortuneWheel(
+                onAnimationEnd: () {
+                  if (selectedRandomInt == selectedIndexOfFruits) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Text('IRABAZI DUZU!!',
+                                style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold)),
+                          );
+                        });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Text('GALDU DUZU!!',
+                                style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold)),
+                          );
+                        });
+                  }
+                },
+                animateFirst: false,
+                selected: selected.stream,
+                indicators: const <FortuneIndicator>[
+                  FortuneIndicator(
+                    alignment: Alignment.topCenter,
+                    child: TriangleIndicator(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+                physics: CircularPanPhysics(
+                  duration: const Duration(seconds: 2),
+                  curve: Curves.decelerate,
+                ),
+                // selected: controller.stream,
+                items: [
+                  FortuneItem(
+                    child: Transform.rotate(
+                      angle: -11,
+                      child: Image.asset(
+                        fruitImages[0],
+                        height: screenSize.height * 0.1,
+                        width: screenSize.height * 0.1,
+                      ),
+                    ),
+                    style: const FortuneItemStyle(
+                      color: Colors.yellow,
+                      borderWidth: 5,
+                      borderColor: Colors.black,
+                    ),
+                  ),
+                  FortuneItem(
+                    child: Transform.rotate(
+                      angle: -11,
+                      child: Image.asset(
+                        fruitImages[1],
+                        height: screenSize.height * 0.1,
+                        width: screenSize.height * 0.1,
+                      ),
+                    ),
+                    style: const FortuneItemStyle(
+                      color: Colors.red,
+                      borderWidth: 5,
+                      borderColor: Colors.black,
+                    ),
+                  ),
+                  FortuneItem(
+                    child: Transform.rotate(
+                      angle: -5.2,
+                      child: Image.asset(
+                        fruitImages[2],
+                        height: screenSize.height * 0.1,
+                        width: screenSize.height * 0.1,
+                      ),
+                    ),
+                    style: const FortuneItemStyle(
+                      color: Colors.green,
+                      borderWidth: 5,
+                      borderColor: Colors.black,
+                    ),
+                  ),
+                  FortuneItem(
+                    child: Transform.rotate(
+                      angle: -11,
+                      child: Image.asset(
+                        fruitImages[3],
+                        height: screenSize.height * 0.1,
+                        width: screenSize.height * 0.1,
+                      ),
+                    ),
+                    style: const FortuneItemStyle(
+                      color: Colors.orange,
+                      borderWidth: 5,
+                      borderColor: Colors.black,
+                    ),
+                  ),
+                  FortuneItem(
+                    child: Transform.rotate(
+                      angle: -5.2,
+                      child: Image.asset(
+                        fruitImages[4],
+                        height: screenSize.height * 0.1,
+                        width: screenSize.height * 0.1,
+                      ),
+                    ),
+                    style: const FortuneItemStyle(
+                      color: Colors.blue,
+                      borderWidth: 5,
+                      borderColor: Colors.black,
+                    ),
+                  ),
+                  FortuneItem(
+                    child: Transform.rotate(
+                      angle: -11,
+                      child: Image.asset(
+                        fruitImages[5],
+                        height: screenSize.height * 0.1,
+                        width: screenSize.height * 0.1,
+                      ),
+                    ),
+                    style: const FortuneItemStyle(
+                      color: Colors.yellow,
+                      borderWidth: 5,
+                      borderColor: Colors.black,
+                    ),
+                  ),
+                ],
+                styleStrategy: const UniformStyleStrategy(
+                  borderWidth: 100,
+                  borderColor: Colors.black,
+                ),
+              ),
+            ),
+          );
+  }
+
+  ClipRRect fruituAukeraketa(double widthBuilder, double heightBuilder, List<String> fruitImages, Size screenSize) {
+    return ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              width: widthBuilder,
+              height: heightBuilder,
+              color: Colors.red,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      'Hautatu fruitu bat',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: fruitImages.length,
+                      itemBuilder: (_, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedIndexOfFruits = index;
+                              spinColor = Colors.pink;
+                            });
+                          },
+                          child: Hero(
+                            tag: fruitImages[index],
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                color: selectedIndexOfFruits == index
+                                    ? Colors.blue.withOpacity(0.5)
+                                    : Colors.transparent,
+                                width: screenSize.height * 0.1,
+                                height: screenSize.height * 0.1,
+                                margin: const EdgeInsets.all(10),
+                                child: FadeInImage(
+                                  placeholder: const AssetImage(
+                                      'assets/no-image.jpg'),
+                                  image: AssetImage(fruitImages[index]),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+  }
+
+  AnimatedTextKit testuAnimatua(TextStyle colorizeTextStyle, List<Color> colorizeColors) {
+    return AnimatedTextKit(
+              animatedTexts: [
+                ColorizeAnimatedText(
+                  'ERRULETA',
+                  textStyle: colorizeTextStyle,
+                  colors: colorizeColors,
+                  speed: const Duration(milliseconds: 700),
+                ),
+              ],
+              totalRepeatCount: 1,
+            );
   }
 
   AppBar appBarInfo(BuildContext context) {
