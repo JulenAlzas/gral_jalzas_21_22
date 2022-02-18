@@ -67,7 +67,7 @@ class _Joko1State extends State<Joko1> {
       appBar: appBarInfo(context),
       body: Stack(
         children: [
-        const gameBackground(),
+        const GameBackground(),
         gameContent(widthRoullette, colorizeTextStyle, colorizeColors, widthBuilder, heightBuilder, fruitImages, screenSize, heightRoullette, context)
         ],
       ),
@@ -78,17 +78,21 @@ class _Joko1State extends State<Joko1> {
     return SingleChildScrollView(
           child: Column(
           children: <Widget>[
-            Container(
-              width: widthRoullette,
-              alignment: Alignment.topCenter,
-              child: testuAnimatua(colorizeTextStyle, colorizeColors),
-            ),
+            testuAnimatuaContainer(widthRoullette, colorizeTextStyle, colorizeColors),
             fruituAukeraketa(widthBuilder, heightBuilder, fruitImages, screenSize),
             erruletaInplementazioa(heightRoullette, widthRoullette, context, fruitImages, screenSize),
             botoiInplementazioa(fruitImages),
           ],
                 ),
         );
+  }
+
+  Container testuAnimatuaContainer(double widthRoullette, TextStyle colorizeTextStyle, List<Color> colorizeColors) {
+    return Container(
+            width: widthRoullette,
+            alignment: Alignment.topCenter,
+            child: testuAnimatua(colorizeTextStyle, colorizeColors),
+          );
   }
 
   FloatingActionButton botoiInplementazioa(List<String> fruitImages) {
@@ -374,8 +378,8 @@ class _Joko1State extends State<Joko1> {
   }
 }
 
-class gameBackground extends StatelessWidget {
-  const gameBackground({
+class GameBackground extends StatelessWidget {
+  const GameBackground({
     Key? key,
   }) : super(key: key);
 

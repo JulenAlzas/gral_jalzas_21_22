@@ -16,6 +16,36 @@ class LoginHome extends StatelessWidget {
       },
       child: Scaffold(
         appBar: appBarDetails(context),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                child: Container(),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/Menu2.png'),
+                    fit: BoxFit.cover
+                    ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon( Icons.edit),
+                title: const Text('Profila aldatu'),
+                onTap:() {
+                  Navigator.pushReplacementNamed(context, 'editprofile');
+                },
+              ),
+              ListTile(
+                leading: const Icon( Icons.person_remove_alt_1),
+                title: const Text('Profila ezabatu'),
+                onTap:() {
+                  print('Eraman profila aldatzera');
+                },
+              )
+            ],
+          ),
+        ),
         body: Stack(
           children: [
             const BackgroundHome(),
@@ -62,7 +92,6 @@ class LoginHome extends StatelessWidget {
         backgroundColor: Colors.pink,
         title: const Text('Lehen jokoa'),
         elevation: 0,
-        automaticallyImplyLeading: false,
         actions: [
           TextButton.icon(
               onPressed: () {
