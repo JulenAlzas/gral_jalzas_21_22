@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/Joko1.dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
+import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 class LoginHome extends StatelessWidget {
@@ -24,22 +25,24 @@ class LoginHome extends StatelessWidget {
                 child: Container(),
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/Menu2.png'),
-                    fit: BoxFit.cover
-                    ),
+                      image: AssetImage('assets/Menu2.png'), fit: BoxFit.cover),
                 ),
               ),
               ListTile(
-                leading: const Icon( Icons.edit),
+                leading: const Icon(Icons.edit),
                 title: const Text('Profila aldatu'),
-                onTap:() {
-                  Navigator.pushReplacementNamed(context, 'editprofile');
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EditProfile()));
                 },
               ),
               ListTile(
-                leading: const Icon( Icons.person_remove_alt_1),
+                leading: const Icon(Icons.person_remove_alt_1),
                 title: const Text('Profila ezabatu'),
-                onTap:() {
+                onTap: () {
                   print('Eraman profila aldatzera');
                 },
               )
@@ -89,28 +92,28 @@ class LoginHome extends StatelessWidget {
 
   AppBar appBarDetails(BuildContext context) {
     return AppBar(
-        backgroundColor: Colors.pink,
-        title: const Text('Lehen jokoa'),
-        elevation: 0,
-        actions: [
-          TextButton.icon(
-              onPressed: () {
-                LoginAuth.signOut();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Homepage()),
-                );
-              },
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
-              label: const Text(
-                'Atera',
-                style: TextStyle(color: Colors.white),
-              ))
-        ],
-      );
+      backgroundColor: Colors.pink,
+      title: const Text('Lehen jokoa'),
+      elevation: 0,
+      actions: [
+        TextButton.icon(
+            onPressed: () {
+              LoginAuth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Homepage()),
+              );
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            label: const Text(
+              'Atera',
+              style: TextStyle(color: Colors.white),
+            ))
+      ],
+    );
   }
 }
 

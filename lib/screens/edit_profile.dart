@@ -1,15 +1,35 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class EditProfile extends StatelessWidget {
+class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
 
   @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  GlobalKey<FormState> formEditProfKey = GlobalKey<FormState>();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String _fullName = '';
+  String _email = '';
+  String _telephNum = '';
+  String _passw = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserEmail();
+  }
+  @override
   Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
     final screenSize = MediaQuery.of(context).size;
-    const labelizena = 'Izena';
-    const hintizena = 'Zure izena hemen';
     const Color eremuKolorea = Colors.white;
 
     return Scaffold(
@@ -40,36 +60,72 @@ class EditProfile extends StatelessWidget {
                   child: Container(
                     width: 100,
                     height: 100,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 4, color: Colors.white),
+                        boxShadow: [
+                          BoxShadow(
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                              color: Colors.black.withOpacity(0.1))
+                        ],
                         shape: BoxShape.circle,
-                        image: DecorationImage(
+                        image: const DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage('assets/profile-no-image.jpg'))),
                   ),
                 ),
-                erab_eremuak(
-                    screenSize: screenSize,
-                    eremuKolorea: eremuKolorea,
-                    labelizena: labelizena,
-                    hintizena: hintizena),
+                Center(
+                  child: SizedBox(
+                    width: screenSize.width * 0.85,
+                    child: TextFormField(
+                      style: const TextStyle(color: eremuKolorea),
+                      initialValue: _email,
+                      onChanged: (nameChange) {
+                        setState(() {
+                          _fullName = nameChange;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: eremuKolorea, width: 2.0)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: eremuKolorea)),
+                          labelStyle: TextStyle(color: eremuKolorea),
+                          labelText: 'Izena',
+                          hintText: 'Sartu izen berria',
+                          hintStyle: TextStyle(color: eremuKolorea)),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 5),
-                erab_eremuak(
-                    screenSize: screenSize,
-                    eremuKolorea: eremuKolorea,
-                    labelizena: 'E-posta',
-                    hintizena: 'Sartu e-posta berria'),
-                const SizedBox(height: 5),
-                erab_eremuak(
-                    screenSize: screenSize,
-                    eremuKolorea: eremuKolorea,
-                    labelizena: 'Pasahitza',
-                    hintizena: 'Sartu pasahitz berria'),
-                const SizedBox(height: 10),
-                erab_eremuak(
-                    screenSize: screenSize,
-                    eremuKolorea: eremuKolorea,
-                    labelizena: 'Mugikor zenbakia',
-                    hintizena: 'Sartu mugikor zenbaki berria'),
+                Center(
+                  child: SizedBox(
+                    width: screenSize.width * 0.85,
+                    child: Form(
+                      key: formEditProfKey,
+                      child: TextFormField(
+                        style: const TextStyle(color: eremuKolorea),
+                        initialValue: _email,
+                        onChanged: (emailChange) {
+                          setState(() {
+                            _email = emailChange;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: eremuKolorea, width: 2.0)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: eremuKolorea)),
+                            labelStyle: TextStyle(color: eremuKolorea),
+                            labelText: 'E-posta',
+                            hintText: 'Sartu e-posta berria',
+                            hintStyle: TextStyle(color: eremuKolorea)),
+                      ),
+                    ),
+                  ),
+                ),              
                 const SizedBox(height: 10),
                 Center(
                   child: TextButton(
@@ -90,6 +146,16 @@ class EditProfile extends StatelessWidget {
     );
   }
 
+  // void setEmail(Future<String> Function() getUserEmail) async {
+  //   email = await getUserEmail();
+
+  //   getUserEmail().then((String? result) {
+  //     setState(() {
+  //       email = result.toString();
+  //     });
+  //   });
+  // }
+
   AppBar appBarDetails(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.pink,
@@ -99,6 +165,7 @@ class EditProfile extends StatelessWidget {
         TextButton.icon(
             onPressed: () {
               LoginAuth.signOut();
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Homepage()),
@@ -115,42 +182,16 @@ class EditProfile extends StatelessWidget {
       ],
     );
   }
+
+  void getUserEmail() async {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      setState(() {
+        _email = user!.email!;
+      });
+    }
 }
 
-class erab_eremuak extends StatelessWidget {
-  const erab_eremuak({
-    Key? key,
-    required this.screenSize,
-    required this.eremuKolorea,
-    required this.labelizena,
-    required this.hintizena,
-  }) : super(key: key);
-
-  final Size screenSize;
-  final Color eremuKolorea;
-  final String labelizena;
-  final String hintizena;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: screenSize.width * 0.85,
-        child: TextField(
-          decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: eremuKolorea, width: 2.0)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: eremuKolorea)),
-              labelStyle: TextStyle(color: eremuKolorea),
-              labelText: labelizena,
-              hintText: hintizena,
-              hintStyle: TextStyle(color: eremuKolorea)),
-        ),
-      ),
-    );
-  }
-}
 
 class BackgroundHome extends StatelessWidget {
   const BackgroundHome({
