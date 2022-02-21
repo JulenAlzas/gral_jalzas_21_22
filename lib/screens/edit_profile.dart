@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gral_jalzas_21_22/logic/EditProfile.dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,21 +15,23 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   GlobalKey<FormState> formEditProfKey = GlobalKey<FormState>();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   String _fullName = '';
   String _email = '';
   String _telephNum = '';
-  String _passw = '';
+  String _passw = '*******';
+
+  bool enteredOnEditProfile = false;
+  bool _isHidden = true;
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     getUserEmail();
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-
     final screenSize = MediaQuery.of(context).size;
     const Color eremuKolorea = Colors.white;
 
@@ -74,69 +77,163 @@ class _EditProfileState extends State<EditProfile> {
                             image: AssetImage('assets/profile-no-image.jpg'))),
                   ),
                 ),
-                Center(
-                  child: SizedBox(
-                    width: screenSize.width * 0.85,
-                    child: TextFormField(
-                      style: const TextStyle(color: eremuKolorea),
-                      initialValue: _email,
-                      onChanged: (nameChange) {
-                        setState(() {
-                          _fullName = nameChange;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: eremuKolorea, width: 2.0)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: eremuKolorea)),
-                          labelStyle: TextStyle(color: eremuKolorea),
-                          labelText: 'Izena',
-                          hintText: 'Sartu izen berria',
-                          hintStyle: TextStyle(color: eremuKolorea)),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Center(
-                  child: SizedBox(
-                    width: screenSize.width * 0.85,
-                    child: Form(
-                      key: formEditProfKey,
-                      child: TextFormField(
-                        style: const TextStyle(color: eremuKolorea),
-                        initialValue: _email,
-                        onChanged: (emailChange) {
-                          setState(() {
-                            _email = emailChange;
-                          });
-                        },
-                        decoration: const InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: eremuKolorea, width: 2.0)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: eremuKolorea)),
-                            labelStyle: TextStyle(color: eremuKolorea),
-                            labelText: 'E-posta',
-                            hintText: 'Sartu e-posta berria',
-                            hintStyle: TextStyle(color: eremuKolorea)),
-                      ),
-                    ),
-                  ),
-                ),              
-                const SizedBox(height: 10),
-                Center(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      textStyle: const TextStyle(fontSize: 20),
-                      backgroundColor: Colors.deepPurple,
-                    ),
-                    onPressed: () {},
-                    child: const Text('Aldatu'),
-                  ),
+                FutureBuilder(
+                  future: getOtherUserParams(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (_fullName == '' &&
+                        _telephNum == '' &&
+                        !enteredOnEditProfile) {
+                          enteredOnEditProfile =true;
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return Form(
+                        key: formEditProfKey,
+                        child: Column(
+                          children: [
+                            Center(
+                              child: SizedBox(
+                                width: screenSize.width * 0.85,
+                                child: TextFormField(
+                                    style: const TextStyle(color: eremuKolorea),
+                                    initialValue: _fullName,
+                                    onChanged: (changedValue) {
+                                      setState(() {
+                                          _fullName = changedValue;
+                                      });
+                                    },
+                                    decoration: const InputDecoration(
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: eremuKolorea,
+                                                width: 2.0)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: eremuKolorea)),
+                                        errorBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.black,
+                                                width: 2.0)),
+                                        labelStyle:
+                                            TextStyle(color: eremuKolorea),
+                                        errorStyle:
+                                            TextStyle(color: Colors.black),
+                                        labelText: 'Izena',
+                                        hintText: 'Sartu zure izena',
+                                        hintStyle:
+                                            TextStyle(color: eremuKolorea)),
+                                    validator: (value) {
+                                      if (value != null && value.isNotEmpty) {
+                                        return null;
+                                      } else {
+                                        return 'Zure izena idatz ezazu';
+                                      }
+                                    }),
+                              ),
+                            ),
+                            // userField(screenSize, eremuKolorea, 'Izena',
+                            //     'Sartu zure izena', _fullName, 'izena'),
+                            const SizedBox(height: 5),
+                            userField(screenSize, eremuKolorea, 'E-posta',
+                                'Sartu zure e-posta', _email, 'e-posta'),
+                            const SizedBox(height: 5),
+                            userFieldPass(screenSize, eremuKolorea, 'Pasahitza',
+                                'Sartu zure pasahitza', _passw),
+                            const SizedBox(height: 5),
+                            userField(
+                                screenSize,
+                                eremuKolorea,
+                                'Mugikorra',
+                                'Sartu mugikor zenbakia',
+                                _telephNum,
+                                'mzenbakia'),
+                            const SizedBox(height: 10),
+                            Center(
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  primary: Colors.white,
+                                  textStyle: const TextStyle(fontSize: 20),
+                                  backgroundColor: Colors.deepPurple,
+                                ),
+                                onPressed: () {
+                                  if (isValidForm()) {
+                                    EditProfileLogic.editUserProfile(
+                                            oldName: '',
+                                            oldEmail: '',
+                                            oldTelepNum: '',
+                                            newName: _fullName,
+                                            newEmail: _email,
+                                            newPassword: _passw,
+                                            newTelepNum: _telephNum)
+                                        .then((String? profileEditResult) {
+                                      if (profileEditResult == 'Eremu berak') {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text('Error'),
+                                                content: const Text(
+                                                    'Ez dira eremu berak eguneratuko'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      } else if (profileEditResult ==
+                                          'Erab eguneratua') {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text('Error'),
+                                                content: const Text(
+                                                    'Erabiltzailearen informazioa eguneratu da. Pasahitza izan ezik'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text('Error'),
+                                                content: Text(profileEditResult
+                                                    .toString()),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      }
+                                    });
+                                  }
+                                },
+                                child: const Text('Aldatu'),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -146,15 +243,127 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  // void setEmail(Future<String> Function() getUserEmail) async {
-  //   email = await getUserEmail();
+  Center userField(Size screenSize, Color eremuKolorea, String labeltext,
+      String hintext, String initialText, String mota) {
+    return Center(
+      child: SizedBox(
+        width: screenSize.width * 0.85,
+        child: TextFormField(
+            style: TextStyle(color: eremuKolorea),
+            initialValue: initialText,
+            onChanged: (changedValue) {
+              setState(() {
+                if (mota == 'izena') {
+                  // setState(() {
+                  _fullName = changedValue;
+                  // });
+                } else if (mota == 'e-posta') {
+                  // setState(() {
+                  _email = changedValue;
+                  // });
+                } else if (mota == 'mzenbakia') {
+                  // setState(() {
+                  _telephNum = changedValue;
+                  // });
+                }
+              });
+            },
+            decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: eremuKolorea, width: 2.0)),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: eremuKolorea)),
+                errorBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 2.0)),
+                labelStyle: TextStyle(color: eremuKolorea),
+                errorStyle: const TextStyle(color: Colors.black),
+                labelText: labeltext,
+                hintText: hintext,
+                hintStyle: TextStyle(color: eremuKolorea)),
+            validator: (value) {
+              if (mota == 'izena') {
+                if (value != null && value.isNotEmpty) {
+                  return null;
+                } else {
+                  return 'Zure izena idatz ezazu';
+                }
+              } else if (mota == 'e-posta') {
+                String pattern =
+                    r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$';
 
-  //   getUserEmail().then((String? result) {
-  //     setState(() {
-  //       email = result.toString();
-  //     });
-  //   });
-  // }
+                RegExp regExp = RegExp(pattern);
+                if (value != null &&
+                    regExp.hasMatch(value) &&
+                    value.length <= 254) {
+                  return null;
+                } else {
+                  return 'E-posta ez da zuzena';
+                }
+              } else if (mota == 'mzenbakia') {
+                String pattern = r'^(6\d{2}|7[1-9]\d{1})\d{6}$';
+
+                RegExp regExp = RegExp(pattern);
+                if (value != null && regExp.hasMatch(value)) {
+                  return null;
+                } else {
+                  return 'Mugikor zenbakia espainiarra izan behar du';
+                }
+              }
+            }),
+      ),
+    );
+  }
+
+  Center userFieldPass(Size screenSize, Color eremuKolorea, String labeltext,
+      String hintext, String initialText) {
+    return Center(
+      child: SizedBox(
+        width: screenSize.width * 0.85,
+        child: TextFormField(
+          obscureText: _isHidden,
+          style: TextStyle(color: eremuKolorea),
+          initialValue: initialText,
+          onChanged: (changedValue) {
+            setState(() {
+              _fullName = changedValue;
+            });
+          },
+          decoration: InputDecoration(
+              errorMaxLines: 2,
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: eremuKolorea, width: 2.0)),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: eremuKolorea)),
+              labelStyle: TextStyle(color: eremuKolorea),
+              errorStyle: const TextStyle(color: Colors.black),
+              focusedErrorBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2.0)),
+              errorBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2.0)),
+              labelText: labeltext,
+              hintText: hintext,
+              hintStyle: TextStyle(color: eremuKolorea),
+              suffix: InkWell(
+                onTap: togglePasswordView,
+                child: Icon(
+                  _isHidden ? Icons.visibility : Icons.visibility_off,
+                ),
+              )),
+          validator: (value) {
+            String pattern =
+                r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
+
+            RegExp regExp = RegExp(pattern);
+            if (value != null && regExp.hasMatch(value)) {
+              return null;
+            } else {
+              return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
+            }
+          },
+        ),
+      ),
+    );
+  }
 
   AppBar appBarDetails(BuildContext context) {
     return AppBar(
@@ -184,14 +393,39 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void getUserEmail() async {
-      User? user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
+    setState(() {
+      _email = user!.email!;
+    });
+  }
+
+  Future<String?> getOtherUserParams() async {
+    if(!enteredOnEditProfile){
+      String userCred = FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCred)
+        .get()
+        .then((querySnapshot) {
       setState(() {
-        _email = user!.email!;
+        _fullName = querySnapshot['username'];
+        _telephNum = querySnapshot['telepNum'];
       });
+    });
     }
-}
+  }
 
+  void togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
+
+  bool isValidForm() {
+    return formEditProfKey.currentState?.validate() ?? false;
+  }
+}
 
 class BackgroundHome extends StatelessWidget {
   const BackgroundHome({
