@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gral_jalzas_21_22/logic/EditProfile.dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
@@ -21,12 +22,18 @@ class _EditProfileState extends State<EditProfile> {
   String _telephNum = '';
   String _passw = '*******';
 
-  bool enteredOnEditProfile = false;
+  String _oldfullName = '';
+  String _oldemail = '';
+  String _oldtelephNum = '';
+
   bool _isHidden = true;
+  bool _isLoading = false;
+  bool _isSwitched = true;
 
   @override
   void initState() {
     getUserEmail();
+    getOtherUserParams();
     super.initState();
   }
 
@@ -37,58 +44,50 @@ class _EditProfileState extends State<EditProfile> {
 
     return Scaffold(
       appBar: appBarDetails(context),
-      body: Stack(
-        children: [
-          const BackgroundHome(),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 15),
-                Container(
-                  height: 25,
-                  padding: const EdgeInsets.only(left: 30),
-                  child: ListView(
-                    children: const [
-                      Text('Profila Aldatu',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white)),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Center(
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 4, color: Colors.white),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.1))
-                        ],
-                        shape: BoxShape.circle,
-                        image: const DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/profile-no-image.jpg'))),
-                  ),
-                ),
-                FutureBuilder(
-                  future: getOtherUserParams(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (_fullName == '' &&
-                        _telephNum == '' &&
-                        !enteredOnEditProfile) {
-                          enteredOnEditProfile =true;
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      return Form(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Stack(
+              children: [
+                const BackgroundHome(),
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 15),
+                      Container(
+                        height: 25,
+                        padding: const EdgeInsets.only(left: 30),
+                        child: ListView(
+                          children: const [
+                            Text('Profila Aldatu',
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Center(
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 4, color: Colors.white),
+                              boxShadow: [
+                                BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.1))
+                              ],
+                              shape: BoxShape.circle,
+                              image: const DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                      'assets/profile-no-image.jpg'))),
+                        ),
+                      ),
+                      Form(
                         key: formEditProfKey,
                         child: Column(
                           children: [
@@ -100,7 +99,7 @@ class _EditProfileState extends State<EditProfile> {
                                     initialValue: _fullName,
                                     onChanged: (changedValue) {
                                       setState(() {
-                                          _fullName = changedValue;
+                                        _fullName = changedValue;
                                       });
                                     },
                                     decoration: const InputDecoration(
@@ -159,13 +158,14 @@ class _EditProfileState extends State<EditProfile> {
                                 onPressed: () {
                                   if (isValidForm()) {
                                     EditProfileLogic.editUserProfile(
-                                            oldName: '',
-                                            oldEmail: '',
-                                            oldTelepNum: '',
+                                            oldName: _oldfullName,
+                                            oldEmail: _oldemail,
+                                            oldTelepNum: _oldtelephNum,
                                             newName: _fullName,
                                             newEmail: _email,
                                             newPassword: _passw,
-                                            newTelepNum: _telephNum)
+                                            newTelepNum: _telephNum,
+                                            updatePass: _isSwitched)
                                         .then((String? profileEditResult) {
                                       if (profileEditResult == 'Eremu berak') {
                                         showDialog(
@@ -191,9 +191,9 @@ class _EditProfileState extends State<EditProfile> {
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
-                                                title: const Text('Error'),
+                                                title: const Text('Mezua'),
                                                 content: const Text(
-                                                    'Erabiltzailearen informazioa eguneratu da. Pasahitza izan ezik'),
+                                                    'Erabiltzailearen informazioa eguneratu da.'),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: () =>
@@ -223,6 +223,11 @@ class _EditProfileState extends State<EditProfile> {
                                               );
                                             });
                                       }
+                                      setState(() {
+                                        _oldemail = _email;
+                                        _oldfullName = _fullName;
+                                        _oldtelephNum = _telephNum;
+                                      });
                                     });
                                   }
                                 },
@@ -231,15 +236,12 @@ class _EditProfileState extends State<EditProfile> {
                             )
                           ],
                         ),
-                      );
-                    }
-                  },
-                ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 
@@ -319,47 +321,72 @@ class _EditProfileState extends State<EditProfile> {
     return Center(
       child: SizedBox(
         width: screenSize.width * 0.85,
-        child: TextFormField(
-          obscureText: _isHidden,
-          style: TextStyle(color: eremuKolorea),
-          initialValue: initialText,
-          onChanged: (changedValue) {
-            setState(() {
-              _fullName = changedValue;
-            });
-          },
-          decoration: InputDecoration(
-              errorMaxLines: 2,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: eremuKolorea, width: 2.0)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: eremuKolorea)),
-              labelStyle: TextStyle(color: eremuKolorea),
-              errorStyle: const TextStyle(color: Colors.black),
-              focusedErrorBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0)),
-              errorBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0)),
-              labelText: labeltext,
-              hintText: hintext,
-              hintStyle: TextStyle(color: eremuKolorea),
-              suffix: InkWell(
-                onTap: togglePasswordView,
-                child: Icon(
-                  _isHidden ? Icons.visibility : Icons.visibility_off,
-                ),
-              )),
-          validator: (value) {
-            String pattern =
-                r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
-
-            RegExp regExp = RegExp(pattern);
-            if (value != null && regExp.hasMatch(value)) {
-              return null;
-            } else {
-              return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
-            }
-          },
+        child: Row(
+          children: [
+            SizedBox(
+              width: screenSize.width * 0.09,
+              child: Switch(
+                value: _isSwitched,
+                onChanged: (value) {
+                  setState(() {
+                    _isSwitched = !_isSwitched;
+                  });
+                },
+              ),
+            ),
+            SizedBox(width:  screenSize.width * 0.01,),
+            SizedBox(
+              width: screenSize.width * 0.75,
+              child: TextFormField(
+                enabled: _isSwitched,
+                obscureText: _isHidden,
+                style: TextStyle(color: eremuKolorea),
+                initialValue: initialText,
+                onChanged: (changedValue) {
+                  setState(() {
+                    _passw = changedValue;
+                  });
+                },
+                decoration: InputDecoration(
+                    errorMaxLines: 2,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: eremuKolorea, width: 2.0)),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: eremuKolorea)),
+                    labelStyle: TextStyle(color: eremuKolorea),
+                    errorStyle: const TextStyle(color: Colors.black),
+                    focusedErrorBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0)),
+                    errorBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0)),
+                    labelText: labeltext,
+                    hintText: hintext,
+                    hintStyle: TextStyle(color: eremuKolorea),
+                    suffix: InkWell(
+                      onTap: togglePasswordView,
+                      child: Icon(
+                        _isHidden ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    )),
+                validator: (value) {
+                  if(_isSwitched){
+                    String pattern =
+                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
+            
+                  RegExp regExp = RegExp(pattern);
+                  if (value != null && regExp.hasMatch(value)) {
+                    return null;
+                  } else {
+                    return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
+                  }
+                  }else{
+                    return null;
+                  }
+                  
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -401,9 +428,12 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future<String?> getOtherUserParams() async {
-    if(!enteredOnEditProfile){
-      String userCred = FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
-    FirebaseFirestore.instance
+    // if (!enteredOnEditProfile) {
+    setState(() {
+      _isLoading = true;
+    });
+    String userCred = FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(userCred)
         .get()
@@ -412,8 +442,17 @@ class _EditProfileState extends State<EditProfile> {
         _fullName = querySnapshot['username'];
         _telephNum = querySnapshot['telepNum'];
       });
+      setState(() {
+        _oldemail = _email;
+        _oldfullName = _fullName;
+        _oldtelephNum = _telephNum;
+      });
     });
-    }
+    // }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void togglePasswordView() {
