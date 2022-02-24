@@ -1,4 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
+import 'package:firebase_auth_desktop/firebase_auth_desktop.dart' as authforwindowsweb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/EditProfileLogic..dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
@@ -142,18 +144,17 @@ class _EditProfileState extends State<EditProfile> {
                     onPressed: () {
                       if (isValidForm()) {
                         EditProfileLogic.editUserProfile(
-                                oldName: _oldfullName,
-                                oldEmail: _oldemail,
-                                oldTelepNum: _oldtelephNum,
-                                newName: _fullName,
-                                newEmail: _email,
-                                newPassword: _passw,
-                                newTelepNum: _telephNum,
-                                updatePass: _isSwitched,
-                                oldPasword: _oldpassw,
-                                updateRecentLogRequired:
-                                    updateRecentLogRequired,)
-                            .then((String? profileEditResult) {
+                          oldName: _oldfullName,
+                          oldEmail: _oldemail,
+                          oldTelepNum: _oldtelephNum,
+                          newName: _fullName,
+                          newEmail: _email,
+                          newPassword: _passw,
+                          newTelepNum: _telephNum,
+                          updatePass: _isSwitched,
+                          oldPasword: _oldpassw,
+                          updateRecentLogRequired: updateRecentLogRequired,
+                        ).then((String? profileEditResult) {
                           if (profileEditResult == 'Eremu berak') {
                             showDialog(
                                 context: context,
@@ -521,18 +522,33 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void getUserEmail() async {
-    User? user = FirebaseAuth.instance.currentUser;
 
-    setState(() {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      authforandroid.User? user = authforandroid.FirebaseAuth.instance.currentUser;
+      setState(() {
       _email = user!.email!;
     });
+    } else {
+       String userEmail = authforwindowsweb.FirebaseAuthDesktop.instance.currentUser!.email!;
+       setState(() {
+      _email = userEmail;
+    });
+    }
+
+    
   }
 
   Future<String?> getOtherUserParams() async {
     setState(() {
       _isLoading = true;
     });
-    String userCred = FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+    String userCred = '';
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      userCred = authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+    } else {
+       userCred =
+          authforwindowsweb.FirebaseAuthDesktop.instance.currentUser?.uid ?? 'no-id';
+    }
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userCred)

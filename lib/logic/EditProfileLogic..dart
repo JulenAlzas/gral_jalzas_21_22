@@ -100,7 +100,7 @@ class EditProfileLogic {
       }
       if (updatePass) {
         try {
-          if (updateRecentLogRequired && oldEmail != newEmail) {//e-posta desberdina bada iada kredentzialak eguneratuak daude
+          if (updateRecentLogRequired && oldEmail == newEmail) {//e-posta desberdina bada iada kredentzialak eguneratu dira goian
             await updateCredentials(oldEmail, oldPasword);
             currentUser = FirebaseAuth.instance.currentUser;
           }

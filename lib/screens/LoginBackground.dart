@@ -1,4 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
+import 'package:firebase_auth_desktop/firebase_auth_desktop.dart' as authforwindowsweb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/Provider/LoginProvider.dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
@@ -9,7 +11,6 @@ import 'package:provider/provider.dart';
 
 import 'Background.dart';
 
-// ignore: use_key_in_widget_constructors, camel_case_types
 class LoginBackground extends StatefulWidget {
   @override
   State<LoginBackground> createState() => _LoginBackgroundState();
@@ -21,7 +22,9 @@ class _LoginBackgroundState extends State<LoginBackground> {
   @override
   Widget build(BuildContext context) {
     final loginFormProvider = Provider.of<LoginProvider>(context);
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      authforandroid.FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
         Navigator.push(
           context,
@@ -29,6 +32,18 @@ class _LoginBackgroundState extends State<LoginBackground> {
         );
       }
     });
+    } 
+    if(defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.linux){
+     authforwindowsweb.FirebaseAuthDesktop.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginHome()),
+        );
+      }
+    });
+    }
+    
 
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
