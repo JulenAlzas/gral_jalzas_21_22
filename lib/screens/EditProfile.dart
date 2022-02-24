@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gral_jalzas_21_22/logic/EditProfile.dart';
+import 'package:gral_jalzas_21_22/logic/EditProfileLogic..dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
+import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -28,12 +28,14 @@ class _EditProfileState extends State<EditProfile> {
   String _oldtelephNum = '';
 
   int passWrongCount = -1;
+  int wrongPassCount = 0;
 
   bool _isHidden = true;
   bool _isHiddenOld = true;
   bool _isLoading = false;
   bool _isSwitched = true;
   bool _oldPassisVisible = false;
+  bool updateRecentLogRequired = false;
 
   @override
   void initState() {
@@ -108,8 +110,8 @@ class _EditProfileState extends State<EditProfile> {
             key: formEditProfKey,
             child: Column(
               children: [
-                userField(screenSize, eremuKolorea, 'Izena',
-                    'Sartu zure izena', _fullName, 'izena'),
+                userField(screenSize, eremuKolorea, 'Izena', 'Sartu zure izena',
+                    _fullName, 'izena'),
                 const SizedBox(height: 5),
                 userField(screenSize, eremuKolorea, 'E-posta',
                     'Sartu zure e-posta', _email, 'e-posta'),
@@ -148,14 +150,16 @@ class _EditProfileState extends State<EditProfile> {
                                 newPassword: _passw,
                                 newTelepNum: _telephNum,
                                 updatePass: _isSwitched,
-                                oldPasword: _oldpassw)
+                                oldPasword: _oldpassw,
+                                updateRecentLogRequired:
+                                    updateRecentLogRequired,)
                             .then((String? profileEditResult) {
                           if (profileEditResult == 'Eremu berak') {
                             showDialog(
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text('Errorea'),
+                                    title: const Text('Errorea:'),
                                     content: const Text(
                                         'Ez dira eremu berak eguneratuko'),
                                     actions: <Widget>[
@@ -184,47 +188,81 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
+                            setState(() {
+                              _oldemail = _email;
+                              _oldfullName = _fullName;
+                              _oldtelephNum = _telephNum;
+                            });
                           } else if (profileEditResult ==
                               'requires-recent-login') {
                             _oldPassisVisible = true;
+                            updateRecentLogRequired = true;
                             showDialog(
                                 context: context,
                                 builder: (context) {
-                                  passWrongCount++;
-                                  if (passWrongCount >= 1) {
-                                    return AlertDialog(
-                                      title: const Text('Errorea'),
-                                      content: Text(
-                                          'Pasahitz zaharraren erroreak: $passWrongCount'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  } else {
-                                    return AlertDialog(
-                                      title: const Text('Errorea'),
-                                      content: const Text(
-                                          'Pasahitz/Eposta aldatzeak orain dela gutxiko logeatzea behar du. Sartu pasahitz zaharra.'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  }
+                                  return AlertDialog(
+                                    title: const Text('Errorea:'),
+                                    content: const Text(
+                                        'Pasahitz/Eposta aldatzeak orain dela gutxiko logeatzea behar du. Sartu pasahitz zaharra.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          } else if (profileEditResult == 'wrong-password') {
+                            wrongPassCount++;
+
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Errorea:'),
+                                    content: Text(
+                                        'Pasahitz zaharraren erroreak: $wrongPassCount'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          } else if (profileEditResult == 'too-many-requests') {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Errorea:'),
+                                    content: const Text(
+                                        'Firebase kautotze kuota maximora iritxi zara. Logeatu berriz.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, 'OK');
+                                          LoginAuth.signOut();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginScreen()),
+                                          );
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
                                 });
                           } else {
                             showDialog(
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text('Errorea'),
+                                    title: const Text('Errorea:'),
                                     content: Text(profileEditResult.toString()),
                                     actions: <Widget>[
                                       TextButton(
@@ -236,11 +274,6 @@ class _EditProfileState extends State<EditProfile> {
                                   );
                                 });
                           }
-                          setState(() {
-                            _oldemail = _email;
-                            _oldfullName = _fullName;
-                            _oldtelephNum = _telephNum;
-                          });
                         });
                       }
                     },
@@ -440,7 +473,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 )),
             validator: (value) {
-              if (_isSwitched) {
+              if (_oldPassisVisible) {
                 String pattern =
                     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 

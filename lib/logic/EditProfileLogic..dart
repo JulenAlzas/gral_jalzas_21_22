@@ -2,16 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class EditProfileLogic {
-  static Future<String?> editUserProfile(
-      {required String oldName,
-      required String oldEmail,
-      required String oldTelepNum,
-      required String newName,
-      required String newEmail,
-      required String newPassword,
-      required String newTelepNum,
-      required bool updatePass,
-      required String oldPasword}) async {
+  static Future<String?> editUserProfile({
+    required String oldName,
+    required String oldEmail,
+    required String oldTelepNum,
+    required String newName,
+    required String newEmail,
+    required String newPassword,
+    required String newTelepNum,
+    required bool updatePass,
+    required String oldPasword,
+    required bool updateRecentLogRequired,
+  }) async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
     try {
@@ -28,13 +30,18 @@ class EditProfileLogic {
       if (oldName != newName &&
           oldEmail != newEmail &&
           oldTelepNum != newTelepNum) {
+        if (updateRecentLogRequired) {
+          await updateCredentials(oldEmail, oldPasword);
+          currentUser = FirebaseAuth.instance.currentUser;
+        }
+
+        await currentUser!.updateEmail(newEmail);
+
         _firestore.collection('users').doc(userCredential).update({
           'username': newName,
           'email': newEmail,
           'telepNum': newTelepNum,
         });
-        await currentUser!.updateEmail(newEmail);
-        currentUser!.updateEmail(newEmail);
       } else if (oldName != newName &&
           oldEmail == newEmail &&
           oldTelepNum == newTelepNum) {
@@ -44,11 +51,16 @@ class EditProfileLogic {
       } else if (oldName != newName &&
           oldEmail != newEmail &&
           oldTelepNum == newTelepNum) {
+        if (updateRecentLogRequired) {
+          await updateCredentials(oldEmail, oldPasword);
+          currentUser = FirebaseAuth.instance.currentUser;
+        }
+
+        await currentUser!.updateEmail(newEmail);
         _firestore.collection('users').doc(userCredential).update({
           'username': newName,
           'email': newEmail,
         });
-        currentUser!.updateEmail(newEmail);
       } else if (oldName != newName &&
           oldEmail == newEmail &&
           oldTelepNum != newTelepNum) {
@@ -59,19 +71,26 @@ class EditProfileLogic {
       } else if (oldName == newName &&
           oldEmail != newEmail &&
           oldTelepNum != newTelepNum) {
+        if (updateRecentLogRequired) {
+          await updateCredentials(oldEmail, oldPasword);
+          currentUser = FirebaseAuth.instance.currentUser;
+        }
+        await currentUser!.updateEmail(newEmail);
         _firestore.collection('users').doc(userCredential).update({
           'email': newEmail,
           'telepNum': newTelepNum,
         });
-        await currentUser!.updateEmail(newEmail);
       } else if (oldName == newName &&
           oldEmail != newEmail &&
           oldTelepNum == newTelepNum) {
+        if (updateRecentLogRequired) {
+          await updateCredentials(oldEmail, oldPasword);
+          currentUser = FirebaseAuth.instance.currentUser;
+        }
+        await currentUser!.updateEmail(newEmail);
         _firestore.collection('users').doc(userCredential).update({
           'email': newEmail,
         });
-        await currentUser!.updateEmail(newEmail);
-        currentUser!.updateEmail(newEmail);
       } else if (oldName == newName &&
           oldEmail == newEmail &&
           oldTelepNum != newTelepNum) {
@@ -81,40 +100,42 @@ class EditProfileLogic {
       }
       if (updatePass) {
         try {
-          if (oldPasword != '') {
+          if (updateRecentLogRequired && oldEmail != newEmail) {//e-posta desberdina bada iada kredentzialak eguneratuak daude
             await updateCredentials(oldEmail, oldPasword);
             currentUser = FirebaseAuth.instance.currentUser;
           }
           await currentUser!.updatePassword(newPassword);
         } on FirebaseAuthException catch (e) {
           if (e.code == 'requires-recent-login') {
-            print(
-                'The user must reauthenticate before this operation can be executed.');
             return 'requires-recent-login';
+          } else if (e.code == 'wrong-password') {
+            return 'wrong-password';
+          } else if (e.code == 'too-many-requests') {
+            return 'too-many-requests';
+          } else {
+            return 'Errorea: $e';
           }
         }
       }
       return 'Erab eguneratua';
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('Pasahitza ahulegia da');
-      } else if (e.code == 'email-already-in-use') {
-        print('E-posta iada existizen da.');
-      } else if (e.code == 'requires-recent-login') {
-        print(
-            'The user must reauthenticate before this operation can be executed.');
+      if (e.code == 'requires-recent-login') {
         return 'requires-recent-login';
+      } else if (e.code == 'wrong-password') {
+        return 'wrong-password';
+      } else if (e.code == 'too-many-requests') {
+        return 'too-many-requests';
+      } else {
+        return 'Errorea: $e';
       }
-    } catch (e) {
-      return 'Errorea: $e';
-      print('Errorea: $e');
     }
   }
 
-  static Future<void> updateCredentials(String oldEmail, String oldPasword) async {
-    AuthCredential credential = EmailAuthProvider.credential(
-        email: oldEmail, password: oldPasword);
-    
+  static Future<void> updateCredentials(
+      String oldEmail, String oldPasword) async {
+    AuthCredential credential =
+        EmailAuthProvider.credential(email: oldEmail, password: oldPasword);
+
     await FirebaseAuth.instance.currentUser!
         .reauthenticateWithCredential(credential);
   }
