@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
     as authforwindowsweb;
+import 'package:fireverse/fireverse.dart';
 import 'package:flutter/foundation.dart';
 
 class LoginAuth {
@@ -8,7 +9,7 @@ class LoginAuth {
     required String email,
     required String password,
   }) async {
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       try {
         await authforandroid.FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
@@ -23,7 +24,15 @@ class LoginAuth {
         }
         return "$e.code";
       }
-    // } 
+    }else{
+      try {
+        await Fire.signIn(email: email, password: password);
+
+        return "Ondo Logeatu zara";
+      }catch (e) {
+        return "$e.code";
+      }
+    }
     // else {
     //   try {
     //     await authforwindowsweb.FirebaseAuthDesktop.instance
@@ -43,12 +52,13 @@ class LoginAuth {
   }
 
   static Future<void> signOut() async {
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       await authforandroid.FirebaseAuth.instance.signOut();
-    // } 
-    // else {
-    //   await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
-    //   // await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
-    // }
+    } 
+    else {
+      Fire.signOut();
+      // await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
+      // await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
+    }
   }
 }

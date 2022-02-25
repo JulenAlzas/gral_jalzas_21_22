@@ -7,14 +7,14 @@ import 'package:gral_jalzas_21_22/screens/EditProfile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fireverse/fireglobal.dart';
 
-// import 'package:firedart/firedart.dart';
 import 'dart:io' show Platform;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (kIsWeb || Platform.isLinux || Platform.isWindows) {
+  if (kIsWeb) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
             apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
@@ -26,6 +26,13 @@ Future<void> main() async {
             measurementId: "G-5D6PWQE0L1"));
   } else if ((Platform.isAndroid)) {
     await Firebase.initializeApp();
+  } else if (Platform.isLinux || Platform.isWindows) {
+    await Fire.initialize(
+      apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
+      projectId: "gral-jalzas",
+      appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
+      messagingSenderId: "312983830076",
+    );
   }
 
   runApp(const MyApp());
