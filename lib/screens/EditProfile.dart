@@ -523,17 +523,17 @@ class _EditProfileState extends State<EditProfile> {
 
   void getUserEmail() async {
 
-    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       authforandroid.User? user = authforandroid.FirebaseAuth.instance.currentUser;
       setState(() {
       _email = user!.email!;
     });
-    } else {
-       String userEmail = authforwindowsweb.FirebaseAuthDesktop.instance.currentUser!.email!;
-       setState(() {
-      _email = userEmail;
-    });
-    }
+    // } else {
+    //    String userEmail = authforwindowsweb.FirebaseAuthDesktop.instance.currentUser!.email!;
+    //    setState(() {
+    //   _email = userEmail;
+    // });
+    // }
 
     
   }
@@ -543,12 +543,12 @@ class _EditProfileState extends State<EditProfile> {
       _isLoading = true;
     });
     String userCred = '';
-    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       userCred = authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
-    } else {
-       userCred =
-          authforwindowsweb.FirebaseAuthDesktop.instance.currentUser?.uid ?? 'no-id';
-    }
+    // } else {
+    //    userCred =
+    //       authforwindowsweb.FirebaseAuthDesktop.instance.currentUser?.uid ?? 'no-id';
+    // }
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userCred)
