@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/Provider/RegisterProvider.dart';
 import 'package:gral_jalzas_21_22/screens/LoginHome.dart';
 import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
+import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
 import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
 import 'package:provider/provider.dart';
 
@@ -206,7 +207,7 @@ class RegisterBackground extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const LoginHome()),
+                                              const LoginScreen()),
                                     );
                                   }else{
                                     String error = value.toString();

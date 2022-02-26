@@ -1,3 +1,6 @@
+// import 'package:fireverse/fireverse.dart';
+import 'package:firedart/firedart.dart' as firebasedart;
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/LoginHome.dart';
@@ -7,7 +10,6 @@ import 'package:gral_jalzas_21_22/screens/EditProfile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fireverse/fireglobal.dart';
 
 import 'dart:io' show Platform;
 
@@ -27,12 +29,14 @@ Future<void> main() async {
   } else if ((Platform.isAndroid)) {
     await Firebase.initializeApp();
   } else if (Platform.isLinux || Platform.isWindows) {
-    await Fire.initialize(
-      apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
-      projectId: "gral-jalzas",
-      appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
-      messagingSenderId: "312983830076",
-    );
+    firebasedart.FirebaseAuth.initialize("AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA", firebasedart.VolatileStore());
+    firebasedart.Firestore.initialize( "gral-jalzas"); 
+    // Fire.initialize(
+    //   apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
+    //   projectId: "gral-jalzas",
+    //   appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
+    //   messagingSenderId: "312983830076",
+    // );
   }
 
   runApp(const MyApp());

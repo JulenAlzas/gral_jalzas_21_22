@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-import 'package:firebase_auth_desktop/firebase_auth_desktop.dart' as authforwindowsweb;
+import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
+    as authforwindowsweb;
+import 'package:firedart/auth/user_gateway.dart';
+// import 'package:fireverse/fireverse.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/EditProfileLogic..dart';
@@ -7,6 +11,7 @@ import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
 import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firedart/firedart.dart' as firedart;
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -17,7 +22,6 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   GlobalKey<FormState> formEditProfKey = GlobalKey<FormState>();
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   String _fullName = '';
   String _email = '';
@@ -522,20 +526,27 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void getUserEmail() async {
-
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-      authforandroid.User? user = authforandroid.FirebaseAuth.instance.currentUser;
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      authforandroid.User? user =
+          authforandroid.FirebaseAuth.instance.currentUser;
       setState(() {
-      _email = user!.email!;
-    });
-    // } else {
-    //    String userEmail = authforwindowsweb.FirebaseAuthDesktop.instance.currentUser!.email!;
-    //    setState(() {
-    //   _email = userEmail;
-    // });
-    // }
-
-    
+        _email = user!.email!;
+      });
+    } else {
+      var auth = firedart.FirebaseAuth.instance;
+      User? currentUser;
+      await auth.getUser().then((user) {
+        currentUser = user;
+      });
+      //var user = Fire.currentUser;
+      setState(() {
+        _email = currentUser!.email!;
+      });
+      //    String userEmail = authforwindowsweb.FirebaseAuthDesktop.instance.currentUser!.email!;
+      //    setState(() {
+      //   _email = userEmail;
+      // });
+    }
   }
 
   Future<String?> getOtherUserParams() async {
@@ -543,27 +554,45 @@ class _EditProfileState extends State<EditProfile> {
       _isLoading = true;
     });
     String userCred = '';
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-      userCred = authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
-    // } else {
-    //    userCred =
-    //       authforwindowsweb.FirebaseAuthDesktop.instance.currentUser?.uid ?? 'no-id';
-    // }
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userCred)
-        .get()
-        .then((querySnapshot) {
-      setState(() {
-        _fullName = querySnapshot['username'];
-        _telephNum = querySnapshot['telepNum'];
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      userCred =
+          authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCred)
+          .get()
+          .then((querySnapshot) {
+        setState(() {
+          _fullName = querySnapshot['username'];
+          _telephNum = querySnapshot['telepNum'];
+        });
+        setState(() {
+          _oldemail = _email;
+          _oldfullName = _fullName;
+          _oldtelephNum = _telephNum;
+        });
       });
-      setState(() {
-        _oldemail = _email;
-        _oldfullName = _fullName;
-        _oldtelephNum = _telephNum;
+    } else {
+      await firedart.FirebaseAuth.instance.getUser().then((user) {
+        userCred = user.id;
       });
-    });
+      await Firestore.instance
+          .collection('users')
+          .document(userCred)
+          .get()
+          .then((querySnapshot) {
+        setState(() {
+          _fullName = querySnapshot['username'];
+          _telephNum = querySnapshot['telepNum'];
+        });
+        setState(() {
+          _oldemail = _email;
+          _oldfullName = _fullName;
+          _oldtelephNum = _telephNum;
+        });
+      });
+    }
+
     setState(() {
       _isLoading = false;
     });

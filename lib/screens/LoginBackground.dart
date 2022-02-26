@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
     as authforwindowsweb;
-import 'package:fireverse/fireverse.dart';
+import 'package:firedart/firedart.dart' as firedart;
+// import 'package:fireverse/fireverse.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/Provider/LoginProvider.dart';
@@ -25,23 +26,32 @@ class _LoginBackgroundState extends State<LoginBackground> {
   Widget build(BuildContext context) {
     final loginFormProvider = Provider.of<LoginProvider>(context);
 
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-    // authforandroid.FirebaseAuth.instance.authStateChanges().listen((user) {
-    //   if (user != null) {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      authforandroid.FirebaseAuth.instance.authStateChanges().listen((user) {
+        if (user != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginHome()),
+          );
+        }
+      });
+    }
+    // if (defaultTargetPlatform == TargetPlatform.windows ||
+    //     defaultTargetPlatform == TargetPlatform.linux) {
+    //   var auth = firedart.FirebaseAuth.instance.;
+    //   if (auth.isSignedIn) {
     //     Navigator.push(
     //       context,
     //       MaterialPageRoute(builder: (context) => const LoginHome()),
     //     );
     //   }
-    // });
-    var auth = FireDartFirebaseAuth.instance;
-    if (auth.isSignedIn) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginHome()),
-      );
-    }
-
+    // }
+    Future.microtask(() {
+      if (firedart.FirebaseAuth.instance.isSignedIn) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginHome()));
+      }
+    });
     // }
     // else if (defaultTargetPlatform == TargetPlatform.windows ||
     //     defaultTargetPlatform == TargetPlatform.linux) {

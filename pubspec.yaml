@@ -35,6 +35,7 @@ dependencies:
   firebase_auth_desktop: ^0.1.1-dev.3
   firebase_core: ^1.12.0
   firebase_core_desktop: ^0.1.1-dev.3
+  firedart: ^0.9.0+1
   fireverse: ^0.0.10
   flutter:
     sdk: flutter

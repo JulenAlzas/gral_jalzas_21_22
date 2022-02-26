@@ -218,6 +218,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.7"
+  firedart:
+    dependency: "direct main"
+    description:
+      name: firedart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.0+1"
   fireverse:
     dependency: "direct main"
     description:

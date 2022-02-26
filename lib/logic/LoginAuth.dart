@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
     as authforwindowsweb;
+import 'package:firedart/firedart.dart' as firedart;
 import 'package:fireverse/fireverse.dart';
 import 'package:flutter/foundation.dart';
 
@@ -26,11 +27,16 @@ class LoginAuth {
       }
     }else{
       try {
-        await Fire.signIn(email: email, password: password);
-
+        
+        // await Fire.signIn(email: email, password: password);
+        var auth = firedart.FirebaseAuth.instance;
+        await auth.signIn(email, password);
+        
         return "Ondo Logeatu zara";
-      }catch (e) {
-        return "$e.code";
+      } catch (e) {
+          return "$e";
+
+        
       }
     }
     // else {
@@ -56,7 +62,8 @@ class LoginAuth {
       await authforandroid.FirebaseAuth.instance.signOut();
     } 
     else {
-      Fire.signOut();
+      firedart.FirebaseAuth.instance.signOut();
+      // Fire.signOut();
       // await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
       // await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
     }
