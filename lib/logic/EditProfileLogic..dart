@@ -21,7 +21,7 @@ class EditProfileLogic {
     required bool updateRecentLogRequired,
   }) async {
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
       try {
         //Get current values
@@ -145,7 +145,7 @@ class EditProfileLogic {
       }
     } else {
       try {
-        var auth = firedart.FirebaseAuth.instance;
+        firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
         User? currentUser;
         await auth.getUser().then((user) {
           currentUser = user;
@@ -166,22 +166,62 @@ class EditProfileLogic {
         if (oldName != newName &&
             oldEmail != newEmail &&
             oldTelepNum != newTelepNum) {
-          if (updateRecentLogRequired) {
+          // if (updateRecentLogRequired) {
 
-            // currentUser = Fire.currentUser;
-            await auth.getUser().then((user) {
-              currentUser = user;
-             });
-          }
+          //   // currentUser = Fire.currentUser;
+          //   await auth.getUser().then((user) {
+          //     currentUser = user;
+          //    });
+          // }
 
           // removeAddEmail(auth, newEmail, oldPasword);
-          removeAddEmail(auth, newEmail, newPassword);
 
-          firedart.Firestore.instance.collection('users').document(userId).update({
-            'username': newName,
-            'email': newEmail,
-            'telepNum': newTelepNum,
+          String email = '';
+          String fullName = '';
+          String telephNum = '';
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .get()
+              .then((querySnapshot) {
+            fullName = querySnapshot['username'];
+            telephNum = querySnapshot['telepNum'];
+            email = querySnapshot['email'];
           });
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .delete();
+
+          auth = await deleteAccCreateNew(auth, newEmail, newPassword);
+
+          await auth.getUser().then((user) {
+            currentUser = user;
+          });
+          String newuserId = currentUser!.id.toString();
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(newuserId)
+              .set(
+            {
+              'username': newName,
+              'email': newEmail,
+              'telepNum': newTelepNum,
+              'uid': newuserId
+            },
+          );
+
+          // firedart.Firestore.instance
+          //     .collection('users')
+          //     .document(userId)
+          //     .update({
+          //   'username': newName,
+          //   'email': newEmail,
+          //   'telepNum': newTelepNum,
+          // });
 
           // Fire.update(collectionName: 'users', docId: userId, value: {
           //   'username': newName,
@@ -192,8 +232,10 @@ class EditProfileLogic {
         } else if (oldName != newName &&
             oldEmail == newEmail &&
             oldTelepNum == newTelepNum) {
-
-          firedart.Firestore.instance.collection('users').document(userId).update({
+          firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .update({
             'username': newName,
           });
           // Fire.update(collectionName: 'users', docId: userId, value: {
@@ -202,20 +244,59 @@ class EditProfileLogic {
         } else if (oldName != newName &&
             oldEmail != newEmail &&
             oldTelepNum == newTelepNum) {
-          if (updateRecentLogRequired) {
-            
-            await auth.getUser().then((user) {
-              currentUser = user;
-             });
+          // if (updateRecentLogRequired) {
+          //   await auth.getUser().then((user) {
+          //     currentUser = user;
+          //   });
 
-            // currentUser = Fire.currentUser;
-          }
+          //   // currentUser = Fire.currentUser;
+          // }
 
-          removeAddEmail(auth, newEmail, newPassword);
-          firedart.Firestore.instance.collection('users').document(userId).update({
-            'username': newName,
-            'email': newEmail,
+          String email = '';
+          String fullName = '';
+          String telephNum = '';
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .get()
+              .then((querySnapshot) {
+            fullName = querySnapshot['username'];
+            telephNum = querySnapshot['telepNum'];
+            email = querySnapshot['email'];
           });
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .delete();
+
+          auth = await deleteAccCreateNew(auth, newEmail, newPassword);
+          await auth.getUser().then((user) {
+            currentUser = user;
+          });
+
+          String newuserId = currentUser!.id.toString();
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(newuserId)
+              .set(
+            {
+              'username': newName,
+              'email': newEmail,
+              'telepNum': telephNum,
+              'uid': newuserId
+            },
+          );
+
+          // firedart.Firestore.instance
+          //     .collection('users')
+          //     .document(userId)
+          //     .update({
+          //   'username': newName,
+          //   'email': newEmail,
+          // });
 
           // Fire.update(collectionName: 'users', docId: userId, value: {
           //   'username': newName,
@@ -224,8 +305,10 @@ class EditProfileLogic {
         } else if (oldName != newName &&
             oldEmail == newEmail &&
             oldTelepNum != newTelepNum) {
-
-            firedart.Firestore.instance.collection('users').document(userId).update({
+          firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .update({
             'username': newName,
             'telepNum': newTelepNum,
           });
@@ -236,21 +319,60 @@ class EditProfileLogic {
         } else if (oldName == newName &&
             oldEmail != newEmail &&
             oldTelepNum != newTelepNum) {
-          if (updateRecentLogRequired) {
-            
-            await auth.getUser().then((user) {
-              currentUser = user;
-             });
+          // if (updateRecentLogRequired) {
+          //   await auth.getUser().then((user) {
+          //     currentUser = user;
+          //   });
 
-            // currentUser = Fire.currentUser;
-          }
-          removeAddEmail(auth, newEmail, newPassword);
+          //   // currentUser = Fire.currentUser;
+          // }
+          String email = '';
+          String fullName = '';
+          String telephNum = '';
 
-          firedart.Firestore.instance.collection('users').document(userId).update({
-            'username': newName,
-            'email': newEmail,
-            'telepNum': newTelepNum,
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .get()
+              .then((querySnapshot) {
+            fullName = querySnapshot['username'];
+            telephNum = querySnapshot['telepNum'];
+            email = querySnapshot['email'];
           });
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .delete();
+
+          auth = await deleteAccCreateNew(auth, newEmail, newPassword);
+
+          await auth.getUser().then((user) {
+            currentUser = user;
+          });
+
+          String newuserId = currentUser!.id.toString();
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(newuserId)
+              .set(
+            {
+              'username': fullName,
+              'email': newEmail,
+              'telepNum': newTelepNum,
+              'uid': newuserId
+            },
+          );
+
+          // firedart.Firestore.instance
+          //     .collection('users')
+          //     .document(userId)
+          //     .update({
+          //   'username': newName,
+          //   'email': newEmail,
+          //   'telepNum': newTelepNum,
+          // });
 
           // Fire.update(collectionName: 'users', docId: userId, value: {
           //   'email': newEmail,
@@ -259,22 +381,60 @@ class EditProfileLogic {
         } else if (oldName == newName &&
             oldEmail != newEmail &&
             oldTelepNum == newTelepNum) {
-          if (updateRecentLogRequired) {
-            
-             await auth.getUser().then((user) {
-              currentUser = user;
-             });
+          // if (updateRecentLogRequired) {
+          //   await auth.getUser().then((user) {
+          //     currentUser = user;
+          //   });
 
-            // currentUser = Fire.currentUser;
-          }
+          //   // currentUser = Fire.currentUser;
+          // }
 
-          removeAddEmail(auth, newEmail, newPassword);
+          String email = '';
+          String fullName = '';
+          String telephNum = '';
 
-          firedart.Firestore.instance.collection('users').document(userId).update({
-            'username': newName,
-            'email': newEmail,
-            'telepNum': newTelepNum,
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .get()
+              .then((querySnapshot) {
+            fullName = querySnapshot['username'];
+            telephNum = querySnapshot['telepNum'];
+            email = querySnapshot['email'];
           });
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .delete();
+
+          auth = await deleteAccCreateNew(auth, newEmail, newPassword);
+
+          await auth.getUser().then((user) {
+            currentUser = user;
+          });
+          String newuserId = currentUser!.id.toString();
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(newuserId)
+              .set(
+            {
+              'username': fullName,
+              'email': newEmail,
+              'telepNum': telephNum,
+              'uid': newuserId
+            },
+          );
+
+          // firedart.Firestore.instance
+          //     .collection('users')
+          //     .document(userId)
+          //     .update({
+          //   'username': newName,
+          //   'email': newEmail,
+          //   'telepNum': newTelepNum,
+          // });
 
           // Fire.update(collectionName: 'users', docId: userId, value: {
           //   'email': newEmail,
@@ -282,31 +442,29 @@ class EditProfileLogic {
         } else if (oldName == newName &&
             oldEmail == newEmail &&
             oldTelepNum != newTelepNum) {
-           firedart.Firestore.instance.collection('users').document(userId).update({
+          firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .update({
             'telepNum': newTelepNum,
           });
         }
         if (updatePass) {
           try {
-            if (updateRecentLogRequired && oldEmail == newEmail) {
-              //e-posta desberdina bada iada kredentzialak eguneratu dira goian
-               await auth.getUser().then((user) {
-              currentUser = user;
-             });
-              // currentUser = Fire.currentUser;
-            }
+            // if (updateRecentLogRequired && oldEmail == newEmail) {
+            //   //e-posta desberdina bada iada kredentzialak eguneratu dira goian
+            //   await auth.getUser().then((user) {
+            //     currentUser = user;
+            //   });
+            //   // currentUser = Fire.currentUser;
+            // }
             await auth.changePassword(newPassword);
+            auth.signOut();
+            auth.signIn(newEmail, newPassword);
+
             //  await auth.changePassword(newPassword);
-          } on authforandroid.FirebaseAuthException catch (e) {
-            if (e.code == 'requires-recent-login') {
-              return 'requires-recent-login';
-            } else if (e.code == 'wrong-password') {
-              return 'wrong-password';
-            } else if (e.code == 'too-many-requests') {
-              return 'too-many-requests';
-            } else {
-              return 'Errorea: $e';
-            }
+          } catch (e) {
+            return 'Errorea: $e';
           }
         }
         return 'Erab eguneratua';
@@ -453,12 +611,13 @@ class EditProfileLogic {
     // }
   }
 
-  static Future<void> removeAddEmail(firedart.FirebaseAuth auth, String newEmail, String newPasword) async {
+  static Future<firedart.FirebaseAuth> deleteAccCreateNew(
+      firedart.FirebaseAuth auth, String newEmail, String newPassword) async {
     await auth.deleteAccount();
-    await auth.signUp(newEmail, newPasword);
-    await auth.signIn(newEmail, newPasword);
+    await auth.signUp(newEmail, newPassword);
+    await auth.signIn(newEmail, newPassword);
+    return auth;
   }
-
 
   static Future<void> updateCredentials(
       String oldEmail, String oldPasword) async {
