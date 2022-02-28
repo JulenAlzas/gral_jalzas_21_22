@@ -10,15 +10,15 @@ import 'package:gral_jalzas_21_22/screens/EditProfile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth_desktop/firebase_auth_desktop.dart' as auth;
-import 'package:firebase_core/firebase_core.dart' as authcore;
 
 import 'dart:io' show Platform;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await authcore.Firebase.initializeApp(
+ 
+  if (kIsWeb) {
+    await Firebase.initializeApp(
         options: const FirebaseOptions(
             apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
             authDomain: "gral-jalzas.firebaseapp.com",
@@ -27,25 +27,11 @@ Future<void> main() async {
             messagingSenderId: "312983830076",
             appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
             measurementId: "G-5D6PWQE0L1"));
- 
- 
- //--------Comments
-  // if (kIsWeb) {
-  //   await Firebase.initializeApp(
-  //       options: const FirebaseOptions(
-  //           apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
-  //           authDomain: "gral-jalzas.firebaseapp.com",
-  //           projectId: "gral-jalzas",
-  //           storageBucket: "gral-jalzas.appspot.com",
-  //           messagingSenderId: "312983830076",
-  //           appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
-  //           measurementId: "G-5D6PWQE0L1"));
-  // } else if ((Platform.isAndroid)) {
-  //   await Firebase.initializeApp();
-  // } else if (Platform.isLinux || Platform.isWindows) {
-  //   firebasedart.FirebaseAuth.initialize("AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA", firebasedart.VolatileStore());
-  //   firebasedart.Firestore.initialize( "gral-jalzas"); 
- //--------Comments
+  } else if ((Platform.isAndroid)) {
+    await Firebase.initializeApp();
+  } else if (Platform.isLinux || Platform.isWindows) {
+    firebasedart.FirebaseAuth.initialize("AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA", firebasedart.VolatileStore());
+    firebasedart.Firestore.initialize( "gral-jalzas"); 
 
     // Fire.initialize(
     //   apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
@@ -54,7 +40,7 @@ Future<void> main() async {
     //   messagingSenderId: "312983830076",
     // );
    //--------Comments
-  // }
+  }
    //--------Comments
 
   runApp(const MyApp());
