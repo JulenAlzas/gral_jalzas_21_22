@@ -140,7 +140,7 @@ packages:
       name: firebase_auth_dart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1-dev.2"
+    version: "0.1.1-dev.4"
   firebase_auth_desktop:
     dependency: "direct main"
     description:
@@ -197,41 +197,22 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.4"
-  firebase_messaging:
+  firebaseapis:
     dependency: transitive
     description:
-      name: firebase_messaging
+      name: firebaseapis
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "11.2.6"
-  firebase_messaging_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_messaging_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.0"
-  firebase_messaging_web:
-    dependency: transitive
-    description:
-      name: firebase_messaging_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.7"
+    version: "0.1.1"
   firedart:
     dependency: "direct main"
     description:
-      name: firedart
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "6ca043ee018ba1d1af9d8e260b5212e2abf2542f"
+      url: "https://github.com/JulenAlzas/firedart/"
+    source: git
     version: "0.9.0+1"
-  fireverse:
-    dependency: "direct main"
-    description:
-      name: fireverse
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.10"
   fixnum:
     dependency: transitive
     description:
@@ -275,34 +256,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  google_sign_in:
-    dependency: transitive
-    description:
-      name: google_sign_in
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.2.4"
-  google_sign_in_platform_interface:
-    dependency: transitive
-    description:
-      name: google_sign_in_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.2"
-  google_sign_in_web:
-    dependency: transitive
-    description:
-      name: google_sign_in_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.0+5"
-  googleapis:
-    dependency: transitive
-    description:
-      name: googleapis
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.1"
   googleapis_auth:
     dependency: transitive
     description:

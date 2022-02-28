@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-    as authforwindowsweb;
+// import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
+//     as authforwindowsweb;
 import 'package:firedart/firedart.dart' as firedart;
 // import 'package:fireverse/fireverse.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +15,8 @@ import 'package:provider/provider.dart';
 import 'Background.dart';
 
 class LoginBackground extends StatefulWidget {
+  const LoginBackground({Key? key}) : super(key: key);
+
   @override
   State<LoginBackground> createState() => _LoginBackgroundState();
 }

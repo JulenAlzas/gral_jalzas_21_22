@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart' as firedart;
-import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-    as authforwindowsweb;
+// import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
+//     as authforwindowsweb;
 // import 'package:fireverse/fireverse.dart';
 
 import 'package:flutter/foundation.dart';
@@ -22,6 +22,10 @@ class RegisterAuth {
         authforandroid.UserCredential userCredential = await authforandroid
             .FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+        
+        userCredential = await authforandroid
+            .FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
 
         _firestore.collection('users').doc(userCredential.user!.uid).set({
           'username': name,

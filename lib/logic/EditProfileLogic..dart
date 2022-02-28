@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-    as authforwindowsweb;
+// import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
+//     as authforwindowsweb;
 import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart' as firedart;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -112,8 +112,7 @@ class EditProfileLogic {
         }
         if (updatePass) {
           try {
-            if (updateRecentLogRequired && oldEmail == newEmail) {
-              //e-posta desberdina bada iada kredentzialak eguneratu dira goian
+            if (updateRecentLogRequired && oldEmail == newEmail) { //e-posta desberdina bada iada kredentzialak eguneratu dira goian
               await updateCredentials(oldEmail, oldPasword);
 
               currentUser = authforandroid.FirebaseAuth.instance.currentUser;
@@ -176,20 +175,6 @@ class EditProfileLogic {
 
           // removeAddEmail(auth, newEmail, oldPasword);
 
-          String email = '';
-          String fullName = '';
-          String telephNum = '';
-
-          await firedart.Firestore.instance
-              .collection('users')
-              .document(userId)
-              .get()
-              .then((querySnapshot) {
-            fullName = querySnapshot['username'];
-            telephNum = querySnapshot['telepNum'];
-            email = querySnapshot['email'];
-          });
-
           await firedart.Firestore.instance
               .collection('users')
               .document(userId)
@@ -252,8 +237,6 @@ class EditProfileLogic {
           //   // currentUser = Fire.currentUser;
           // }
 
-          String email = '';
-          String fullName = '';
           String telephNum = '';
 
           await firedart.Firestore.instance
@@ -261,9 +244,7 @@ class EditProfileLogic {
               .document(userId)
               .get()
               .then((querySnapshot) {
-            fullName = querySnapshot['username'];
             telephNum = querySnapshot['telepNum'];
-            email = querySnapshot['email'];
           });
 
           await firedart.Firestore.instance
@@ -326,9 +307,7 @@ class EditProfileLogic {
 
           //   // currentUser = Fire.currentUser;
           // }
-          String email = '';
           String fullName = '';
-          String telephNum = '';
 
           await firedart.Firestore.instance
               .collection('users')
@@ -336,8 +315,6 @@ class EditProfileLogic {
               .get()
               .then((querySnapshot) {
             fullName = querySnapshot['username'];
-            telephNum = querySnapshot['telepNum'];
-            email = querySnapshot['email'];
           });
 
           await firedart.Firestore.instance
@@ -389,7 +366,9 @@ class EditProfileLogic {
           //   // currentUser = Fire.currentUser;
           // }
 
-          String email = '';
+
+          // auth.changeEmail(newEmail);
+          //--------------Comment
           String fullName = '';
           String telephNum = '';
 
@@ -400,7 +379,6 @@ class EditProfileLogic {
               .then((querySnapshot) {
             fullName = querySnapshot['username'];
             telephNum = querySnapshot['telepNum'];
-            email = querySnapshot['email'];
           });
 
           await firedart.Firestore.instance
@@ -426,6 +404,7 @@ class EditProfileLogic {
               'uid': newuserId
             },
           );
+          //--------------Comment
 
           // firedart.Firestore.instance
           //     .collection('users')
