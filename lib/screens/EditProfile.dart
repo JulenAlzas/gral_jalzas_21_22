@@ -535,6 +535,12 @@ class _EditProfileState extends State<EditProfile> {
     } else {
       var auth = firedart.FirebaseAuth.instance;
       User? currentUser;
+      String token;
+      await auth.tokenProvider.refreshIDToken.then((value)  {
+          token = value;
+          print('object');
+        });
+
       await auth.getUser().then((user) {
         currentUser = user;
       });

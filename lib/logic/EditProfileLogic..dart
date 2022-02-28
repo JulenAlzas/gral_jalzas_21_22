@@ -146,7 +146,17 @@ class EditProfileLogic {
     } else {
       try {
         firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
-        User? currentUser;
+        String token = '';
+        await auth.tokenProvider.refreshIDToken.then((value)  {
+          token = value;
+          print('object');
+        });
+
+        // await  auth.tokenProvider.idToken.then((value)  {
+        //   token = value;
+        //   print('object');
+        // });
+
         // await auth.getUser().then((user) {
         //   currentUser = user;
         // });
@@ -237,6 +247,7 @@ class EditProfileLogic {
         if (updatePass) {
           try {
             await auth.changePassword(newPassword);
+           
             // auth.signOut();
             // auth.signIn(newEmail, newPassword);
           } catch (e) {
