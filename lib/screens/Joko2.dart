@@ -106,313 +106,413 @@ class _Joko2State extends State<Joko2> {
         children: <Widget>[
           testuAnimatuaContainer(
               widthRoullette, colorizeTextStyle, colorizeColors),
-          fruituAukeraketa(
-              widthBuilder, heightBuilder, fruitImages, screenSize),
+          Center(
+            child: Container(
+              width: screenSize.width * 0.802,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 5.0),
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.blueAccent),
+              child: Column(
+                children: [
+                  const Text('Konbinazioak'),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 5.0),
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Colors.blueAccent),
+                    child: Row(
+                      children: [
+                        FadeInImage(
+                          placeholder: const AssetImage('assets/no-image.jpg'),
+                          image: const AssetImage('assets/Apple.png'),
+                          height: screenSize.width * 0.07,
+                          width: screenSize.width * 0.07,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(width: screenSize.width * 0.005),
+                        FadeInImage(
+                          placeholder: const AssetImage('assets/no-image.jpg'),
+                          image: const AssetImage('assets/Apple.png'),
+                          height: screenSize.width * 0.07,
+                          width: screenSize.width * 0.07,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(width: screenSize.width * 0.005),
+                        FadeInImage(
+                          placeholder: const AssetImage('assets/no-image.jpg'),
+                          image: const AssetImage('assets/Apple.png'),
+                          height: screenSize.width * 0.07,
+                          width: screenSize.width * 0.07,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(width: screenSize.width * 0.05),
+                        Text(
+                          '75',
+                          style: TextStyle(
+                            fontSize: 20,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 6
+                              ..color = Colors.pink,
+                          ),
+                        ),
+                        SizedBox(width: screenSize.width * 0.05),
+                        FadeInImage(
+                          placeholder: const AssetImage('assets/no-image.jpg'),
+                          image: const AssetImage('assets/Banana.png'),
+                          height: screenSize.width * 0.07,
+                          width: screenSize.width * 0.07,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(width: screenSize.width * 0.005),
+                        FadeInImage(
+                          placeholder: const AssetImage('assets/no-image.jpg'),
+                          image: const AssetImage('assets/Banana.png'),
+                          height: screenSize.width * 0.07,
+                          width: screenSize.width * 0.07,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(width: screenSize.width * 0.005),
+                        FadeInImage(
+                          placeholder: const AssetImage('assets/no-image.jpg'),
+                          image: const AssetImage('assets/Banana.png'),
+                          height: screenSize.width * 0.07,
+                          width: screenSize.width * 0.07,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(width: screenSize.width * 0.05),
+                        Text(
+                          '75',
+                          style: TextStyle(
+                            fontSize: 20,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 6
+                              ..color = Colors.pink,
+                          ),
+                        ),
+                        SizedBox(width: screenSize.width * 0.05),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment.center,
-            child: Container(
-              alignment: Alignment.center,
-              color: Colors.white,
-              width: screenSize.width * 0.9,
-              height: screenSize.height * 0.4,
-              child: Padding(
-                padding: EdgeInsets.only(left: screenSize.width *0.15 , right: screenSize.width *0.15),
-                child: Transform.rotate(
-                  angle: 11,
-                  child: Container(
-                    color: Colors.yellow,
-                    height: screenSize.width *0.99/*screenSize.width - (screenSize.width *0.15 + screenSize.width * 0.1+ screenSize.width *0.15) -10*/,
-                    width: screenSize.width * 0.5,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top:15, right: 15),
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width: screenSize.width * 0.25,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: screenSize.width * 0.15,
+                  right: screenSize.width * 0.15),
+              child: Transform.rotate(
+                angle: 11,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10, bottom: 20),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 5.0),
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Colors.blueAccent),
+                  // color: Colors.yellow,
+                  height: screenSize.width *
+                      0.79 /*screenSize.width - (screenSize.width *0.15 + screenSize.width * 0.1+ screenSize.width *0.15) -10*/,
+                  width: screenSize.width * 0.6,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 15, top: 15, right: 15),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: screenSize.width * 0.5,
+                          height: screenSize.width * 0.23,
+                          color: Colors.green,
+                          child: FortuneBar(
                             height: screenSize.width * 0.23,
-                            color: Colors.green,
-                            child: FortuneBar(
-                              height: screenSize.width * 0.23,
-                              visibleItemCount: 1,
-                              physics: DirectionalPanPhysics.vertical(),
-                              onAnimationEnd: () {
-                                if (selectedRandomIntFirst == selectedIndexOfFruits) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: const Text('IRABAZI DUZU!!',
-                                              style: TextStyle(
-                                                  fontSize: 40,
-                                                  fontWeight: FontWeight.bold)),
-                                        );
-                                      });
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: const Text('GALDU DUZU!!',
-                                              style: TextStyle(
-                                                  fontSize: 40,
-                                                  fontWeight: FontWeight.bold)),
-                                        );
-                                      });
-                                }
-                              },
-                              animateFirst: false,
-                              selected: selectedFirst.stream,
-                              // selected: controller.stream,
-                              items: [
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[0],
-                                    ),
+                            physics: DirectionalPanPhysics.vertical(),
+                            onAnimationEnd: () {
+                              if (selectedRandomIntFirst ==
+                                  selectedIndexOfFruits) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Text('IRABAZI DUZU!!',
+                                            style: TextStyle(
+                                                fontSize: 40,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Text('GALDU DUZU!!',
+                                            style: TextStyle(
+                                                fontSize: 40,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    });
+                              }
+                            },
+                            animateFirst: false,
+                            selected: selectedFirst.stream,
+                            // selected: controller.stream,
+                            items: [
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[0],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[1],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[1],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -5.2,
-                                    child: Image.asset(
-                                      fruitImages[2],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -5.2,
+                                  child: Image.asset(
+                                    fruitImages[2],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[3],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[3],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -5.2,
-                                    child: Image.asset(
-                                      fruitImages[4],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -5.2,
+                                  child: Image.asset(
+                                    fruitImages[4],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[5],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[5],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            width: screenSize.width * 0.25,
+                        ),
+                        Container(
+                          width: screenSize.width * 0.5,
+                          height: screenSize.width * 0.23,
+                          color: Colors.green,
+                          child: FortuneBar(
                             height: screenSize.width * 0.23,
-                            color: Colors.green,
-                            child: FortuneBar(
-                              height: screenSize.width * 0.23,
-                              visibleItemCount: 1,
-                              physics: DirectionalPanPhysics.vertical(),
-                              onAnimationEnd: () {
-                                if (selectedRandomIntSecond ==
-                                    selectedIndexOfFruits) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: const Text('IRABAZI DUZU!!',
-                                              style: TextStyle(
-                                                  fontSize: 40,
-                                                  fontWeight: FontWeight.bold)),
-                                        );
-                                      });
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: const Text('GALDU DUZU!!',
-                                              style: TextStyle(
-                                                  fontSize: 40,
-                                                  fontWeight: FontWeight.bold)),
-                                        );
-                                      });
-                                }
-                              },
-                              animateFirst: false,
-                              selected: selectedSecond.stream,
-                              // selected: controller.stream,
-                              items: [
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[0],
-                                    ),
+                            physics: DirectionalPanPhysics.vertical(),
+                            onAnimationEnd: () {
+                              if (selectedRandomIntSecond ==
+                                  selectedIndexOfFruits) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Text('IRABAZI DUZU!!',
+                                            style: TextStyle(
+                                                fontSize: 40,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Text('GALDU DUZU!!',
+                                            style: TextStyle(
+                                                fontSize: 40,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    });
+                              }
+                            },
+                            animateFirst: false,
+                            selected: selectedSecond.stream,
+                            // selected: controller.stream,
+                            items: [
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[0],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[1],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[1],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -5.2,
-                                    child: Image.asset(
-                                      fruitImages[2],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -5.2,
+                                  child: Image.asset(
+                                    fruitImages[2],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[3],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[3],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -5.2,
-                                    child: Image.asset(
-                                      fruitImages[4],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -5.2,
+                                  child: Image.asset(
+                                    fruitImages[4],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[5],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[5],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            width: screenSize.width * 0.25,
+                        ),
+                        Container(
+                          width: screenSize.width * 0.5,
+                          height: screenSize.width * 0.23,
+                          color: Colors.green,
+                          child: FortuneBar(
                             height: screenSize.width * 0.23,
-                            color: Colors.green,
-                            child: FortuneBar(
-                              height: screenSize.width * 0.23,
-                              visibleItemCount: 1,
-                              physics: DirectionalPanPhysics.vertical(),
-                              onAnimationEnd: () {
-                                if (selectedRandomIntThird == selectedIndexOfFruits) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: const Text('IRABAZI DUZU!!',
-                                              style: TextStyle(
-                                                  fontSize: 40,
-                                                  fontWeight: FontWeight.bold)),
-                                        );
-                                      });
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: const Text('GALDU DUZU!!',
-                                              style: TextStyle(
-                                                  fontSize: 40,
-                                                  fontWeight: FontWeight.bold)),
-                                        );
-                                      });
-                                }
-                              },
-                              animateFirst: false,
-                              selected: selectedThird.stream,
-                              // selected: controller.stream,
-                              items: [
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[0],
-                                    ),
+                            physics: DirectionalPanPhysics.vertical(),
+                            onAnimationEnd: () {
+                              if (selectedRandomIntThird ==
+                                  selectedIndexOfFruits) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Text('IRABAZI DUZU!!',
+                                            style: TextStyle(
+                                                fontSize: 40,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Text('GALDU DUZU!!',
+                                            style: TextStyle(
+                                                fontSize: 40,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    });
+                              }
+                            },
+                            animateFirst: false,
+                            selected: selectedThird.stream,
+                            // selected: controller.stream,
+                            items: [
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[0],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[1],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[1],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -5.2,
-                                    child: Image.asset(
-                                      fruitImages[2],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -5.2,
+                                  child: Image.asset(
+                                    fruitImages[2],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[3],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[3],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -5.2,
-                                    child: Image.asset(
-                                      fruitImages[4],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -5.2,
+                                  child: Image.asset(
+                                    fruitImages[4],
                                   ),
                                 ),
-                                FortuneItem(
-                                  child: Transform.rotate(
-                                    angle: -11,
-                                    child: Image.asset(
-                                      fruitImages[5],
-                                    ),
+                              ),
+                              FortuneItem(
+                                child: Transform.rotate(
+                                  angle: -11,
+                                  child: Image.asset(
+                                    fruitImages[5],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -573,70 +673,6 @@ class _Joko2State extends State<Joko2> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  ClipRRect fruituAukeraketa(double widthBuilder, double heightBuilder,
-      List<String> fruitImages, Size screenSize) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: widthBuilder,
-        height: heightBuilder,
-        color: Colors.red,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Hautatu fruitu bat',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: fruitImages.length,
-                itemBuilder: (_, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndexOfFruits = index;
-                        spinColor = Colors.pink;
-                      });
-                    },
-                    child: Hero(
-                      tag: fruitImages[index],
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          color: selectedIndexOfFruits == index
-                              ? Colors.blue.withOpacity(0.5)
-                              : Colors.transparent,
-                          width: screenSize.height * 0.1,
-                          height: screenSize.height * 0.1,
-                          margin: const EdgeInsets.all(10),
-                          child: FadeInImage(
-                            placeholder:
-                                const AssetImage('assets/no-image.jpg'),
-                            image: AssetImage(fruitImages[index]),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
         ),
       ),
     );
