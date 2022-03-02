@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_text_kit: ^4.2.1
+  card_swiper: ^2.0.1
   cloud_firestore: ^3.1.7
   cupertino_icons: ^1.0.2
   firebase: ^9.0.2
@@ -35,11 +36,9 @@ dependencies:
   firebase_auth_desktop: ^0.1.1-dev.3
   firebase_core: ^1.12.0
   firebase_core_desktop: ^0.1.1-dev.3
-  # firedart: ^0.9.0+1
   firedart:
     git:
-      url: https://github.com/JulenAlzas/firedart/
-  # fireverse: ^0.0.10
+      url: https://github.com/JulenAlzas/firedart-1/
   flutter:
     sdk: flutter
   flutter_fortune_wheel: ^1.2.0

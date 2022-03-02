@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  card_swiper:
+    dependency: "direct main"
+    description:
+      name: card_swiper
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   characters:
     dependency: transitive
     description:
@@ -209,8 +216,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "6e738294940249710141e857fa98ba0f5e172ddd"
-      url: "https://github.com/JulenAlzas/firedart/"
+      resolved-ref: f507f143ce0898947ef9e8a0952ca1e77fc93778
+      url: "https://github.com/JulenAlzas/firedart-1/"
     source: git
     version: "0.9.0+1"
   fixnum:

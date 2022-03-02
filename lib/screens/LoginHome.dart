@@ -1,14 +1,36 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/Joko1.dart';
 import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
 import 'package:gral_jalzas_21_22/screens/EditProfile.dart';
+import 'package:gral_jalzas_21_22/screens/Joko2.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
+
+import 'package:card_swiper/card_swiper.dart';
 
 class LoginHome extends StatelessWidget {
   const LoginHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
+    double swiperobjectWidth = 0.0;
+    double swiperobjectHeight = 0.0;
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      swiperobjectWidth = screenSize.width * 0.7;
+      swiperobjectHeight = screenSize.width * 0.7;
+    } else {
+      swiperobjectWidth = screenSize.width * 0.08;
+      swiperobjectHeight = screenSize.width * 0.08;
+    }
+
+    List<String> gameImages = [
+      'assets/erruletaJokoa.png',
+      'assets/Banana.png',
+    ];
+
     return WillPopScope(
       onWillPop: () async {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -56,31 +78,66 @@ class LoginHome extends StatelessWidget {
               child: SingleChildScrollView(
                   child: Column(
                 children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 20),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Joko1()),
+                  Swiper(
+                    itemCount: gameImages.length,
+                    layout: SwiperLayout.STACK,
+                    itemWidth: swiperobjectWidth,
+                    itemHeight: swiperobjectHeight,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (gameImages[index] == 'assets/erruletaJokoa.png') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Joko1()),
+                            );
+                          }else  if (gameImages[index] == 'assets/Banana.png'){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Joko2()),
+                            );
+                          }
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: FadeInImage(
+                            placeholder:
+                                const AssetImage('assets/no-image.jpg'),
+                            image: AssetImage(gameImages[index]),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       );
                     },
-                    child: const Text('Joko1'),
-                  ),
+                  )
+                  // TextButton(
+                  //   style: TextButton.styleFrom(
+                  //     textStyle: const TextStyle(fontSize: 20),
+                  //   ),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => const Joko1()),
+                  //     );
+                  //   },
+                  //   child: const Text('Joko1'),
+                  // ),
+                  ,
                   const SizedBox(height: 30),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 20),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Joko1()),
-                      );
-                    },
-                    child: const Text('Joko2'),
-                  ),
+                  // TextButton(
+                  //   style: TextButton.styleFrom(
+                  //     textStyle: const TextStyle(fontSize: 20),
+                  //   ),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => const Joko1()),
+                  //     );
+                  //   },
+                  //   child: const Text('Joko2'),
+                  // ),
                 ],
               )),
             )

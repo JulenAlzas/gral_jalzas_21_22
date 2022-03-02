@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class EditProfileLogic {
+  static bool updateForDBEmailNeeded = true;
   static Future<String?> editUserProfile({
     required String oldName,
     required String oldEmail,
@@ -147,21 +148,22 @@ class EditProfileLogic {
       try {
         firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
         String token = '';
-        await auth.tokenProvider.refreshIDToken.then((value)  {
-          token = value;
-          print('object');
-        });
-
-        // await  auth.tokenProvider.idToken.then((value)  {
+        // await auth.tokenProvider.refreshIDToken.then((value)  {
         //   token = value;
         //   print('object');
         // });
 
-        // await auth.getUser().then((user) {
-        //   currentUser = user;
-        // });
-        // String userId = currentUser!.id.toString();
-        String userId = auth.userId;
+        
+        await  auth.tokenProvider.idToken.then((value)  {
+          token = value;
+          print('object');
+        });
+        User? currentUser;
+        await auth.getUser().then((user) {
+          currentUser = user;
+        });
+        String userId = currentUser!.id.toString();
+        // String userId = auth.userId;
 
         if (oldName == newName &&
             oldEmail == newEmail &&
@@ -172,7 +174,18 @@ class EditProfileLogic {
         if (oldName != newName &&
             oldEmail != newEmail &&
             oldTelepNum != newTelepNum) {
-          await auth.changeEmail(newEmail);
+          
+
+          if( updateForDBEmailNeeded ){
+            Map<String, dynamic> resultmap =await auth.changeEmail(newEmail); 
+          // auth.tokenProvider.setidToken(resultmap['idToken']); //Authentication atala bakarrik aldatuko bada, idtoken-a eguneratzearekin nahikoa. Baina Firestore DB-an berlogeatu behar gara edo UNAUTHENTICATED errorea bueltatuko du.
+            updateForDBEmailNeeded = false;
+            return 'requires-oldpass-updateDB';
+          }else{
+            auth.signOut();
+            auth.signIn(newEmail, oldPasword);
+            updateForDBEmailNeeded = true;
+          }
           firedart.Firestore.instance
               .collection('users')
               .document(userId)
@@ -195,7 +208,17 @@ class EditProfileLogic {
             oldEmail != newEmail &&
             oldTelepNum == newTelepNum) {
           
-          await auth.changeEmail(newEmail);
+          
+
+          if( updateForDBEmailNeeded ){
+            Map<String, dynamic> resultmap =await auth.changeEmail(newEmail);
+            updateForDBEmailNeeded = false;
+            return 'requires-oldpass-updateDB';
+          }else{
+            auth.signOut();
+            auth.signIn(newEmail, oldPasword);
+            updateForDBEmailNeeded = true;
+          }
           firedart.Firestore.instance
               .collection('users')
               .document(userId)
@@ -216,7 +239,18 @@ class EditProfileLogic {
         } else if (oldName == newName &&
             oldEmail != newEmail &&
             oldTelepNum != newTelepNum) {
-          await auth.changeEmail(newEmail);
+          
+
+          if( updateForDBEmailNeeded ){
+            Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+            updateForDBEmailNeeded = false;
+            return 'requires-oldpass-updateDB';
+          }else{
+            auth.signOut();
+            auth.signIn(newEmail, oldPasword);
+            updateForDBEmailNeeded = true;
+          }
+
           firedart.Firestore.instance
               .collection('users')
               .document(userId)
@@ -227,7 +261,18 @@ class EditProfileLogic {
         } else if (oldName == newName &&
             oldEmail != newEmail &&
             oldTelepNum == newTelepNum) {
-          await auth.changeEmail(newEmail);
+         
+
+          if( updateForDBEmailNeeded ){
+             Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+            updateForDBEmailNeeded = false;
+            return 'requires-oldpass-updateDB';
+          }else{
+            auth.signOut();
+            auth.signIn(newEmail, oldPasword);
+            updateForDBEmailNeeded = true;
+          }
+
           firedart.Firestore.instance
               .collection('users')
               .document(userId)
@@ -246,7 +291,17 @@ class EditProfileLogic {
         }
         if (updatePass) {
           try {
-            await auth.changePassword(newPassword);
+            
+
+            if( updateForDBEmailNeeded ){
+               Map<String, dynamic> resultmap = await auth.changePassword(newPassword);
+            updateForDBEmailNeeded = false;
+            return 'requires-oldpass-updateDB';
+          }else{
+            auth.signOut();
+            auth.signIn(newEmail, oldPasword);
+            updateForDBEmailNeeded = true;
+          }
            
             // auth.signOut();
             // auth.signIn(newEmail, newPassword);

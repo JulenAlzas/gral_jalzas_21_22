@@ -218,7 +218,26 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
-                          } else if (profileEditResult == 'wrong-password') {
+                          } else if (profileEditResult ==
+                              'requires-oldpass-updateDB') {
+                            _oldPassisVisible = true;
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Errorea:'),
+                                    content: const Text(
+                                        'Pasahitz/Eposta aldatzeko pasahitz zaharraren beharra dago'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          }else if (profileEditResult == 'wrong-password') {
                             wrongPassCount++;
 
                             showDialog(
@@ -535,11 +554,17 @@ class _EditProfileState extends State<EditProfile> {
     } else {
       var auth = firedart.FirebaseAuth.instance;
       User? currentUser;
-      String token;
-      await auth.tokenProvider.refreshIDToken.then((value)  {
-          token = value;
-          print('object');
-        });
+      String token = '';
+      // await auth.tokenProvider.refreshIDToken.then((value)  {
+      //     token = value;
+      //     print('object');
+      //   });
+
+
+      await auth.tokenProvider.idToken.then((value) {
+        token = value;
+      });
+
 
       await auth.getUser().then((user) {
         currentUser = user;
@@ -579,6 +604,13 @@ class _EditProfileState extends State<EditProfile> {
         });
       });
     } else {
+      var auth = firedart.FirebaseAuth.instance;
+      String token = '';
+
+      await auth.tokenProvider.idToken.then((value) {
+        token = value;
+        print('object');
+      });
       await firedart.FirebaseAuth.instance.getUser().then((user) {
         userCred = user.id;
       });
