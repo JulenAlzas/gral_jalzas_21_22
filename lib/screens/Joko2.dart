@@ -63,7 +63,7 @@ class _Joko2State extends State<Joko2> {
       'assets/raspberry.png'
     ];
     const colorizeColors = [
-      Colors.white,
+      Colors.black,
       Colors.pink,
       Colors.yellow,
       Colors.purple,
@@ -73,54 +73,45 @@ class _Joko2State extends State<Joko2> {
 
     final screenSize = MediaQuery.of(context).size;
 
-    double widthRoullette = 0.0;
-    double heightRoullette = 0.0;
-    double heightBuilder = 0.0;
-    double widthBuilder = 0.0;
+    double widthKonbinazioak = 0.0;
+    double konfigImageSize = 0.0;
+    double  containerwidth = 0.0;
+    double containerheight = 0.0;
+    double fortunewidth = 0.0;
+    double fortuneheight = 0.0;
+    double konbinazioakSizeText = 0.0;
+    double konbinazioakHoriz = 0.0;
+    double konbinazioakVert = 0.0;
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      widthRoullette = screenSize.width - screenSize.width * 0.05;
-      heightRoullette = widthRoullette;
-      widthBuilder = screenSize.width * 0.85;
-      heightBuilder = screenSize.height * 0.15;
-    } else {
-      widthRoullette = screenSize.height * 0.6;
-      heightRoullette = widthRoullette;
-      widthBuilder = screenSize.width * 0.38;
-      heightBuilder = screenSize.height * 0.15;
-    }
+      widthKonbinazioak =  screenSize.width * 0.825;
+      konfigImageSize = screenSize.width * 0.07;
+      containerwidth = screenSize.width * 0.8;
+      containerheight= screenSize.width * 0.7;
+      fortunewidth= screenSize.width * 0.5;
+      fortuneheight= screenSize.width * 0.2;
+      konbinazioakSizeText = screenSize.width *0.04;
+      konbinazioakHoriz = screenSize.width*0.05;
+      konbinazioakVert = screenSize.width*0.005;
 
+    } else {
+      widthKonbinazioak =  screenSize.width * 0.625;
+      konfigImageSize = screenSize.width * 0.025;
+      containerwidth = screenSize.width * 0.625;
+      containerheight= screenSize.width * 0.15;
+      fortunewidth=screenSize.width * 0.15;
+      fortuneheight= screenSize.width * 0.18;
+      konbinazioakSizeText = screenSize.width *0.02;
+      konbinazioakHoriz = screenSize.width*0.005;
+      konbinazioakVert = screenSize.width*0.005;
+    }
+    
     return Scaffold(
       appBar: appBarInfo(context),
       body: Stack(
         children: [
           const GameBackground(),
-          gameContent(
-              widthRoullette,
-              colorizeTextStyle,
-              colorizeColors,
-              widthBuilder,
-              heightBuilder,
-              fruitImages,
-              screenSize,
-              heightRoullette,
-              context)
-        ],
-      ),
-    );
-  }
-
-  SingleChildScrollView gameContent(
-      double widthRoullette,
-      TextStyle colorizeTextStyle,
-      List<Color> colorizeColors,
-      double widthBuilder,
-      double heightBuilder,
-      List<String> fruitImages,
-      Size screenSize,
-      double heightRoullette,
-      BuildContext context) {
-    return SingleChildScrollView(
+          SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Align(
@@ -136,523 +127,524 @@ class _Joko2State extends State<Joko2> {
             ),
           ),
           testuAnimatuaContainer(
-              widthRoullette, colorizeTextStyle, colorizeColors),
-          Center(
+              widthKonbinazioak, colorizeTextStyle, colorizeColors),
+          Container(
+            width:widthKonbinazioak,
+            decoration: BoxDecoration(
+                border: Border.all(width: 5.0),
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.green),
+            child: Column(
+              children: [
+                Text('Konbinazioak', style: Theme.of(context).textTheme.headline6),
+                Container(
+                  width:widthKonbinazioak- (screenSize.width *0.2),
+                  padding: EdgeInsets.symmetric(horizontal: konbinazioakHoriz, vertical: konbinazioakVert),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 4.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.red),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Apple.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Apple.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Apple.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.03),
+                          Text(
+                            '75',
+                            style: TextStyle(
+                              fontSize: konbinazioakSizeText,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 6
+                                ..color = Colors.pink,
+                            ),
+                          ),
+                          SizedBox(width: screenSize.width * 0.085),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Banana.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Banana.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Banana.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.03),
+                          Text(
+                            '75',
+                            style: TextStyle(
+                              fontSize: konbinazioakSizeText,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 6
+                                ..color = Colors.pink,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/blackberry.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/blackberry.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/blackberry.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.03),
+                          Text(
+                            '75',
+                            style: TextStyle(
+                              fontSize: konbinazioakSizeText,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 6
+                                ..color = Colors.pink,
+                            ),
+                          ),
+                          SizedBox(width: screenSize.width * 0.085),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Lemon.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Lemon.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/Lemon.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.03),
+                          Text(
+                            '75',
+                            style: TextStyle(
+                              fontSize: konbinazioakSizeText,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 6
+                                ..color = Colors.pink,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/orange.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/orange.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/orange.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.03),
+                          Text(
+                            '75',
+                            style: TextStyle(
+                              fontSize: konbinazioakSizeText,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 6
+                                ..color = Colors.pink,
+                            ),
+                          ),
+                          SizedBox(width: screenSize.width * 0.085),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/raspberry.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/raspberry.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.005),
+                          FadeInImage(
+                            placeholder: const AssetImage('assets/no-image.jpg'),
+                            image: const AssetImage('assets/raspberry.png'),
+                            height: konfigImageSize,
+                            width: konfigImageSize,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: screenSize.width * 0.03),
+                          Text(
+                            '75',
+                            style: TextStyle(
+                              fontSize: konbinazioakSizeText,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 6
+                                ..color = Colors.pink,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          RotatedBox(
+            quarterTurns: -1,
             child: Container(
-              width: screenSize.width * 0.825,
               decoration: BoxDecoration(
                   border: Border.all(width: 5.0),
                   borderRadius: BorderRadius.circular(20.0),
                   color: Colors.blueAccent),
-              child: Column(
-                children: [
-                  Text('Konbinazioak', style: Theme.of(context).textTheme.headline6),
-                  Container(
-                    margin: EdgeInsets.all(screenSize.width*0.01),
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 4.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.blueAccent),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Apple.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Apple.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Apple.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.05),
-                            Text(
-                              '75',
-                              style: TextStyle(
-                                fontSize: 15,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Colors.pink,
+              // color: Colors.yellow,
+              height: containerwidth /*screenSize.width - (screenSize.width *0.15 + screenSize.width * 0.1+ screenSize.width *0.15) -10*/,
+              width: containerheight,
+              child: Padding(
+                padding:
+                    EdgeInsets.only(left: screenSize.width*0.01, top: screenSize.width*0.05, right: screenSize.width*0.01),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: fortunewidth,
+                      height: fortuneheight,
+                      color: Colors.green,
+                      child: FortuneBar(
+                        height: fortuneheight,
+                        physics: DirectionalPanPhysics.vertical(),
+                        onAnimationStart: (){
+                          firstAnimationEnded =false;
+                        },
+                        onAnimationEnd: () {
+                          firstAnimationEnded =true;
+                          if ((firstAnimationEnded && secondAnimationEnded && thirdAnimationEnded) && selectedRandomIntFirst == selectedRandomIntSecond && selectedRandomIntSecond == selectedRandomIntThird) {
+                            _controllerTopCenter.play();
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10),
+                                    ),
+                                    child: const Text('IRABAZI DUZU!!',
+                                        style: TextStyle(
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.bold)),
+                                  );
+                                });
+                          } else {
+                            _controllerTopCenter.play();
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10),
+                                    ),
+                                    child: const Text('GALDU DUZU!!',
+                                        style: TextStyle(
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.bold)),
+                                  );
+                                });
+                          }
+                        },
+                        animateFirst: false,
+                        selected: selectedFirst.stream,
+                        // selected: controller.stream,
+                        items: [
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[0],
                               ),
                             ),
-                            SizedBox(width: screenSize.width * 0.085),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Banana.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Banana.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Banana.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.05),
-                            Text(
-                              '75',
-                              style: TextStyle(
-                                fontSize: 15,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Colors.pink,
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[1],
                               ),
                             ),
-                            SizedBox(width: screenSize.width * 0.05),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/blackberry.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/blackberry.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/blackberry.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.05),
-                            Text(
-                              '75',
-                              style: TextStyle(
-                                fontSize: 15,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Colors.pink,
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -5.2,
+                              child: Image.asset(
+                                fruitImages[2],
                               ),
                             ),
-                            SizedBox(width: screenSize.width * 0.085),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Lemon.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Lemon.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/Lemon.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.05),
-                            Text(
-                              '75',
-                              style: TextStyle(
-                                fontSize: 15,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Colors.pink,
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[3],
                               ),
                             ),
-                            SizedBox(width: screenSize.width * 0.05),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/orange.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/orange.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/orange.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.05),
-                            Text(
-                              '75',
-                              style: TextStyle(
-                                fontSize: 15,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Colors.pink,
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -5.2,
+                              child: Image.asset(
+                                fruitImages[4],
                               ),
                             ),
-                            SizedBox(width: screenSize.width * 0.085),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/raspberry.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/raspberry.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.005),
-                            FadeInImage(
-                              placeholder: const AssetImage('assets/no-image.jpg'),
-                              image: const AssetImage('assets/raspberry.png'),
-                              height: screenSize.width * 0.07,
-                              width: screenSize.width * 0.07,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: screenSize.width * 0.05),
-                            Text(
-                              '75',
-                              style: TextStyle(
-                                fontSize: 15,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Colors.pink,
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[5],
                               ),
                             ),
-                            SizedBox(width: screenSize.width * 0.05),
-                          ],
-                        )
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: screenSize.width * 0.15,
-                  right: screenSize.width * 0.15),
-              child: Transform.rotate(
-                angle: 11,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 10, bottom: 20),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 5.0),
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: Colors.blueAccent),
-                  // color: Colors.yellow,
-                  height: screenSize.width *
-                      0.79 /*screenSize.width - (screenSize.width *0.15 + screenSize.width * 0.1+ screenSize.width *0.15) -10*/,
-                  width: screenSize.width * 0.6,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 15, top: 15, right: 15),
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: screenSize.width * 0.5,
-                          height: screenSize.width * 0.23,
-                          color: Colors.green,
-                          child: FortuneBar(
-                            height: screenSize.width * 0.23,
-                            physics: DirectionalPanPhysics.vertical(),
-                            onAnimationStart: (){
-                              firstAnimationEnded =false;
-                            },
-                            onAnimationEnd: () {
-                              firstAnimationEnded =true;
-                              if ((firstAnimationEnded && secondAnimationEnded && thirdAnimationEnded) && selectedRandomIntFirst == selectedRandomIntSecond && selectedRandomIntSecond == selectedRandomIntThird) {
-                                _controllerTopCenter.play();
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: const Text('IRABAZI DUZU!!',
-                                            style: TextStyle(
-                                                fontSize: 40,
-                                                fontWeight: FontWeight.bold)),
-                                      );
-                                    });
-                              } else {
-                                _controllerTopCenter.play();
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: const Text('GALDU DUZU!!',
-                                            style: TextStyle(
-                                                fontSize: 40,
-                                                fontWeight: FontWeight.bold)),
-                                      );
-                                    });
-                              }
-                            },
-                            animateFirst: false,
-                            selected: selectedFirst.stream,
-                            // selected: controller.stream,
-                            items: [
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[0],
-                                  ),
-                                ),
+                    Container(
+                      width: fortunewidth,
+                      height: fortuneheight,
+                      color: Colors.green,
+                      child: FortuneBar(
+                        height: fortuneheight,
+                        physics: DirectionalPanPhysics.vertical(),
+                         onAnimationStart: (){
+                          secondAnimationEnded =false;
+                        },
+                        onAnimationEnd: () {
+                          secondAnimationEnded =true;
+                        },
+                        animateFirst: false,
+                        selected: selectedSecond.stream,
+                        // selected: controller.stream,
+                        items: [
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[0],
                               ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[1],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -5.2,
-                                  child: Image.asset(
-                                    fruitImages[2],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[3],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -5.2,
-                                  child: Image.asset(
-                                    fruitImages[4],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[5],
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: screenSize.width * 0.5,
-                          height: screenSize.width * 0.23,
-                          color: Colors.green,
-                          child: FortuneBar(
-                            height: screenSize.width * 0.23,
-                            physics: DirectionalPanPhysics.vertical(),
-                             onAnimationStart: (){
-                              secondAnimationEnded =false;
-                            },
-                            onAnimationEnd: () {
-                              secondAnimationEnded =true;
-                            },
-                            animateFirst: false,
-                            selected: selectedSecond.stream,
-                            // selected: controller.stream,
-                            items: [
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[0],
-                                  ),
-                                ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[1],
                               ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[1],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -5.2,
-                                  child: Image.asset(
-                                    fruitImages[2],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[3],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -5.2,
-                                  child: Image.asset(
-                                    fruitImages[4],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[5],
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: screenSize.width * 0.5,
-                          height: screenSize.width * 0.23,
-                          color: Colors.green,
-                          child: FortuneBar(
-                            height: screenSize.width * 0.23,
-                            physics: DirectionalPanPhysics.vertical(),
-                             onAnimationStart: (){
-                              thirdAnimationEnded =false;
-                            },
-                            onAnimationEnd: () {
-                              thirdAnimationEnded =true;
-                            },
-                            animateFirst: false,
-                            selected: selectedThird.stream,
-                            // selected: controller.stream,
-                            items: [
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[0],
-                                  ),
-                                ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -5.2,
+                              child: Image.asset(
+                                fruitImages[2],
                               ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[1],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -5.2,
-                                  child: Image.asset(
-                                    fruitImages[2],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[3],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -5.2,
-                                  child: Image.asset(
-                                    fruitImages[4],
-                                  ),
-                                ),
-                              ),
-                              FortuneItem(
-                                child: Transform.rotate(
-                                  angle: -11,
-                                  child: Image.asset(
-                                    fruitImages[5],
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[3],
+                              ),
+                            ),
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -5.2,
+                              child: Image.asset(
+                                fruitImages[4],
+                              ),
+                            ),
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[5],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    Container(
+                      width: fortunewidth,
+                      height: fortuneheight,
+                      color: Colors.green,
+                      child: FortuneBar(
+                        height: fortuneheight,
+                        physics: DirectionalPanPhysics.vertical(),
+                         onAnimationStart: (){
+                          thirdAnimationEnded =false;
+                        },
+                        onAnimationEnd: () {
+                          thirdAnimationEnded =true;
+                        },
+                        animateFirst: false,
+                        selected: selectedThird.stream,
+                        // selected: controller.stream,
+                        items: [
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[0],
+                              ),
+                            ),
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[1],
+                              ),
+                            ),
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -5.2,
+                              child: Image.asset(
+                                fruitImages[2],
+                              ),
+                            ),
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[3],
+                              ),
+                            ),
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -5.2,
+                              child: Image.asset(
+                                fruitImages[4],
+                              ),
+                            ),
+                          ),
+                          FortuneItem(
+                            child: Transform.rotate(
+                              angle: -11,
+                              child: Image.asset(
+                                fruitImages[5],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
+          Container(
+            width:widthKonbinazioak,
+            decoration: BoxDecoration(
+                border: Border.all(width: 5.0),
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.green),
+          ),
           botoiInplementazioa(fruitImages),
+        ],
+      ),
+    ),
         ],
       ),
     );
@@ -756,7 +748,7 @@ class GameBackground extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/background_games.jpg"),
+          image: AssetImage("assets/backgroundSlots.jpg"),
           fit: BoxFit.cover,
         ),
       ),
