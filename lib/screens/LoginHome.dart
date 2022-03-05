@@ -22,13 +22,13 @@ class LoginHome extends StatelessWidget {
       swiperobjectWidth = screenSize.width * 0.7;
       swiperobjectHeight = screenSize.width * 0.7;
     } else {
-      swiperobjectWidth = screenSize.width * 0.08;
-      swiperobjectHeight = screenSize.width * 0.08;
+      swiperobjectWidth = screenSize.width * 0.25;
+      swiperobjectHeight = screenSize.width * 0.25;
     }
 
     List<String> gameImages = [
       'assets/erruletaJokoa.png',
-      'assets/Banana.png',
+      'assets/slotGame.png',
     ];
 
     return WillPopScope(
@@ -92,7 +92,7 @@ class LoginHome extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => const Joko1()),
                             );
-                          }else  if (gameImages[index] == 'assets/Banana.png'){
+                          }else  if (gameImages[index] == 'assets/slotGame.png'){
                             Navigator.push(
                               context,
                               MaterialPageRoute(
