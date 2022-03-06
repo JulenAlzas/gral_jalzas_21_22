@@ -178,7 +178,7 @@ class EditProfileLogic {
 
           if( updateForDBEmailNeeded ){
             Map<String, dynamic> resultmap =await auth.changeEmail(newEmail); 
-          // auth.tokenProvider.setidToken(resultmap['idToken']); //Authentication atala bakarrik aldatuko bada, idtoken-a eguneratzearekin nahikoa. Baina Firestore DB-an berlogeatu behar gara edo UNAUTHENTICATED errorea bueltatuko du.
+            auth.tokenProvider.setidToken(resultmap['idToken']); //Authentication atala bakarrik aldatuko bada, idtoken-a eguneratzearekin nahikoa. Baina Firestore DB-an berlogeatu behar gara edo UNAUTHENTICATED errorea bueltatuko du.
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
           }else{
@@ -212,6 +212,7 @@ class EditProfileLogic {
 
           if( updateForDBEmailNeeded ){
             Map<String, dynamic> resultmap =await auth.changeEmail(newEmail);
+            auth.tokenProvider.setidToken(resultmap['idToken']);
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
           }else{
@@ -243,6 +244,7 @@ class EditProfileLogic {
 
           if( updateForDBEmailNeeded ){
             Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+            auth.tokenProvider.setidToken(resultmap['idToken']);
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
           }else{
@@ -264,12 +266,18 @@ class EditProfileLogic {
          
 
           if( updateForDBEmailNeeded ){
-             Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+            Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+            auth.tokenProvider.setidToken(resultmap['idToken']);
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
           }else{
             auth.signOut();
-            auth.signIn(newEmail, oldPasword);
+            try{
+              await auth.signIn(newEmail, oldPasword);
+            }catch(e){
+              return 'errorea';
+            }
+            
             updateForDBEmailNeeded = true;
           }
 
@@ -294,7 +302,8 @@ class EditProfileLogic {
             
 
             if( updateForDBEmailNeeded ){
-               Map<String, dynamic> resultmap = await auth.changePassword(newPassword);
+            Map<String, dynamic> resultmap = await auth.changePassword(newPassword);
+            auth.tokenProvider.setidToken(resultmap['idToken']);
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
           }else{

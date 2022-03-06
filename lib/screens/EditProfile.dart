@@ -177,6 +177,9 @@ class _EditProfileState extends State<EditProfile> {
                                   );
                                 });
                           } else if (profileEditResult == 'Erab eguneratua') {
+                            setState(() {
+                              _oldPassisVisible = false;
+                            });
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -200,8 +203,11 @@ class _EditProfileState extends State<EditProfile> {
                             });
                           } else if (profileEditResult ==
                               'requires-recent-login') {
-                            _oldPassisVisible = true;
-                            updateRecentLogRequired = true;
+                            setState(() {
+                              _oldPassisVisible = true;
+                              updateRecentLogRequired = true;
+                            });
+
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -220,7 +226,9 @@ class _EditProfileState extends State<EditProfile> {
                                 });
                           } else if (profileEditResult ==
                               'requires-oldpass-updateDB') {
-                            _oldPassisVisible = true;
+                            setState(() {
+                              _oldPassisVisible = true;
+                            });
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -237,7 +245,7 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
-                          }else if (profileEditResult == 'wrong-password') {
+                          } else if (profileEditResult == 'wrong-password') {
                             wrongPassCount++;
 
                             showDialog(
@@ -560,11 +568,9 @@ class _EditProfileState extends State<EditProfile> {
       //     print('object');
       //   });
 
-
       await auth.tokenProvider.idToken.then((value) {
         token = value;
       });
-
 
       await auth.getUser().then((user) {
         currentUser = user;

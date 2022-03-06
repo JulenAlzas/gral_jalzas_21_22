@@ -40,20 +40,20 @@ class _LoginBackgroundState extends State<LoginBackground> {
     }
     // if (defaultTargetPlatform == TargetPlatform.windows ||
     //     defaultTargetPlatform == TargetPlatform.linux) {
-    //   var auth = firedart.FirebaseAuth.instance.;
-    //   if (auth.isSignedIn) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => const LoginHome()),
-    //     );
-    //   }
+    //       var auth = firedart.FirebaseAuth.instance;
+    //       auth.signInState.listen((state) {
+    //         Navigator.push(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => const LoginHome()),
+    //       );
+    //       });
     // }
-    Future.microtask(() {
-      if (firedart.FirebaseAuth.instance.isSignedIn) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const LoginHome()));
-      }
-    });
+    // Future.microtask(() {
+    //   if (firedart.FirebaseAuth.instance.isSignedIn) {
+    //     Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => const LoginHome()));
+    //   }
+    // });
     // }
     // else if (defaultTargetPlatform == TargetPlatform.windows ||
     //     defaultTargetPlatform == TargetPlatform.linux) {
