@@ -181,6 +181,40 @@ class _LoginBackgroundState extends State<LoginBackground> {
                                           builder: (context) =>
                                               const LoginHome()),
                                     );
+                                  } else if (loginResult == "wrong-password") {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Error'),
+                                            content: const Text(
+                                                'Pasahitz okerra sartu duzu'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  } else if (loginResult == "wrong-email") {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Error'),
+                                            content: const Text(
+                                                'E-posta okerra sartu duzu'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   } else {
                                     showDialog(
                                         context: context,

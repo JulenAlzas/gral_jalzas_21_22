@@ -43,6 +43,7 @@ class _EditProfileState extends State<EditProfile> {
   bool _oldPassisVisible = false;
   bool updateRecentLogRequired = false;
 
+
   @override
   void initState() {
     getUserEmail();
@@ -179,6 +180,9 @@ class _EditProfileState extends State<EditProfile> {
                           } else if (profileEditResult == 'Erab eguneratua') {
                             setState(() {
                               _oldPassisVisible = false;
+                              updateRecentLogRequired = false;
+                              _oldpassw = '';
+                              wrongPassCount =0;
                             });
                             showDialog(
                                 context: context,
@@ -235,7 +239,7 @@ class _EditProfileState extends State<EditProfile> {
                                   return AlertDialog(
                                     title: const Text('Errorea:'),
                                     content: const Text(
-                                        'Pasahitz/Eposta aldatzeko pasahitz zaharraren beharra dago'),
+                                        'Eposta aldatzeko pasahitz zaharraren beharra dago'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () =>
@@ -246,7 +250,9 @@ class _EditProfileState extends State<EditProfile> {
                                   );
                                 });
                           } else if (profileEditResult == 'wrong-password') {
-                            wrongPassCount++;
+                            setState(() {
+                              wrongPassCount++;
+                            });
 
                             showDialog(
                                 context: context,
@@ -264,14 +270,14 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
-                          } else if (profileEditResult == 'too-many-requests') {
+                          } else if (profileEditResult == 'too-many-requests' || profileEditResult == 'TOO_MANY_ATTEMPTS_TRY_LATER') {
                             showDialog(
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
                                     title: const Text('Errorea:'),
                                     content: const Text(
-                                        'Firebase kautotze kuota maximora iritxi zara. Logeatu berriz.'),
+                                        'Firebase kautotze kuota maximora iritxi zara. Denbora bat itxaron beharko duzu.'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {

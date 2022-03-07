@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
+import 'package:firedart/auth/exceptions.dart';
 // import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
 //     as authforwindowsweb;
 import 'package:firedart/auth/user_gateway.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/foundation.dart';
 
 class EditProfileLogic {
   static bool updateForDBEmailNeeded = true;
+  static bool verifyOldPass = false;
+
   static Future<String?> editUserProfile({
     required String oldName,
     required String oldEmail,
@@ -147,23 +150,26 @@ class EditProfileLogic {
     } else {
       try {
         firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
-        String token = '';
+        // String token = '';
         // await auth.tokenProvider.refreshIDToken.then((value)  {
         //   token = value;
         //   print('object');
         // });
 
-        
-        await  auth.tokenProvider.idToken.then((value)  {
-          token = value;
-          print('object');
-        });
-        User? currentUser;
-        await auth.getUser().then((user) {
-          currentUser = user;
-        });
-        String userId = currentUser!.id.toString();
-        // String userId = auth.userId;
+        // await auth.tokenProvider.idToken.then((value) {
+        //   token = value;
+        //   print('object');
+        // });
+        // User? currentUser;
+        // await auth.getUser().then((user) {
+        //   currentUser = user;
+        // });
+        // String userId = currentUser!.id.toString();
+
+        String userId = '';
+        if (auth.isSignedIn) {
+          userId = auth.userId;
+        }
 
         if (oldName == newName &&
             oldEmail == newEmail &&
@@ -174,31 +180,47 @@ class EditProfileLogic {
         if (oldName != newName &&
             oldEmail != newEmail &&
             oldTelepNum != newTelepNum) {
-          
-
-          if( updateForDBEmailNeeded ){
-            Map<String, dynamic> resultmap =await auth.changeEmail(newEmail); 
-            auth.tokenProvider.setidToken(resultmap['idToken']); //Authentication atala bakarrik aldatuko bada, idtoken-a eguneratzearekin nahikoa. Baina Firestore DB-an berlogeatu behar gara edo UNAUTHENTICATED errorea bueltatuko du.
+          if (updateForDBEmailNeeded) {
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
-          }else{
-            auth.signOut();
-            auth.signIn(newEmail, oldPasword);
+          } else {
+            try {
+              if (!verifyOldPass) {
+                auth.signOut();
+                await auth.signIn(oldEmail, oldPasword);
+                verifyOldPass = true;
+              } else {
+                Map<String, dynamic> resultmap =
+                    await auth.changeEmail(newEmail);
+                auth.tokenProvider.setidToken(resultmap['idToken']);
+                auth.signOut();
+                await auth.signIn(newEmail, oldPasword);
+                verifyOldPass = false;
+              }
+            } on AuthException catch (e) {
+              if (e.errorCode == 'INVALID_PASSWORD') {
+                return 'wrong-password';
+              } else {
+                return e.errorCode;
+              }
+            }
+
+            userId = auth.userId;
             updateForDBEmailNeeded = true;
           }
-          firedart.Firestore.instance
+
+          await firedart.Firestore.instance
               .collection('users')
               .document(userId)
               .update({
-              'username': newName,
-              'email': newEmail,
-              'telepNum': newTelepNum,
+            'username': newName,
+            'email': newEmail,
+            'telepNum': newTelepNum,
           });
-
         } else if (oldName != newName &&
             oldEmail == newEmail &&
             oldTelepNum == newTelepNum) {
-          firedart.Firestore.instance
+          await firedart.Firestore.instance
               .collection('users')
               .document(userId)
               .update({
@@ -207,30 +229,39 @@ class EditProfileLogic {
         } else if (oldName != newName &&
             oldEmail != newEmail &&
             oldTelepNum == newTelepNum) {
-          
-          
-
-          if( updateForDBEmailNeeded ){
-            Map<String, dynamic> resultmap =await auth.changeEmail(newEmail);
-            auth.tokenProvider.setidToken(resultmap['idToken']);
+          if (updateForDBEmailNeeded) {
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
-          }else{
-            auth.signOut();
-            auth.signIn(newEmail, oldPasword);
+          } else {
+            try {
+              auth.signOut();
+              await auth.signIn(oldEmail, oldPasword);
+              Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+              auth.tokenProvider.setidToken(resultmap['idToken']);
+              auth.signOut();
+              await auth.signIn(newEmail, oldPasword);
+            } on AuthException catch (e) {
+              if (e.errorCode == 'INVALID_PASSWORD') {
+                return 'wrong-password';
+              } else {
+                return e.errorCode;
+              }
+            }
+            userId = auth.userId;
             updateForDBEmailNeeded = true;
           }
-          firedart.Firestore.instance
+
+          await firedart.Firestore.instance
               .collection('users')
               .document(userId)
               .update({
-              'username': newName,
-              'email': newEmail,
+            'username': newName,
+            'email': newEmail,
           });
         } else if (oldName != newName &&
             oldEmail == newEmail &&
             oldTelepNum != newTelepNum) {
-          firedart.Firestore.instance
+          await firedart.Firestore.instance
               .collection('users')
               .document(userId)
               .update({
@@ -240,57 +271,70 @@ class EditProfileLogic {
         } else if (oldName == newName &&
             oldEmail != newEmail &&
             oldTelepNum != newTelepNum) {
-          
-
-          if( updateForDBEmailNeeded ){
-            Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
-            auth.tokenProvider.setidToken(resultmap['idToken']);
+          if (updateForDBEmailNeeded) {
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
-          }else{
-            auth.signOut();
-            auth.signIn(newEmail, oldPasword);
+          } else {
+            try {
+              auth.signOut();
+              await auth.signIn(oldEmail, oldPasword);
+              Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+              auth.tokenProvider.setidToken(resultmap['idToken']);
+              auth.signOut();
+              await auth.signIn(newEmail, oldPasword);
+            } on AuthException catch (e) {
+              if (e.errorCode == 'INVALID_PASSWORD') {
+                return 'wrong-password';
+              } else {
+                return e.errorCode;
+              }
+            }
+            userId = auth.userId;
             updateForDBEmailNeeded = true;
           }
 
-          firedart.Firestore.instance
+          await firedart.Firestore.instance
               .collection('users')
               .document(userId)
               .update({
-              'email': newEmail,
-              'telepNum': newTelepNum,
+            'email': newEmail,
+            'telepNum': newTelepNum,
           });
         } else if (oldName == newName &&
             oldEmail != newEmail &&
             oldTelepNum == newTelepNum) {
-         
-
-          if( updateForDBEmailNeeded ){
-            Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
-            auth.tokenProvider.setidToken(resultmap['idToken']);
+          if (updateForDBEmailNeeded) {
             updateForDBEmailNeeded = false;
             return 'requires-oldpass-updateDB';
-          }else{
-            auth.signOut();
-            try{
+          } else {
+            try {
+              auth.signOut();
+              await auth.signIn(oldEmail, oldPasword);
+              Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+              auth.tokenProvider.setidToken(resultmap['idToken']);
+              auth.signOut();
               await auth.signIn(newEmail, oldPasword);
-            }catch(e){
-              return 'errorea';
+            } on AuthException catch (e) {
+              if (e.errorCode == 'INVALID_PASSWORD') {
+                return 'wrong-password';
+              } else {
+                return e.errorCode;
+              }
             }
-            
+            userId = auth.userId;
             updateForDBEmailNeeded = true;
           }
 
-          firedart.Firestore.instance
+          await firedart.Firestore.instance
               .collection('users')
               .document(userId)
               .update({
-              'email': newEmail,
+            'email': newEmail,
           });
         } else if (oldName == newName &&
             oldEmail == newEmail &&
             oldTelepNum != newTelepNum) {
-          firedart.Firestore.instance
+          await firedart.Firestore.instance
               .collection('users')
               .document(userId)
               .update({
@@ -299,23 +343,26 @@ class EditProfileLogic {
         }
         if (updatePass) {
           try {
-            
-
-            if( updateForDBEmailNeeded ){
-            Map<String, dynamic> resultmap = await auth.changePassword(newPassword);
+            Map<String, dynamic> resultmap =
+                await auth.changePassword(newPassword);
             auth.tokenProvider.setidToken(resultmap['idToken']);
-            updateForDBEmailNeeded = false;
-            return 'requires-oldpass-updateDB';
-          }else{
+
             auth.signOut();
-            auth.signIn(newEmail, oldPasword);
-            updateForDBEmailNeeded = true;
-          }
-           
-            // auth.signOut();
-            // auth.signIn(newEmail, newPassword);
-          } catch (e) {
-            return 'Errorea: $e';
+            try {
+              await auth.signIn(newEmail, newPassword);
+            } on AuthException catch (e) {
+              if (e.errorCode == 'INVALID_PASSWORD') {
+                return 'wrong-password';
+              } else {
+                return e.errorCode;
+              }
+            }
+          } on AuthException catch (e) {
+            if (e.errorCode == 'INVALID_PASSWORD') {
+              return 'wrong-password';
+            } else {
+              return e.errorCode;
+            }
           }
         }
         return 'Erab eguneratua';
