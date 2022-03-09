@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart';
 
 class EditProfileLogic {
   static bool updateForDBEmailNeeded = true;
-  static bool verifyOldPass = false;
 
   static Future<String?> editUserProfile({
     required String oldName,
@@ -158,7 +157,6 @@ class EditProfileLogic {
 
         // await auth.tokenProvider.idToken.then((value) {
         //   token = value;
-        //   print('object');
         // });
         // User? currentUser;
         // await auth.getUser().then((user) {
@@ -185,18 +183,12 @@ class EditProfileLogic {
             return 'requires-oldpass-updateDB';
           } else {
             try {
-              if (!verifyOldPass) {
-                auth.signOut();
-                await auth.signIn(oldEmail, oldPasword);
-                verifyOldPass = true;
-              } else {
-                Map<String, dynamic> resultmap =
-                    await auth.changeEmail(newEmail);
-                auth.tokenProvider.setidToken(resultmap['idToken']);
-                auth.signOut();
-                await auth.signIn(newEmail, oldPasword);
-                verifyOldPass = false;
-              }
+              auth.signOut();
+              await auth.signIn(oldEmail, oldPasword);
+              Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
+              auth.tokenProvider.setidToken(resultmap['idToken']);
+              auth.signOut();
+              await auth.signIn(newEmail, oldPasword);
             } on AuthException catch (e) {
               if (e.errorCode == 'INVALID_PASSWORD') {
                 return 'wrong-password';
@@ -204,7 +196,6 @@ class EditProfileLogic {
                 return e.errorCode;
               }
             }
-
             userId = auth.userId;
             updateForDBEmailNeeded = true;
           }
