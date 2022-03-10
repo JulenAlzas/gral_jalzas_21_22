@@ -1,14 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-// import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-//     as authforwindowsweb;
 import 'package:firedart/auth/user_gateway.dart';
-// import 'package:fireverse/fireverse.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/logic/EditProfileLogic..dart';
-import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
-import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
+import 'package:gral_jalzas_21_22/logic/edit_profile_logic.dart';
+import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firedart/firedart.dart' as firedart;
@@ -82,7 +79,7 @@ class _EditProfileState extends State<EditProfile> {
         children: <Widget>[
           const SizedBox(height: 15),
           Container(
-            height: 25,
+            height: screenSize.height *0.1,
             padding: const EdgeInsets.only(left: 30),
             child: ListView(
               children: const [
@@ -568,27 +565,14 @@ class _EditProfileState extends State<EditProfile> {
     } else {
       var auth = firedart.FirebaseAuth.instance;
       User? currentUser;
-      String token = '';
-      // await auth.tokenProvider.refreshIDToken.then((value)  {
-      //     token = value;
-      //     print('object');
-      //   });
-
-      await auth.tokenProvider.idToken.then((value) {
-        token = value;
-      });
 
       await auth.getUser().then((user) {
         currentUser = user;
       });
-      //var user = Fire.currentUser;
+
       setState(() {
         _email = currentUser!.email!;
       });
-      //    String userEmail = authforwindowsweb.FirebaseAuthDesktop.instance.currentUser!.email!;
-      //    setState(() {
-      //   _email = userEmail;
-      // });
     }
   }
 
@@ -616,13 +600,7 @@ class _EditProfileState extends State<EditProfile> {
         });
       });
     } else {
-      var auth = firedart.FirebaseAuth.instance;
-      String token = '';
 
-      await auth.tokenProvider.idToken.then((value) {
-        token = value;
-        print('object');
-      });
       await firedart.FirebaseAuth.instance.getUser().then((user) {
         userCred = user.id;
       });

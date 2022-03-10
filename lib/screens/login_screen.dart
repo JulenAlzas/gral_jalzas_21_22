@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/Provider/LoginProvider.dart';
-import 'package:gral_jalzas_21_22/screens/LoginBackground.dart';
+import 'package:gral_jalzas_21_22/Provider/login_provider.dart';
+import 'package:gral_jalzas_21_22/screens/login_background.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -12,9 +12,7 @@ class LoginScreen extends StatelessWidget {
       body: Center(
         child: ChangeNotifierProvider(
           create: (_) => LoginProvider(),
-          child: LoginBackground(
-          
-        ),
+          child: const LoginBackground(),
         ),
       ),
     );

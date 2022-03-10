@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/auth/exceptions.dart';
-// import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-//     as authforwindowsweb;
 import 'package:firedart/firedart.dart' as firedart;
-// import 'package:fireverse/fireverse.dart';
 import 'package:flutter/foundation.dart';
 
 class LoginAuth {
@@ -18,10 +15,8 @@ class LoginAuth {
         return "Ondo Logeatu zara";
       } on authforandroid.FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          // AlertDialog('No user found for that email.');
           return "Ez da e-posta hori duen erabiltzilerik aurkitu";
         } else if (e.code == 'wrong-password') {
-          // print('Wrong password provided for that user.');
           return "Pasahitz okerra erabiltzaile horrentzat";
         }
         return "$e.code";
@@ -43,22 +38,6 @@ class LoginAuth {
         }
       }
     }
-    // else {
-    //   try {
-    //     await authforwindowsweb.FirebaseAuthDesktop.instance
-    //         .signInWithEmailAndPassword(email, password);
-    //     return "Ondo Logeatu zara";
-    //   } on authforandroid.FirebaseAuthException catch (e) {
-    //     if (e.code == 'user-not-found') {
-    //       // AlertDialog('No user found for that email.');
-    //       return "Ez da e-posta hori duen erabiltzilerik aurkitu";
-    //     } else if (e.code == 'wrong-password') {
-    //       // print('Wrong password provided for that user.');
-    //       return "Pasahitz okerra erabiltzaile horrentzat";
-    //     }
-    //     return "$e.code";
-    //   }
-    // }
   }
 
   static Future<void> signOut() async {
@@ -66,24 +45,20 @@ class LoginAuth {
       await authforandroid.FirebaseAuth.instance.signOut();
     } else {
       firedart.FirebaseAuth.instance.signOut();
-      // Fire.signOut();
-      // await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
-      // await authforwindowsweb.FirebaseAuthDesktop.instance.signOut();
     }
   }
 
-   static Future<void> deleteProfile() async {
+  static Future<void> deleteProfile() async {
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       await authforandroid.FirebaseAuth.instance.signOut();
-      
     } else {
       firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
       firedart.FirebaseAuth.instance.deleteAccount();
       String userId = auth.userId;
       await firedart.Firestore.instance
-              .collection('users')
-              .document(userId)
-              .delete();
+          .collection('users')
+          .document(userId)
+          .delete();
     }
   }
 }

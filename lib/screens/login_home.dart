@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/screens/Joko1.dart';
-import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
-import 'package:gral_jalzas_21_22/screens/EditProfile.dart';
-import 'package:gral_jalzas_21_22/screens/Joko2.dart';
+import 'package:gral_jalzas_21_22/screens/joko1.dart';
+import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
+import 'package:gral_jalzas_21_22/screens/joko2.dart';
+import 'package:gral_jalzas_21_22/screens/delete_account.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:card_swiper/card_swiper.dart';
@@ -65,7 +66,10 @@ class LoginHome extends StatelessWidget {
                 leading: const Icon(Icons.person_remove_alt_1),
                 title: const Text('Profila ezabatu'),
                 onTap: () {
-                  print('Eraman profila aldatzera');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DeleteAccount()));
                 },
               )
             ],
@@ -111,33 +115,8 @@ class LoginHome extends StatelessWidget {
                         ),
                       );
                     },
-                  )
-                  // TextButton(
-                  //   style: TextButton.styleFrom(
-                  //     textStyle: const TextStyle(fontSize: 20),
-                  //   ),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => const Joko1()),
-                  //     );
-                  //   },
-                  //   child: const Text('Joko1'),
-                  // ),
-                  ,
+                  ),
                   const SizedBox(height: 30),
-                  // TextButton(
-                  //   style: TextButton.styleFrom(
-                  //     textStyle: const TextStyle(fontSize: 20),
-                  //   ),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => const Joko1()),
-                  //     );
-                  //   },
-                  //   child: const Text('Joko2'),
-                  // ),
                 ],
               )),
             )

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/Provider/RegisterProvider.dart';
-import 'package:gral_jalzas_21_22/screens/ResgisterBackground.dart';
+import 'package:gral_jalzas_21_22/Provider/register_provider.dart';
+import 'package:gral_jalzas_21_22/screens/resgister_background.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -12,7 +12,7 @@ class RegisterScreen extends StatelessWidget {
       body: Center(
           child: ChangeNotifierProvider(
         create: (_) => RegisterProvider(),
-        child: RegisterBackground(),
+        child: const RegisterBackground(),
       )),
     );
   }

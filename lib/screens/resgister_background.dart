@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/Provider/RegisterProvider.dart';
-import 'package:gral_jalzas_21_22/screens/LoginHome.dart';
-import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
-import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
-import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
+import 'package:gral_jalzas_21_22/Provider/register_provider.dart';
+import 'package:gral_jalzas_21_22/screens/login_screen.dart';
+import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 
-import 'Background.dart';
-import '../logic/RegisterAuth.dart';
+import 'background.dart';
+import '../logic/register_auth.dart';
 
-// ignore: use_key_in_widget_constructors, camel_case_types
 class RegisterBackground extends StatelessWidget {
+  const RegisterBackground({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final registerFormProvider = Provider.of<RegisterProvider>(context);
@@ -43,9 +42,8 @@ class RegisterBackground extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(255, 199, 237, 1),
                     borderRadius: BorderRadius.circular(25),
-                    // ignore: prefer_const_literals_to_create_immutables
-                    boxShadow: [
-                      const BoxShadow(
+                    boxShadow: const[
+                       BoxShadow(
                         color: Colors.black45,
                         blurRadius: 50.0,
                       )
@@ -57,7 +55,6 @@ class RegisterBackground extends StatelessWidget {
                     const SizedBox(height: 5),
                     Form(
                       key: registerFormProvider.formKey,
-                      // autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
                         children: [
                           TextFormField(
@@ -171,8 +168,6 @@ class RegisterBackground extends StatelessWidget {
                                   String pasahitz1 = registerFormProvider.pass;
                                   String pasahitz2 =
                                       registerFormProvider.confirmPass;
-                                  print(
-                                      'Pasahitzak: -> $pasahitz1 -------- $pasahitz2');
                                   if (value != null &&
                                       regExp.hasMatch(value) &&
                                       pasahitz1 == pasahitz2) {

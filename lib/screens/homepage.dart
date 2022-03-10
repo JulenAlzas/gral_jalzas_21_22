@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
-import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
+import 'package:gral_jalzas_21_22/screens/login_screen.dart';
+import 'package:gral_jalzas_21_22/screens/register_screen.dart';
 
-import 'Background.dart';
+import 'background.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);

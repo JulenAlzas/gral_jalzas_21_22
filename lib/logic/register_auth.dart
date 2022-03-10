@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-import 'package:firebase_auth_platform_interface/src/platform_interface/platform_interface_user_credential.dart';
 import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart' as firedart;
-import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-    as authforwindowsweb;
-// import 'package:fireverse/fireverse.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -66,26 +62,6 @@ class RegisterAuth {
           },
         );
         return 'erregistratua';
-
-        // await Fire.register(email: email, password: password);
-
-        //  var auth = FireDartFirebaseAuth.instance;
-        //   if (auth.isSignedIn) {
-        //   var user = await auth.getUser();
-        //   String userId = user.id;
-
-        //   await Fire.update(
-        //   collectionName: "users",
-        //   docId: userId,
-        //   value: {
-        //     'username': name,
-        //     'email': email,
-        //     'telepNum': telepNum,
-        //     'uid': userId
-        //   },
-        // );
-        // return 'erregistratua';
-        //   }
       } catch (e) {
         return 'Errorea: $e';
       }

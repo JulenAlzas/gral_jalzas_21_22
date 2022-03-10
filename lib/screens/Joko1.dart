@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
+import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 class Joko1 extends StatefulWidget {
@@ -110,9 +110,7 @@ class _Joko1State extends State<Joko1> {
                   );
                 });
               } else {
-                // setState(() {
-                //   spinColor=Colors.grey;
-                // });
+
               }
             },
           );
@@ -171,7 +169,6 @@ class _Joko1State extends State<Joko1> {
                   duration: const Duration(seconds: 2),
                   curve: Curves.decelerate,
                 ),
-                // selected: controller.stream,
                 items: [
                   FortuneItem(
                     child: Transform.rotate(

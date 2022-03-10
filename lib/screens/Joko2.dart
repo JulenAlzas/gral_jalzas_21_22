@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
+import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 class Joko2 extends StatefulWidget {
@@ -228,7 +228,6 @@ class _Joko2State extends State<Joko2> {
                 },
                 animateFirst: false,
                 selected: selectedFirst.stream,
-                // selected: controller.stream,
                 items: [
                   FortuneItem(
                     child: Transform.rotate(
@@ -303,7 +302,6 @@ class _Joko2State extends State<Joko2> {
                 },
                 animateFirst: false,
                 selected: selectedSecond.stream,
-                // selected: controller.stream,
                 items: [
                   FortuneItem(
                     child: Transform.rotate(
@@ -378,7 +376,6 @@ class _Joko2State extends State<Joko2> {
                 },
                 animateFirst: false,
                 selected: selectedThird.stream,
-                // selected: controller.stream,
                 items: [
                   FortuneItem(
                     child: Transform.rotate(
@@ -801,22 +798,16 @@ class PositionConfetti extends StatelessWidget {
       child: ConfettiWidget(
         confettiController: _controllerTopCenter,
         blastDirection: pi / 2,
-        maxBlastForce: 5, // set a lower max blast force
-        minBlastForce: 2, // set a lower min blast force
+        maxBlastForce: 5, 
+        minBlastForce: 2, 
         emissionFrequency: 0.05,
-        numberOfParticles: 50, // a lot of particles at once
+        numberOfParticles: 50, 
         gravity: 1,
       ),
     );
   }
 }
 
-Text _display(String text) {
-  return Text(
-    text,
-    style: const TextStyle(color: Colors.white, fontSize: 20),
-  );
-}
 
 class GameBackground extends StatelessWidget {
   const GameBackground({

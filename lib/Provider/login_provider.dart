@@ -22,7 +22,6 @@ class LoginProvider extends ChangeNotifier{
 
 
   bool isValidForm(){
-    print(formKey.currentState?.validate());
 
     if(formKey.currentState != null && formKey.currentState!.validate()){
       formHeight = 275;

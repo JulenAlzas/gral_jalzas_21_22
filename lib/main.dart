@@ -3,10 +3,10 @@ import 'package:firedart/firedart.dart' as firebasedart;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/screens/LoginHome.dart';
-import 'package:gral_jalzas_21_22/screens/LoginScreen.dart';
-import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
-import 'package:gral_jalzas_21_22/screens/EditProfile.dart';
+import 'package:gral_jalzas_21_22/screens/login_home.dart';
+import 'package:gral_jalzas_21_22/screens/login_screen.dart';
+import 'package:gral_jalzas_21_22/screens/register_screen.dart';
+import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:firebase_core/firebase_core.dart';

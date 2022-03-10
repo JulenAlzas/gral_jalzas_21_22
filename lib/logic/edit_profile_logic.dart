@@ -1,11 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-import 'package:firedart/auth/exceptions.dart';
-// import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-//     as authforwindowsweb;
-import 'package:firedart/auth/user_gateway.dart';
+import 'package:firedart/auth/exceptions.dart' show AuthException;
 import 'package:firedart/firedart.dart' as firedart;
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:fireverse/fireverse.dart';
 import 'package:flutter/foundation.dart';
 
 class EditProfileLogic {
@@ -27,7 +23,6 @@ class EditProfileLogic {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
       try {
-        //Get current values
         String userCredential =
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
@@ -149,20 +144,6 @@ class EditProfileLogic {
     } else {
       try {
         firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
-        // String token = '';
-        // await auth.tokenProvider.refreshIDToken.then((value)  {
-        //   token = value;
-        //   print('object');
-        // });
-
-        // await auth.tokenProvider.idToken.then((value) {
-        //   token = value;
-        // });
-        // User? currentUser;
-        // await auth.getUser().then((user) {
-        //   currentUser = user;
-        // });
-        // String userId = currentUser!.id.toString();
 
         String userId = '';
         if (auth.isSignedIn) {
@@ -369,14 +350,6 @@ class EditProfileLogic {
         }
       }
     }
-  }
-
-  static Future<firedart.FirebaseAuth> deleteAccCreateNew(
-      firedart.FirebaseAuth auth, String newEmail, String newPassword) async {
-    await auth.deleteAccount();
-    await auth.signUp(newEmail, newPassword);
-    await auth.signIn(newEmail, newPassword);
-    return auth;
   }
 
   static Future<void> updateCredentials(

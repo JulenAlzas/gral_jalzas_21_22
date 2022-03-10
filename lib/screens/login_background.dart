@@ -1,18 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-// import 'package:firebase_auth_desktop/firebase_auth_desktop.dart'
-//     as authforwindowsweb;
-import 'package:firedart/firedart.dart' as firedart;
-// import 'package:fireverse/fireverse.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/Provider/LoginProvider.dart';
-import 'package:gral_jalzas_21_22/logic/LoginAuth.dart';
-import 'package:gral_jalzas_21_22/screens/LoginHome.dart';
-import 'package:gral_jalzas_21_22/screens/RegisterScreen.dart';
-import 'package:gral_jalzas_21_22/ui/InputDecorations.dart';
+import 'package:gral_jalzas_21_22/Provider/login_provider.dart';
+import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/screens/login_home.dart';
+import 'package:gral_jalzas_21_22/screens/register_screen.dart';
+import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 
-import 'Background.dart';
+import 'background.dart';
 
 class LoginBackground extends StatefulWidget {
   const LoginBackground({Key? key}) : super(key: key);
@@ -38,36 +34,6 @@ class _LoginBackgroundState extends State<LoginBackground> {
         }
       });
     }
-    // if (defaultTargetPlatform == TargetPlatform.windows ||
-    //     defaultTargetPlatform == TargetPlatform.linux) {
-    //       var auth = firedart.FirebaseAuth.instance;
-    //       auth.signInState.listen((state) {
-    //         Navigator.push(
-    //         context,
-    //         MaterialPageRoute(builder: (context) => const LoginHome()),
-    //       );
-    //       });
-    // }
-    // Future.microtask(() {
-    //   if (firedart.FirebaseAuth.instance.isSignedIn) {
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => const LoginHome()));
-    //   }
-    // });
-    // }
-    // else if (defaultTargetPlatform == TargetPlatform.windows ||
-    //     defaultTargetPlatform == TargetPlatform.linux) {
-    //   authforwindowsweb.FirebaseAuthDesktop.instance
-    //       .authStateChanges()
-    //       .listen((user) {
-    //     if (user != null) {
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(builder: (context) => const LoginHome()),
-    //       );
-    //     }
-    //   });
-    // }
 
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
@@ -97,9 +63,8 @@ class _LoginBackgroundState extends State<LoginBackground> {
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(255, 199, 237, 1),
                     borderRadius: BorderRadius.circular(25),
-                    // ignore: prefer_const_literals_to_create_immutables
-                    boxShadow: [
-                      const BoxShadow(
+                    boxShadow: const[
+                       BoxShadow(
                         color: Colors.black45,
                         blurRadius: 50.0,
                       )
