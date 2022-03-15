@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 
 class DeleteAccountLogic {
   static bool updateForDBEmailNeeded = true;
+  bool _mustWriteOldPassWell = false;
 
   static Future<String?> deleteProfile({
     required String oldEmail,
@@ -38,11 +39,15 @@ class DeleteAccountLogic {
       try {
         firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
 
-        String userId = auth.userId;
+        String userId = '';
+        if (auth.isSignedIn) {
+          userId = auth.userId;
+        }
 
         try {
           auth.signOut();
           await auth.signIn(oldEmail, oldPasword);
+          userId = auth.userId;
           await firedart.Firestore.instance
               .collection('users')
               .document(userId)

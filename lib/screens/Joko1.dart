@@ -352,7 +352,6 @@ class _Joko1State extends State<Joko1> {
       backgroundColor: Colors.pink,
       title: const Text('Lehen jokoa'),
       elevation: 0,
-      automaticallyImplyLeading: false,
       actions: [
         TextButton.icon(
             onPressed: () {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/logic/delete_account_logic.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
+import 'package:gral_jalzas_21_22/screens/login_home.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:firedart/firedart.dart' as firedart;
@@ -18,6 +19,8 @@ class DeleteAccount extends StatefulWidget {
 
 class _DeleteAccountState extends State<DeleteAccount> {
   GlobalKey<FormState> formEditProfKey = GlobalKey<FormState>();
+
+  bool _mustWriteOldPassWell = false;
 
   String _email = '';
   String _oldpassw = '';
@@ -42,11 +45,25 @@ class _DeleteAccountState extends State<DeleteAccount> {
     final screenSize = MediaQuery.of(context).size;
     const Color eremuKolorea = Colors.white;
 
-    return Scaffold(
-      appBar: appBarDetails(context),
-      body: _isLoading
-          ? const KargatzeAnimazioa()
-          : orrialdeKargatuaErakutsi(screenSize, eremuKolorea, context),
+    return WillPopScope(
+      onWillPop: () async {
+        if(_mustWriteOldPassWell){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Pasahitz zaharra ondo jar ezazu edo berlogeatu.')));
+      }else{
+        Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginHome()));
+      }
+        return false;
+      },
+      child: Scaffold(
+        appBar: appBarDetails(context),
+        body: _isLoading
+            ? const KargatzeAnimazioa()
+            : orrialdeKargatuaErakutsi(screenSize, eremuKolorea, context),
+      ),
     );
   }
 
@@ -106,6 +123,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                           if (profileEditResult == 'Erab ezabatua') {
                             setState(() {
                               wrongPassCount = 0;
+                              _mustWriteOldPassWell = false;
                             });
                             showDialog(
                                 context: context,
@@ -133,6 +151,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                           } else if (profileEditResult == 'wrong-password') {
                             setState(() {
                               wrongPassCount++;
+                              _mustWriteOldPassWell = true;
                             });
 
                             showDialog(

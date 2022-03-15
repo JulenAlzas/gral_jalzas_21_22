@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/edit_profile_logic.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/screens/login_home.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +20,8 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   GlobalKey<FormState> formEditProfKey = GlobalKey<FormState>();
+
+  bool _mustWriteOldPassWell = false;
 
   String _fullName = '';
   String _email = '';
@@ -53,11 +56,25 @@ class _EditProfileState extends State<EditProfile> {
     final screenSize = MediaQuery.of(context).size;
     const Color eremuKolorea = Colors.white;
 
-    return Scaffold(
-      appBar: appBarDetails(context),
-      body: _isLoading
-          ? const KargatzeAnimazioa()
-          : orrialdeKargatuaErakutsi(screenSize, eremuKolorea, context),
+    return WillPopScope(
+      onWillPop: () async {
+        if(_mustWriteOldPassWell){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Pasahitz zaharra ondo jar ezazu edo berlogeatu.')));
+      }else{
+        Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginHome()));
+      }
+        return false;
+      },
+      child: Scaffold(
+        appBar: appBarDetails(context),
+        body: _isLoading
+            ? const KargatzeAnimazioa()
+            : orrialdeKargatuaErakutsi(screenSize, eremuKolorea, context),
+      ),
     );
   }
 
@@ -180,6 +197,7 @@ class _EditProfileState extends State<EditProfile> {
                               updateRecentLogRequired = false;
                               _oldpassw = '';
                               wrongPassCount =0;
+                              _mustWriteOldPassWell = false;
                             });
                             showDialog(
                                 context: context,
@@ -229,6 +247,7 @@ class _EditProfileState extends State<EditProfile> {
                               'requires-oldpass-updateDB') {
                             setState(() {
                               _oldPassisVisible = true;
+                              _mustWriteOldPassWell = true;
                             });
                             showDialog(
                                 context: context,
@@ -249,6 +268,7 @@ class _EditProfileState extends State<EditProfile> {
                           } else if (profileEditResult == 'wrong-password') {
                             setState(() {
                               wrongPassCount++;
+                              _mustWriteOldPassWell = true;
                             });
 
                             showDialog(
