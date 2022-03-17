@@ -3,6 +3,8 @@ import 'package:credit_card_validator/validation_results.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:credit_card_validator/credit_card_validator.dart';
+import 'package:credit_card_type_detector/credit_card_type_detector.dart';
+import 'package:gral_jalzas_21_22/logic/add_creditcard.dart';
 
 class CreateCard extends StatefulWidget {
   const CreateCard({Key? key, required this.title}) : super(key: key);
@@ -18,6 +20,7 @@ class _CreateCardState extends State<CreateCard> {
   String expiryDate = '';
   String cvv = '';
   bool showBack = false;
+  CardType txartelmota = CardType.visa;
 
   late FocusNode _focusNode;
   TextEditingController cardNumberCtrl = TextEditingController();
@@ -58,20 +61,20 @@ class _CreateCardState extends State<CreateCard> {
               height: 40,
             ),
             CreditCard(
-                cardNumber: cardNumber,
-                cardExpiry: expiryDate,
-                cardHolderName: cardHolderName,
-                cvv: cvv,
-                bankName: 'Txartela',
-                showBackSide: showBack,
-                frontBackground: CardBackgrounds.black,
-                backBackground: CardBackgrounds.white,
-                showShadow: true,
-                textExpDate: 'Iraun. Data',
-                textName: 'Titularra',
-                cardType: CardType.visa,
-                // mask: getCardTypeMask(cardType: CardType.americanExpress),
-                ),
+              cardNumber: cardNumber,
+              cardExpiry: expiryDate,
+              cardHolderName: cardHolderName,
+              cvv: cvv,
+              bankName: 'Txartela',
+              showBackSide: showBack,
+              frontBackground: CardBackgrounds.black,
+              backBackground: CardBackgrounds.white,
+              showShadow: true,
+              textExpDate: 'Iraun. Data',
+              textName: 'Titularra',
+              cardType: txartelmota,
+              // mask: getCardTypeMask(cardType: CardType.americanExpress),
+            ),
             const SizedBox(
               height: 40,
             ),
@@ -110,11 +113,10 @@ class _CreateCardState extends State<CreateCard> {
                               _ccValidator.validateCCNum(cardNumber);
                           if (ccNumResults.isValid) {
                             return null;
-                          }
-                           else if(ccNumResults.message == 'No input or contains non-numerical characters'){
+                          } else if (ccNumResults.message ==
+                              'No input or contains non-numerical characters') {
                             return 'Sarrera hutsa edo karaktere ez zenbakizkoak';
-                          }
-                          else {
+                          } else {
                             return 'Sarrera okerra: ' + ccNumResults.message;
                           }
                         }),
@@ -183,25 +185,46 @@ class _CreateCardState extends State<CreateCard> {
                     margin: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 25),
                     child: TextFormField(
-                      decoration: const InputDecoration(hintText: 'CVV'),
-                      maxLength: 3,
-                      onChanged: (value) {
-                        setState(() {
-                          cvv = value;
-                        });
-                      },
-                      focusNode: _focusNode,
-                      validator: (_) {
-                        var ccNumResults =
+                        decoration: const InputDecoration(hintText: 'CVV'),
+                        maxLength: 3,
+                        onChanged: (value) {
+                          setState(() {
+                            cvv = value;
+                          });
+                        },
+                        focusNode: _focusNode,
+                        validator: (_) {
+                          var ccNumResults =
                               _ccValidator.validateCCNum(cardNumber);
-                          var cvvResults = _ccValidator.validateCVV(cvv, ccNumResults.ccType );
+                          var cvvResults = _ccValidator.validateCVV(
+                              cvv, ccNumResults.ccType);
+
+                          setState(() {
+                            if ( ccNumResults.ccType == CreditCardType.visa){
+                              txartelmota = CardType.visa;
+                            }else if(ccNumResults.ccType == CreditCardType.discover){
+                              txartelmota = CardType.discover;
+                            }else if(ccNumResults.ccType == CreditCardType.mastercard){
+                              txartelmota = CardType.masterCard;
+                            }else if(ccNumResults.ccType == CreditCardType.dinersclub){
+                              txartelmota = CardType.dinersClub;
+                            }else if(ccNumResults.ccType == CreditCardType.jcb){
+                              txartelmota = CardType.jcb;
+                            }else if(ccNumResults.ccType == CreditCardType.maestro){
+                              txartelmota = CardType.maestro;
+                            }else if(ccNumResults.ccType == CreditCardType.elo){
+                              txartelmota = CardType.elo;
+                            }else if(ccNumResults.ccType == CreditCardType.hiper || ccNumResults.ccType == CreditCardType.hipercard || ccNumResults.ccType == CreditCardType.amex ||
+                            ccNumResults.ccType == CreditCardType.unionpay || ccNumResults.ccType == CreditCardType.mir || ccNumResults.ccType == CreditCardType.unknown){
+                              txartelmota = CardType.other;
+                            }
+                          });
                           if (cvvResults.isValid) {
                             return null;
                           } else {
                             return 'Iraungitze-data okerra';
                           }
-                        }
-                    ),
+                        }),
                   ),
                 ],
               ),
@@ -215,7 +238,11 @@ class _CreateCardState extends State<CreateCard> {
                   backgroundColor: Colors.deepPurple,
                 ),
                 onPressed: () {
-                  if (formCardKey.currentState?.validate() ?? false) {}
+                  bool isFormValid = formCardKey.currentState?.validate() ?? false;
+                  if (isFormValid) {
+                    AddCreditCard.addNewCard(txartelZenbakia: cardNumber, iraungitzea: expiryDate, cvv: cvv, titularra: cardHolderName);
+
+                  }
                 },
                 child: const Text('Txartela sortu'),
               ),
