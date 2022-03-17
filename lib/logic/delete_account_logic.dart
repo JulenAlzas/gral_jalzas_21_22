@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 
 class DeleteAccountLogic {
   static bool updateForDBEmailNeeded = true;
-  bool _mustWriteOldPassWell = false;
 
   static Future<String?> deleteProfile({
     required String oldEmail,

@@ -71,6 +71,16 @@ class LoginHome extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => const DeleteAccount()));
                 },
+              ),
+              ListTile(
+                leading: const Icon(Icons.person_remove_alt_1),
+                title: const Text('Diru-zorroa'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DeleteAccount()));
+                },
               )
             ],
           ),

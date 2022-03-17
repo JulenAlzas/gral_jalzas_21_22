@@ -3,6 +3,7 @@ import 'package:firedart/firedart.dart' as firebasedart;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gral_jalzas_21_22/screens/create_card.dart';
 import 'package:gral_jalzas_21_22/screens/login_home.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/register_screen.dart';
@@ -67,13 +68,14 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      initialRoute: 'homepage',
+      initialRoute: 'createcard',
       routes: {
         'homepage': (BuildContext context) => const Homepage(),
         'login': (BuildContext context) => const LoginScreen(),
         'register': (BuildContext context) => const RegisterScreen(),
         'loginhome': (BuildContext context) => const LoginHome(),
         'editprofile': (BuildContext context) => const EditProfile(),
+        'createcard': (BuildContext context) => const CreateCard(title: 'Gehitu zure txartela',),
       },
     );
   }
