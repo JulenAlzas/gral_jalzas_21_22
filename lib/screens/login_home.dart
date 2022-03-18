@@ -76,7 +76,7 @@ class LoginHome extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.person_remove_alt_1),
+                leading: const Icon(Icons.credit_card_rounded),
                 title: const Text('Diru-zorroa'),
                 onTap: () {
                   AddCreditCard.isCardCreatedForCurrentUser()

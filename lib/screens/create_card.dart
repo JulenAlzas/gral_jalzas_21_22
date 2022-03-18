@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:credit_card_validator/validation_results.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:credit_card_validator/credit_card_validator.dart';
@@ -24,6 +25,9 @@ class _CreateCardState extends State<CreateCard> {
   String cvv = '';
   bool showBack = false;
   CardType txartelmota = CardType.visa;
+
+  double cardWidth = 0.0;
+  double cardHeight = 0.0;
 
   late FocusNode _focusNode;
   TextEditingController cardNumberCtrl = TextEditingController();
@@ -51,6 +55,16 @@ class _CreateCardState extends State<CreateCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      cardWidth = screenSize.width * 0.95;
+      cardHeight = screenSize.height * 0.25;
+    } else {
+      cardWidth = screenSize.width * 0.35;
+      cardHeight = screenSize.height * 0.4;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -96,6 +110,8 @@ class _CreateCardState extends State<CreateCard> {
               textExpDate: 'Iraun. Data',
               textName: 'Titularra',
               cardType: txartelmota,
+              width: cardWidth,
+              height: cardHeight,
               // mask: getCardTypeMask(cardType: CardType.americanExpress),
             ),
             const SizedBox(
@@ -279,34 +295,57 @@ class _CreateCardState extends State<CreateCard> {
                   if (isFormValid) {
                     AddCreditCard.isCardCreatedForCurrentUser()
                         .then((cardExists) {
-                      AddCreditCard.addNewCard(
-                          txartelZenbakia: cardNumber,
-                          iraungitzea: expiryDate,
-                          cvv: cvv,
-                          titularra: cardHolderName);
+                      if (!cardExists) {
+                        AddCreditCard.addNewCard(
+                                txartelZenbakia: cardNumber,
+                                iraungitzea: expiryDate,
+                                cvv: cvv,
+                                titularra: cardHolderName,
+                                txartelmota: txartelmota)
+                            .then((value) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Mezua:'),
+                                  content:
+                                      const Text('Kred txartela gorde da.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'OK'),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              });
 
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Mezua:'),
-                              content: const Text('Kred txartela gorde da.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'OK'),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          });
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ShowCard(
-                                  title: 'Diru-zorroa',
-                                )),
-                      );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ShowCard(
+                                      title: 'Diru-zorroa',
+                                    )),
+                          );
+                        });
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Mezua:'),
+                                content:
+                                    const Text('Iada Kreditu txartela duzu.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'OK'),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            });
+                      }
                     });
                   }
                 },

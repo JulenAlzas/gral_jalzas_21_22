@@ -1,3 +1,4 @@
+import 'package:awesome_card/awesome_card.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/auth/exceptions.dart' show AuthException;
 import 'package:firedart/firedart.dart' as firedart;
@@ -11,7 +12,8 @@ class AddCreditCard {
       {required String txartelZenbakia,
       required String iraungitzea,
       required String cvv,
-      required String titularra}) async {
+      required String titularra,
+      required CardType txartelmota}) async {
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -36,12 +38,13 @@ class AddCreditCard {
         //   'userUID': userCredential,
         // });
 
-        _firestore.collection('credcard').doc().set({
+        await _firestore.collection('credcard').doc().set({
           'txartelZenbakia': txartelZenbakia,
           'iraungitzea': iraungitzea,
           'cvv': cvv,
           'titularra': titularra,
           'userUID': userCredential,
+          'txartelmota': txartelmota.toString()
         });
 
         return 'Erab eguneratua';
@@ -84,6 +87,7 @@ class AddCreditCard {
             'cvv': cvv,
             'titularra': titularra,
             'userUID': userId,
+            'txartelmota': txartelmota.toString()
           },
         );
 
@@ -116,13 +120,16 @@ class AddCreditCard {
             .where('userUID', isEqualTo: userCredential)
             .get()
             .then((querySnapshot) {
+               if(querySnapshot.docs.isNotEmpty){
               docId= querySnapshot.docs.first.id;
+               }
         });
         if(docId == ''){
           return false;
         }
         return true;
       } on authforandroid.FirebaseAuthException catch (e) {
+        var aaa= e.code;
         return false;
       }
     } else {
@@ -131,10 +138,20 @@ class AddCreditCard {
 
         String userId = auth.userId;
 
-        String cardId = firedart.Firestore.instance
+        String docId ='';
+
+        await firedart.Firestore.instance
             .collection('credcard')
             .where('userUID', isEqualTo: userId)
-            .id;
+            .get().then((querySnapshot) {
+              if(querySnapshot.isNotEmpty){
+                docId = querySnapshot.first.id;
+              }
+            });
+
+        if(docId == ''){
+          return false;
+        }
             
         return true;
       } on authforandroid.FirebaseAuthException catch (e) {

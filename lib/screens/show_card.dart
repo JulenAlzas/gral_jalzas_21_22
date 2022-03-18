@@ -10,6 +10,7 @@ import 'package:credit_card_validator/credit_card_validator.dart';
 import 'package:credit_card_type_detector/credit_card_type_detector.dart';
 import 'package:gral_jalzas_21_22/logic/add_creditcard.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 class ShowCard extends StatefulWidget {
@@ -26,9 +27,12 @@ class _ShowCardState extends State<ShowCard> {
   String expiryDate = '';
   String cvv = '';
   bool showBack = false;
-  CardType txartelmota = CardType.visa;
+  CardType txartelmota = CardType.other;
 
-  bool _isLoading = false;
+  double cardWidth = 0.0;
+  double cardHeight = 0.0;
+
+  bool _isLoading = true;
 
   late FocusNode _focusNode;
   TextEditingController cardNumberCtrl = TextEditingController();
@@ -39,6 +43,7 @@ class _ShowCardState extends State<ShowCard> {
 
   @override
   void initState() {
+    getCardInfo();
     super.initState();
     _focusNode = FocusNode();
     _focusNode.addListener(() {
@@ -46,7 +51,6 @@ class _ShowCardState extends State<ShowCard> {
         _focusNode.hasFocus ? showBack = true : showBack = false;
       });
     });
-    getCardInfo();
   }
 
   @override
@@ -57,6 +61,16 @@ class _ShowCardState extends State<ShowCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      cardWidth = screenSize.width * 0.95;
+      cardHeight = screenSize.height * 0.25;
+    } else {
+      cardWidth = screenSize.width * 0.35;
+      cardHeight = screenSize.height * 0.4;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -81,95 +95,101 @@ class _ShowCardState extends State<ShowCard> {
               ))
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(
-              height: 40,
-            ),
-            CreditCard(
-              cardNumber: cardNumber,
-              cardExpiry: expiryDate,
-              cardHolderName: cardHolderName,
-              cvv: cvv,
-              bankName: 'Txartela',
-              showBackSide: showBack,
-              frontBackground: CardBackgrounds.black,
-              backBackground: CardBackgrounds.white,
-              showShadow: true,
-              textExpDate: 'Iraun. Data',
-              textName: 'Titularra',
-              cardType: txartelmota,
-              // mask: getCardTypeMask(cardType: CardType.americanExpress),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Center(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(16.0),
-                  primary: Colors.white,
-                  textStyle: const TextStyle(fontSize: 20),
-                  backgroundColor: Colors.deepPurple,
-                ),
-                onPressed: () {
-                  bool isFormValid =
-                      formCardKey.currentState?.validate() ?? false;
-                  if (isFormValid) {
-                    AddCreditCard.isCardCreatedForCurrentUser()
-                        .then((cardExists) {
-                      if (cardExists) {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Mezua:'),
-                                content:
-                                    const Text('Iada kreditu txartela duzu'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'OK'),
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            });
-                      } else {
-                        AddCreditCard.addNewCard(
-                            txartelZenbakia: cardNumber,
-                            iraungitzea: expiryDate,
-                            cvv: cvv,
-                            titularra: cardHolderName);
+      body: _isLoading
+          ? const KargatzeAnimazioa()
+          : SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  CreditCard(
+                    cardNumber: cardNumber,
+                    cardExpiry: expiryDate,
+                    cardHolderName: cardHolderName,
+                    cvv: cvv,
+                    bankName: 'Txartela',
+                    showBackSide: showBack,
+                    frontBackground: CardBackgrounds.black,
+                    backBackground: CardBackgrounds.white,
+                    showShadow: true,
+                    textExpDate: 'Iraun. Data',
+                    textName: 'Titularra',
+                    cardType: txartelmota,
+                    width: cardWidth,
+                    height: cardHeight,
+                    // mask: getCardTypeMask(cardType: CardType.americanExpress),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(16.0),
+                        primary: Colors.white,
+                        textStyle: const TextStyle(fontSize: 20),
+                        backgroundColor: Colors.deepPurple,
+                      ),
+                      onPressed: () {
+                        bool isFormValid =
+                            formCardKey.currentState?.validate() ?? false;
+                        if (isFormValid) {
+                          AddCreditCard.isCardCreatedForCurrentUser()
+                              .then((cardExists) {
+                            if (cardExists) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text('Mezua:'),
+                                      content: const Text(
+                                          'Iada kreditu txartela duzu'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              AddCreditCard.addNewCard(
+                                  txartelZenbakia: cardNumber,
+                                  iraungitzea: expiryDate,
+                                  cvv: cvv,
+                                  titularra: cardHolderName,
+                                  txartelmota: txartelmota);
 
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Mezua:'),
-                                content: const Text('Kred txartela gorde da.'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'OK'),
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            });
-                      }
-                    });
-                  }
-                },
-                child: const Text('Txartela sortu'),
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text('Mezua:'),
+                                      content:
+                                          const Text('Kred txartela gorde da.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            }
+                          });
+                        }
+                      },
+                      child: const Text('Txartela sortu'),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 
@@ -203,6 +223,7 @@ class _ShowCardState extends State<ShowCard> {
           cardHolderName = querySnapshot['titularra'];
           expiryDate = querySnapshot['iraungitzea'];
           cvv = querySnapshot['cvv'];
+          txartelmota = getCardCast(querySnapshot['txartelmota']);
         });
       });
     } else {
@@ -210,10 +231,17 @@ class _ShowCardState extends State<ShowCard> {
 
       String userId = auth.userId;
 
-      String cardId = firedart.Firestore.instance
+      String cardId = '';
+
+      await firedart.Firestore.instance
           .collection('credcard')
           .where('userUID', isEqualTo: userId)
-          .id;
+          .get()
+          .then((querySnapshot) {
+        if (querySnapshot.isNotEmpty) {
+          cardId = querySnapshot.first.id;
+        }
+      });
 
       await firedart.Firestore.instance
           .collection('credcard')
@@ -225,6 +253,7 @@ class _ShowCardState extends State<ShowCard> {
           cardHolderName = querySnapshot['titularra'];
           expiryDate = querySnapshot['iraungitzea'];
           cvv = querySnapshot['cvv'];
+          txartelmota = getCardCast(querySnapshot['txartelmota']);
         });
       });
     }
@@ -232,5 +261,26 @@ class _ShowCardState extends State<ShowCard> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  CardType getCardCast(String cardType) {
+    if (cardType == 'CardType.visa') {
+      txartelmota = CardType.visa;
+    } else if (cardType == 'CardType.discover') {
+      txartelmota = CardType.discover;
+    } else if (cardType == 'CardType.masterCard') {
+      txartelmota = CardType.masterCard;
+    } else if (cardType == 'CardType.dinersClub') {
+      txartelmota = CardType.dinersClub;
+    } else if (cardType == 'CardType.jcb') {
+      txartelmota = CardType.jcb;
+    } else if (cardType == 'CardType.maestro') {
+      txartelmota = CardType.maestro;
+    } else if (cardType == 'CardType.elo') {
+      txartelmota = CardType.elo;
+    } else {
+      txartelmota = CardType.other;
+    }
+    return txartelmota;
   }
 }
