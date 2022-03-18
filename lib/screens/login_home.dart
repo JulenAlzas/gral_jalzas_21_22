@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gral_jalzas_21_22/logic/add_creditcard.dart';
+import 'package:gral_jalzas_21_22/screens/create_card.dart';
 import 'package:gral_jalzas_21_22/screens/joko1.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
@@ -8,6 +10,7 @@ import 'package:gral_jalzas_21_22/screens/delete_account.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:card_swiper/card_swiper.dart';
+import 'package:gral_jalzas_21_22/screens/show_card.dart';
 
 class LoginHome extends StatelessWidget {
   const LoginHome({Key? key}) : super(key: key);
@@ -76,10 +79,26 @@ class LoginHome extends StatelessWidget {
                 leading: const Icon(Icons.person_remove_alt_1),
                 title: const Text('Diru-zorroa'),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DeleteAccount()));
+                  AddCreditCard.isCardCreatedForCurrentUser()
+                      .then((cardExists) {
+                    if (cardExists) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ShowCard(
+                                  title: 'Diru-zorroa',
+                                )),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreateCard(
+                                  title: 'Sortu txartela',
+                                )),
+                      );
+                    }
+                  });
                 },
               )
             ],
@@ -106,7 +125,8 @@ class LoginHome extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => const Joko1()),
                             );
-                          }else  if (gameImages[index] == 'assets/slotGame.png'){
+                          } else if (gameImages[index] ==
+                              'assets/slotGame.png') {
                             Navigator.push(
                               context,
                               MaterialPageRoute(

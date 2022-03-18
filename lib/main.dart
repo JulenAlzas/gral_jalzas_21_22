@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      initialRoute: 'createcard',
+      initialRoute: 'homepage',
       routes: {
         'homepage': (BuildContext context) => const Homepage(),
         'login': (BuildContext context) => const LoginScreen(),
