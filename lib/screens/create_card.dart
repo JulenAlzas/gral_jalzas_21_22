@@ -59,7 +59,11 @@ class _CreateCardState extends State<CreateCard> {
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       cardWidth = screenSize.width * 0.95;
-      cardHeight = screenSize.height * 0.25;
+      if(screenSize.height<450){
+        cardHeight = screenSize.height * 0.425;
+      }else{
+        cardHeight = screenSize.height * 0.25;
+      }
     } else {
       cardWidth = screenSize.width * 0.35;
       cardHeight = screenSize.height * 0.4;

@@ -22,16 +22,23 @@ class ShowCard extends StatefulWidget {
 }
 
 class _ShowCardState extends State<ShowCard> {
+  GlobalKey<FormState> formAmountMoneyKey = GlobalKey<FormState>();
+
   String cardNumber = '';
   String cardHolderName = '';
   String expiryDate = '';
   String cvv = '';
   bool showBack = false;
   CardType txartelmota = CardType.other;
+  bool _showMoneyamount = false;
+  MaterialColor eremuKolorea = Colors.pink;
 
   double cardWidth = 0.0;
   double cardHeight = 0.0;
   double kontudirua = 0.0;
+
+  double kontuDiruaTextSize = 0.0;
+  double kontuDiruErreala = 0.0;
 
   bool _isLoading = true;
 
@@ -66,10 +73,18 @@ class _ShowCardState extends State<ShowCard> {
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       cardWidth = screenSize.width * 0.95;
-      cardHeight = screenSize.height * 0.25;
+      if (screenSize.height < 450) {
+        cardHeight = screenSize.height * 0.425;
+      } else {
+        cardHeight = screenSize.height * 0.25;
+      }
+      kontuDiruErreala = screenSize.width * 0.1;
+      kontuDiruaTextSize = screenSize.width * 0.05;
     } else {
       cardWidth = screenSize.width * 0.35;
       cardHeight = screenSize.height * 0.4;
+      kontuDiruErreala = screenSize.width * 0.05;
+      kontuDiruaTextSize = screenSize.width * 0.025;
     }
 
     return Scaffold(
@@ -107,7 +122,7 @@ class _ShowCardState extends State<ShowCard> {
                     Stack(
                       children: [
                         Container(
-                          height: screenSize.height * 0.25,
+                          height: screenSize.height * 0.3,
                           decoration: BoxDecoration(
                             color: Colors.pink[100],
                             borderRadius: const BorderRadius.only(
@@ -117,12 +132,20 @@ class _ShowCardState extends State<ShowCard> {
                         ),
                         Column(
                           children: [
-                            SizedBox(height: screenSize.height*0.015,),
+                            SizedBox(
+                              height: screenSize.height * 0.015,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text('Kontu dirua:'),
-                                SizedBox(width: screenSize.width*0.025,),
+                                Text(
+                                  'Kontu dirua:',
+                                  style:
+                                      TextStyle(fontSize: kontuDiruaTextSize),
+                                ),
+                                SizedBox(
+                                  width: screenSize.width * 0.025,
+                                ),
                                 Container(
                                   padding: const EdgeInsets.all(3),
                                   decoration: BoxDecoration(
@@ -131,13 +154,111 @@ class _ShowCardState extends State<ShowCard> {
                                         Radius.circular(5)),
                                   ),
                                   child: Text(
-                                    ' $kontudirua €',
-                                    style: const TextStyle(fontSize: 35),
+                                    '$kontudirua €',
+                                    style:
+                                        TextStyle(fontSize: kontuDiruErreala),
                                   ),
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(16.0),
+                                    primary: Colors.black,
+                                    textStyle: const TextStyle(fontSize: 20),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _showMoneyamount = true;
+                                    });
+                                  },
+                                  child: const Icon(Icons.add),
                                 ),
                               ],
                             ),
-                            SizedBox(height: screenSize.height*0.015,),
+                            SizedBox(
+                              height: screenSize.height * 0.015,
+                            ),
+                            Visibility(
+                              visible: _showMoneyamount,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Form(
+                                      key: formAmountMoneyKey,
+                                      child: SizedBox(
+                                        width: screenSize.width * 0.7,
+                                        child: TextFormField(
+                                            style:
+                                                TextStyle(color: eremuKolorea),
+                                            onChanged: (changedValue) {
+                                              setState(() {});
+                                            },
+                                            decoration: InputDecoration(
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: eremuKolorea,
+                                                            width: 2.0)),
+                                                focusedBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: eremuKolorea)),
+                                                errorStyle: const TextStyle(
+                                                    color: Colors.black),
+                                                focusedErrorBorder:
+                                                    const UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors.black,
+                                                            width: 2.0)),
+                                                errorBorder:
+                                                    const UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors.black,
+                                                            width: 2.0)),
+                                                labelStyle: TextStyle(
+                                                    color: eremuKolorea),
+                                                labelText:
+                                                    'Zenbat diru sartu nahi duzu?',
+                                                hintText: '10€',
+                                                hintStyle: TextStyle(
+                                                    color: eremuKolorea)),
+                                            validator: (value) {
+
+                                              if (isNumeric(value!)) {
+                                                double sartutakoZenb =double.parse(value);
+                                                if(sartutakoZenb<0){
+                                                  return 'Zenbaki positiboa sartu behar duzu';
+                                                }
+                                                setState(() {
+                                                  kontudirua += sartutakoZenb;
+                                                });
+                                                return null;
+                                              }else{
+                                                return 'Diru konpurua sartu behar da';
+                                              }
+                                            }),
+                                      )),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.all(16.0),
+                                      primary: Colors.black,
+                                      textStyle: const TextStyle(fontSize: 20),
+                                    ),
+                                    onPressed: () {
+                                      bool isFormValid = formAmountMoneyKey.currentState?.validate() ?? false;
+                                      if(isFormValid){
+
+                                      setState(() {
+                                        _showMoneyamount = false;
+                                      });
+                                      }
+                                    },
+                                    child: const Icon(Icons.save),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenSize.height * 0.005,
+                            ),
                             CreditCard(
                               cardNumber: cardNumber,
                               cardExpiry: expiryDate,
@@ -155,14 +276,16 @@ class _ShowCardState extends State<ShowCard> {
                               height: cardHeight,
                               // mask: getCardTypeMask(cardType: CardType.americanExpress),
                             ),
-                             SizedBox(height: screenSize.height*0.015,),
+                            SizedBox(
+                              height: screenSize.height * 0.015,
+                            ),
                             Container(
-                              height: screenSize.height*0.4,
+                              height: screenSize.height * 0.4,
                               decoration: const BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(5)),
-                                  ),
+                                color: Colors.red,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                              ),
                             )
                           ],
                         ),
@@ -171,7 +294,6 @@ class _ShowCardState extends State<ShowCard> {
                     const SizedBox(
                       height: 40,
                     ),
-
                   ],
                 ),
               ),
@@ -268,5 +390,9 @@ class _ShowCardState extends State<ShowCard> {
       txartelmota = CardType.other;
     }
     return txartelmota;
+  }
+
+  bool isNumeric(String moneyNum) {
+    return double.tryParse(moneyNum) != null;
   }
 }
