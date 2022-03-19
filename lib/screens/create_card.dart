@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:credit_card_validator/credit_card_validator.dart';
 import 'package:credit_card_type_detector/credit_card_type_detector.dart';
-import 'package:gral_jalzas_21_22/logic/add_creditcard.dart';
+import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:gral_jalzas_21_22/screens/show_card.dart';
@@ -293,10 +293,10 @@ class _CreateCardState extends State<CreateCard> {
                   bool isFormValid =
                       formCardKey.currentState?.validate() ?? false;
                   if (isFormValid) {
-                    AddCreditCard.isCardCreatedForCurrentUser()
+                    CredCardLogic.isCardCreatedForCurrentUser()
                         .then((cardExists) {
                       if (!cardExists) {
-                        AddCreditCard.addNewCard(
+                        CredCardLogic.addNewCard(
                                 txartelZenbakia: cardNumber,
                                 iraungitzea: expiryDate,
                                 cvv: cvv,

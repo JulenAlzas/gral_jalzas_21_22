@@ -6,8 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
-class AddCreditCard {
-
+class CredCardLogic {
   static Future<String?> addNewCard(
       {required String txartelZenbakia,
       required String iraungitzea,
@@ -77,9 +76,7 @@ class AddCreditCard {
 
         await firedart.Firestore.instance
             .collection('credcard')
-            .document(
-              randomId()
-            )
+            .document(randomId())
             .set(
           {
             'txartelZenbakia': txartelZenbakia,
@@ -106,7 +103,7 @@ class AddCreditCard {
     }
   }
 
-  static Future<bool> isCardCreatedForCurrentUser()async {
+  static Future<bool> isCardCreatedForCurrentUser() async {
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -114,22 +111,22 @@ class AddCreditCard {
         String userCredential =
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
-        String docId ='';
+        String docId = '';
         await _firestore
             .collection('credcard')
             .where('userUID', isEqualTo: userCredential)
             .get()
             .then((querySnapshot) {
-               if(querySnapshot.docs.isNotEmpty){
-              docId= querySnapshot.docs.first.id;
-               }
+          if (querySnapshot.docs.isNotEmpty) {
+            docId = querySnapshot.docs.first.id;
+          }
         });
-        if(docId == ''){
+        if (docId == '') {
           return false;
         }
         return true;
       } on authforandroid.FirebaseAuthException catch (e) {
-        var aaa= e.code;
+        var aaa = e.code;
         return false;
       }
     } else {
@@ -138,27 +135,105 @@ class AddCreditCard {
 
         String userId = auth.userId;
 
-        String docId ='';
+        String docId = '';
 
         await firedart.Firestore.instance
             .collection('credcard')
             .where('userUID', isEqualTo: userId)
-            .get().then((querySnapshot) {
-              if(querySnapshot.isNotEmpty){
-                docId = querySnapshot.first.id;
-              }
-            });
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.isNotEmpty) {
+            docId = querySnapshot.first.id;
+          }
+        });
 
-        if(docId == ''){
+        if (docId == '') {
           return false;
         }
-            
+
         return true;
       } on authforandroid.FirebaseAuthException catch (e) {
         return false;
       }
     }
+  }
+
+  static editCard(
+      {required String txartelZenbakia,
+      required String iraungitzea,
+      required String cvv,
+      required String titularra,
+      required CardType txartelmota}) async {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+      try {
+        String userCredential =
+            authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+
+        String docId = '';
+        await _firestore
+            .collection('credcard')
+            .where('userUID', isEqualTo: userCredential)
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            docId = querySnapshot.docs.first.id;
+          }
+        });
+
+        await _firestore.collection('credcard').doc(docId).update({
+          'txartelZenbakia': txartelZenbakia,
+          'iraungitzea': iraungitzea,
+          'cvv': cvv,
+          'titularra': titularra,
+          'userUID': userCredential,
+          'txartelmota': txartelmota.toString()
+        });
+
+        return 'Erab eguneratua';
+      } on authforandroid.FirebaseAuthException catch (e) {
+        return 'Errorea: $e';
       }
+    } else {
+      try {
+        firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
+
+        String userId = auth.userId;
+
+        String docId = '';
+
+        await firedart.Firestore.instance
+            .collection('credcard')
+            .where('userUID', isEqualTo: userId)
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.isNotEmpty) {
+            docId = querySnapshot.first.id;
+          }
+        });
+
+
+        await firedart.Firestore.instance
+            .collection('credcard')
+            .document(docId)
+            .update(
+          {
+            'txartelZenbakia': txartelZenbakia,
+            'iraungitzea': iraungitzea,
+            'cvv': cvv,
+            'titularra': titularra,
+            'userUID': userId,
+            'txartelmota': txartelmota.toString()
+          },
+        );
+
+        return 'Erab eguneratua';
+      } on authforandroid.FirebaseAuthException catch (e) {
+        return 'Errorea: $e';
+      }
+    }
+  }
 
   static Future<void> updateCredentials(
       String oldEmail, String oldPasword) async {

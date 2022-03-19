@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/logic/add_creditcard.dart';
+import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
 import 'package:gral_jalzas_21_22/screens/create_card.dart';
+import 'package:gral_jalzas_21_22/screens/edit_card.dart';
 import 'package:gral_jalzas_21_22/screens/joko1.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
@@ -79,7 +80,7 @@ class LoginHome extends StatelessWidget {
                 leading: const Icon(Icons.credit_card_rounded),
                 title: const Text('Diru-zorroa'),
                 onTap: () {
-                  AddCreditCard.isCardCreatedForCurrentUser()
+                  CredCardLogic.isCardCreatedForCurrentUser()
                       .then((cardExists) {
                     if (cardExists) {
                       Navigator.push(
@@ -87,6 +88,32 @@ class LoginHome extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const ShowCard(
                                   title: 'Diru-zorroa',
+                                )),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreateCard(
+                                  title: 'Sortu txartela',
+                                )),
+                      );
+                    }
+                  });
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.credit_card_rounded),
+                title: const Text('Txartel aldaketa'),
+                onTap: () {
+                  CredCardLogic.isCardCreatedForCurrentUser()
+                      .then((cardExists) {
+                    if (cardExists) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EditCard(
+                                  title: 'Txartel informazio aldaketa',
                                 )),
                       );
                     } else {

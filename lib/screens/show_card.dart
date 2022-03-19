@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:credit_card_validator/credit_card_validator.dart';
 import 'package:credit_card_type_detector/credit_card_type_detector.dart';
-import 'package:gral_jalzas_21_22/logic/add_creditcard.dart';
+import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
@@ -31,6 +31,7 @@ class _ShowCardState extends State<ShowCard> {
 
   double cardWidth = 0.0;
   double cardHeight = 0.0;
+  double kontudirua = 0.0;
 
   bool _isLoading = true;
 
@@ -98,96 +99,81 @@ class _ShowCardState extends State<ShowCard> {
       body: _isLoading
           ? const KargatzeAnimazioa()
           : SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  CreditCard(
-                    cardNumber: cardNumber,
-                    cardExpiry: expiryDate,
-                    cardHolderName: cardHolderName,
-                    cvv: cvv,
-                    bankName: 'Txartela',
-                    showBackSide: showBack,
-                    frontBackground: CardBackgrounds.black,
-                    backBackground: CardBackgrounds.white,
-                    showShadow: true,
-                    textExpDate: 'Iraun. Data',
-                    textName: 'Titularra',
-                    cardType: txartelmota,
-                    width: cardWidth,
-                    height: cardHeight,
-                    // mask: getCardTypeMask(cardType: CardType.americanExpress),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(16.0),
-                        primary: Colors.white,
-                        textStyle: const TextStyle(fontSize: 20),
-                        backgroundColor: Colors.deepPurple,
-                      ),
-                      onPressed: () {
-                        bool isFormValid =
-                            formCardKey.currentState?.validate() ?? false;
-                        if (isFormValid) {
-                          AddCreditCard.isCardCreatedForCurrentUser()
-                              .then((cardExists) {
-                            if (cardExists) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text('Mezua:'),
-                                      content: const Text(
-                                          'Iada kreditu txartela duzu'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            } else {
-                              AddCreditCard.addNewCard(
-                                  txartelZenbakia: cardNumber,
-                                  iraungitzea: expiryDate,
-                                  cvv: cvv,
-                                  titularra: cardHolderName,
-                                  txartelmota: txartelmota);
-
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text('Mezua:'),
-                                      content:
-                                          const Text('Kred txartela gorde da.'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            }
-                          });
-                        }
-                      },
-                      child: const Text('Txartela sortu'),
+              child: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Stack(
+                      children: [
+                        Container(
+                          height: screenSize.height * 0.25,
+                          decoration: BoxDecoration(
+                            color: Colors.pink[100],
+                            borderRadius: const BorderRadius.only(
+                                bottomRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20)),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(height: screenSize.height*0.015,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('Kontu dirua:'),
+                                SizedBox(width: screenSize.width*0.025,),
+                                Container(
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.pink[400],
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                  ),
+                                  child: Text(
+                                    ' $kontudirua €',
+                                    style: const TextStyle(fontSize: 35),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: screenSize.height*0.015,),
+                            CreditCard(
+                              cardNumber: cardNumber,
+                              cardExpiry: expiryDate,
+                              cardHolderName: cardHolderName,
+                              cvv: cvv,
+                              bankName: 'Txartela',
+                              showBackSide: showBack,
+                              frontBackground: CardBackgrounds.black,
+                              backBackground: CardBackgrounds.white,
+                              showShadow: true,
+                              textExpDate: 'Iraun. Data',
+                              textName: 'Titularra',
+                              cardType: txartelmota,
+                              width: cardWidth,
+                              height: cardHeight,
+                              // mask: getCardTypeMask(cardType: CardType.americanExpress),
+                            ),
+                             SizedBox(height: screenSize.height*0.015,),
+                            Container(
+                              height: screenSize.height*0.4,
+                              decoration: const BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(5)),
+                                  ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                  )
-                ],
+                    const SizedBox(
+                      height: 40,
+                    ),
+
+                  ],
+                ),
               ),
             ),
     );
