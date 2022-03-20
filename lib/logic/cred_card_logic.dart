@@ -20,24 +20,21 @@ class CredCardLogic {
         String userCredential =
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
-        // String docId =' ';
-        // await _firestore
-        //     .collection('credcard')
-        //     .where('userUID', isEqualTo: userCredential)
-        //     .get()
-        //     .then((querySnapshot) {
-        //       docId= querySnapshot.docs.first.id;
-        // });
-
-        // _firestore.collection('credcard').doc(docId).set({
+        // await _firestore.collection('credcard').doc().set({
         //   'txartelZenbakia': txartelZenbakia,
         //   'iraungitzea': iraungitzea,
         //   'cvv': cvv,
         //   'titularra': titularra,
         //   'userUID': userCredential,
+        //   'txartelmota': txartelmota.toString()
         // });
 
-        await _firestore.collection('credcard').doc().set({
+        await _firestore
+            .collection('users')
+            .doc(userCredential)
+            .collection('credcard')
+            .doc()
+            .set({
           'txartelZenbakia': txartelZenbakia,
           'iraungitzea': iraungitzea,
           'cvv': cvv,
@@ -56,14 +53,9 @@ class CredCardLogic {
 
         String userId = auth.userId;
 
-        // String cardId = firedart.Firestore.instance
-        //     .collection('credcard')
-        //     .where('userUID', isEqualTo: userId)
-        //     .id;
-
         // await firedart.Firestore.instance
         //     .collection('credcard')
-        //     .document(cardId)
+        //     .document(randomId())
         //     .set(
         //   {
         //     'txartelZenbakia': txartelZenbakia,
@@ -71,10 +63,13 @@ class CredCardLogic {
         //     'cvv': cvv,
         //     'titularra': titularra,
         //     'userUID': userId,
+        //     'txartelmota': txartelmota.toString()
         //   },
         // );
 
         await firedart.Firestore.instance
+            .collection('users')
+            .document(userId)
             .collection('credcard')
             .document(randomId())
             .set(
@@ -112,21 +107,32 @@ class CredCardLogic {
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
         String docId = '';
+        // await _firestore
+        //     .collection('credcard')
+        //     .where('userUID', isEqualTo: userCredential)
+        //     .get()
+        //     .then((querySnapshot) {
+        //   if (querySnapshot.docs.isNotEmpty) {
+        //     docId = querySnapshot.docs.first.id;
+        //   }
+        // });
+
         await _firestore
+            .collection('users')
+            .doc(userCredential)
             .collection('credcard')
-            .where('userUID', isEqualTo: userCredential)
             .get()
             .then((querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
             docId = querySnapshot.docs.first.id;
           }
         });
+
         if (docId == '') {
           return false;
         }
         return true;
       } on authforandroid.FirebaseAuthException catch (e) {
-        var aaa = e.code;
         return false;
       }
     } else {
@@ -137,9 +143,20 @@ class CredCardLogic {
 
         String docId = '';
 
+        // await firedart.Firestore.instance
+        //     .collection('credcard')
+        //     .where('userUID', isEqualTo: userId)
+        //     .get()
+        //     .then((querySnapshot) {
+        //   if (querySnapshot.isNotEmpty) {
+        //     docId = querySnapshot.first.id;
+        //   }
+        // });
+
         await firedart.Firestore.instance
+            .collection('users')
+            .document(userId)
             .collection('credcard')
-            .where('userUID', isEqualTo: userId)
             .get()
             .then((querySnapshot) {
           if (querySnapshot.isNotEmpty) {
@@ -172,9 +189,29 @@ class CredCardLogic {
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
         String docId = '';
+        // await _firestore
+        //     .collection('credcard')
+        //     .where('userUID', isEqualTo: userCredential)
+        //     .get()
+        //     .then((querySnapshot) {
+        //   if (querySnapshot.docs.isNotEmpty) {
+        //     docId = querySnapshot.docs.first.id;
+        //   }
+        // });
+
+        // await _firestore.collection('credcard').doc(docId).update({
+        //   'txartelZenbakia': txartelZenbakia,
+        //   'iraungitzea': iraungitzea,
+        //   'cvv': cvv,
+        //   'titularra': titularra,
+        //   'userUID': userCredential,
+        //   'txartelmota': txartelmota.toString()
+        // });
+
         await _firestore
+            .collection('users')
+            .doc(userCredential)
             .collection('credcard')
-            .where('userUID', isEqualTo: userCredential)
             .get()
             .then((querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
@@ -182,7 +219,12 @@ class CredCardLogic {
           }
         });
 
-        await _firestore.collection('credcard').doc(docId).update({
+        await _firestore
+            .collection('users')
+            .doc(userCredential)
+            .collection('credcard')
+            .doc(docId)
+            .update({
           'txartelZenbakia': txartelZenbakia,
           'iraungitzea': iraungitzea,
           'cvv': cvv,
@@ -203,9 +245,34 @@ class CredCardLogic {
 
         String docId = '';
 
-        await firedart.Firestore.instance
+        // await firedart.Firestore.instance
+        //     .collection('credcard')
+        //     .where('userUID', isEqualTo: userId)
+        //     .get()
+        //     .then((querySnapshot) {
+        //   if (querySnapshot.isNotEmpty) {
+        //     docId = querySnapshot.first.id;
+        //   }
+        // });
+
+        // await firedart.Firestore.instance
+        //     .collection('credcard')
+        //     .document(docId)
+        //     .update(
+        //   {
+        //     'txartelZenbakia': txartelZenbakia,
+        //     'iraungitzea': iraungitzea,
+        //     'cvv': cvv,
+        //     'titularra': titularra,
+        //     'userUID': userId,
+        //     'txartelmota': txartelmota.toString()
+        //   },
+        // );
+
+         await firedart.Firestore.instance
+            .collection('users')
+            .document(userId)
             .collection('credcard')
-            .where('userUID', isEqualTo: userId)
             .get()
             .then((querySnapshot) {
           if (querySnapshot.isNotEmpty) {
@@ -213,8 +280,9 @@ class CredCardLogic {
           }
         });
 
-
         await firedart.Firestore.instance
+            .collection('users')
+            .document(userId)
             .collection('credcard')
             .document(docId)
             .update(
@@ -227,6 +295,8 @@ class CredCardLogic {
             'txartelmota': txartelmota.toString()
           },
         );
+
+        
 
         return 'Erab eguneratua';
       } on authforandroid.FirebaseAuthException catch (e) {

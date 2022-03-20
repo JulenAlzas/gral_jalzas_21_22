@@ -44,13 +44,12 @@ class _EditCardState extends State<EditCard> {
 
   @override
   void initState() {
-    getCardInfo().then((_) {
-      super.initState();
-      _focusNode = FocusNode();
-      _focusNode.addListener(() {
-        setState(() {
-          _focusNode.hasFocus ? showBack = true : showBack = false;
-        });
+    getCardInfo();
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(() {
+      setState(() {
+        _focusNode.hasFocus ? showBack = true : showBack = false;
       });
     });
   }
@@ -68,9 +67,9 @@ class _EditCardState extends State<EditCard> {
     if (defaultTargetPlatform == TargetPlatform.android) {
       cardWidth = screenSize.width * 0.95;
 
-      if(screenSize.height<450){
+      if (screenSize.height < 450) {
         cardHeight = screenSize.height * 0.425;
-      }else{
+      } else {
         cardHeight = screenSize.height * 0.25;
       }
     } else {
@@ -143,8 +142,8 @@ class _EditCardState extends State<EditCard> {
                             horizontal: 20,
                           ),
                           child: TextFormField(
-                              initialValue: cardNumber,
-                              // controller: cardNumberCtrl,
+                              // initialValue: cardNumber.replaceAll(' ', ''),
+                              controller: cardNumberCtrl,
                               decoration: const InputDecoration(
                                   hintText: 'Txartel zenbakia'),
                               maxLength: 16,
@@ -166,6 +165,50 @@ class _EditCardState extends State<EditCard> {
                                 setState(() {
                                   cardNumber = newStr;
                                 });
+
+                                var ccNumResults =
+                                    _ccValidator.validateCCNum(cardNumber);
+
+                                if (ccNumResults.isValid) {
+                                  setState(() {
+                                    if (ccNumResults.ccType ==
+                                        CreditCardType.visa) {
+                                      txartelmota = CardType.visa;
+                                    } else if (ccNumResults.ccType ==
+                                        CreditCardType.discover) {
+                                      txartelmota = CardType.discover;
+                                    } else if (ccNumResults.ccType ==
+                                        CreditCardType.mastercard) {
+                                      txartelmota = CardType.masterCard;
+                                    } else if (ccNumResults.ccType ==
+                                        CreditCardType.dinersclub) {
+                                      txartelmota = CardType.dinersClub;
+                                    } else if (ccNumResults.ccType ==
+                                        CreditCardType.jcb) {
+                                      txartelmota = CardType.jcb;
+                                    } else if (ccNumResults.ccType ==
+                                        CreditCardType.maestro) {
+                                      txartelmota = CardType.maestro;
+                                    } else if (ccNumResults.ccType ==
+                                        CreditCardType.elo) {
+                                      txartelmota = CardType.elo;
+                                    } else if (ccNumResults.ccType ==
+                                        CreditCardType.amex) {
+                                      txartelmota = CardType.americanExpress;
+                                    } else if (ccNumResults.ccType ==
+                                            CreditCardType.hiper ||
+                                        ccNumResults.ccType ==
+                                            CreditCardType.hipercard ||
+                                        ccNumResults.ccType ==
+                                            CreditCardType.unionpay ||
+                                        ccNumResults.ccType ==
+                                            CreditCardType.mir ||
+                                        ccNumResults.ccType ==
+                                            CreditCardType.unknown) {
+                                      txartelmota = CardType.other;
+                                    }
+                                  });
+                                }
                               },
                               validator: (_) {
                                 var ccNumResults =
@@ -251,7 +294,9 @@ class _EditCardState extends State<EditCard> {
                               initialValue: cvv,
                               decoration:
                                   const InputDecoration(hintText: 'CVV'),
-                              maxLength: 3,
+                              maxLength: txartelmota == CardType.americanExpress
+                                  ? 4
+                                  : 3,
                               onChanged: (value) {
                                 setState(() {
                                   cvv = value;
@@ -264,43 +309,6 @@ class _EditCardState extends State<EditCard> {
                                 var cvvResults = _ccValidator.validateCVV(
                                     cvv, ccNumResults.ccType);
 
-                                setState(() {
-                                  if (ccNumResults.ccType ==
-                                      CreditCardType.visa) {
-                                    txartelmota = CardType.visa;
-                                  } else if (ccNumResults.ccType ==
-                                      CreditCardType.discover) {
-                                    txartelmota = CardType.discover;
-                                  } else if (ccNumResults.ccType ==
-                                      CreditCardType.mastercard) {
-                                    txartelmota = CardType.masterCard;
-                                  } else if (ccNumResults.ccType ==
-                                      CreditCardType.dinersclub) {
-                                    txartelmota = CardType.dinersClub;
-                                  } else if (ccNumResults.ccType ==
-                                      CreditCardType.jcb) {
-                                    txartelmota = CardType.jcb;
-                                  } else if (ccNumResults.ccType ==
-                                      CreditCardType.maestro) {
-                                    txartelmota = CardType.maestro;
-                                  } else if (ccNumResults.ccType ==
-                                      CreditCardType.elo) {
-                                    txartelmota = CardType.elo;
-                                  } else if (ccNumResults.ccType ==
-                                          CreditCardType.hiper ||
-                                      ccNumResults.ccType ==
-                                          CreditCardType.hipercard ||
-                                      ccNumResults.ccType ==
-                                          CreditCardType.amex ||
-                                      ccNumResults.ccType ==
-                                          CreditCardType.unionpay ||
-                                      ccNumResults.ccType ==
-                                          CreditCardType.mir ||
-                                      ccNumResults.ccType ==
-                                          CreditCardType.unknown) {
-                                    txartelmota = CardType.other;
-                                  }
-                                });
                                 if (cvvResults.isValid) {
                                   return null;
                                 } else {
@@ -426,23 +434,47 @@ class _EditCardState extends State<EditCard> {
           authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
       String cardId = '';
+      // await _firestore
+      //     .collection('credcard')
+      //     .where('userUID', isEqualTo: userCred)
+      //     .get()
+      //     .then((querySnapshot) {
+      //   cardId = querySnapshot.docs.first.id;
+      // });
+
+      // await FirebaseFirestore.instance
+      //     .collection('credcard')
+      //     .doc(cardId)
+      //     .get()
+      //     .then((querySnapshot) {
+      //   setState(() {
+      //     cardNumber = querySnapshot['txartelZenbakia'];
+      //     cardHolderName = querySnapshot['titularra'];
+      //     expiryDate = querySnapshot['iraungitzea'];
+      //     cvv = querySnapshot['cvv'];
+      //     txartelmota = getCardCast(querySnapshot['txartelmota']);
+      //   });
+      // });
+
       await _firestore
+          .collection('users')
+          .doc(userCred)
           .collection('credcard')
-          .where('userUID', isEqualTo: userCred)
           .get()
           .then((querySnapshot) {
         cardId = querySnapshot.docs.first.id;
       });
 
       await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCred)
           .collection('credcard')
           .doc(cardId)
           .get()
           .then((querySnapshot) {
         setState(() {
-          cardNumber =
-              querySnapshot['txartelZenbakia'].toString().replaceAll(' ', '');
-          cardNumberCtrl.text = cardNumber;
+          cardNumber = querySnapshot['txartelZenbakia'];
+          cardNumberCtrl.text = cardNumber.replaceAll(' ', '');
           cardHolderName = querySnapshot['titularra'];
           expiryDate = querySnapshot['iraungitzea'];
           expiryFieldCtrl.text = expiryDate;
@@ -459,9 +491,35 @@ class _EditCardState extends State<EditCard> {
 
       String cardId = '';
 
+      //   await firedart.Firestore.instance
+      //       .collection('credcard')
+      //       .where('userUID', isEqualTo: userId)
+      //       .get()
+      //       .then((querySnapshot) {
+      //     if (querySnapshot.isNotEmpty) {
+      //       cardId = querySnapshot.first.id;
+      //     }
+      //   });
+
+      //   await firedart.Firestore.instance
+      //       .collection('credcard')
+      //       .document(cardId)
+      //       .get()
+      //       .then((querySnapshot) {
+      //     setState(() {
+      //       cardNumber = querySnapshot['txartelZenbakia'];
+      //       cardHolderName = querySnapshot['titularra'];
+      //       expiryDate = querySnapshot['iraungitzea'];
+      //       cvv = querySnapshot['cvv'];
+      //       txartelmota = getCardCast(querySnapshot['txartelmota']);
+      //     });
+      //   });
+      // }
+
       await firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
           .collection('credcard')
-          .where('userUID', isEqualTo: userId)
           .get()
           .then((querySnapshot) {
         if (querySnapshot.isNotEmpty) {
@@ -470,14 +528,15 @@ class _EditCardState extends State<EditCard> {
       });
 
       await firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
           .collection('credcard')
           .document(cardId)
           .get()
           .then((querySnapshot) {
         setState(() {
-          cardNumber =
-              querySnapshot['txartelZenbakia'].toString().replaceAll(' ', '');
-          cardNumberCtrl.text = cardNumber;
+          cardNumber = querySnapshot['txartelZenbakia'];
+          cardNumberCtrl.text = cardNumber.replaceAll(' ', '');
           cardHolderName = querySnapshot['titularra'];
           expiryDate = querySnapshot['iraungitzea'];
           expiryFieldCtrl.text = expiryDate;
@@ -507,6 +566,8 @@ class _EditCardState extends State<EditCard> {
       txartelmota = CardType.jcb;
     } else if (cardType == 'CardType.maestro') {
       txartelmota = CardType.maestro;
+    } else if (cardType == 'CardType.americanExpress') {
+      txartelmota = CardType.americanExpress;
     } else if (cardType == 'CardType.elo') {
       txartelmota = CardType.elo;
     } else {

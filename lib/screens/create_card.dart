@@ -59,9 +59,9 @@ class _CreateCardState extends State<CreateCard> {
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       cardWidth = screenSize.width * 0.95;
-      if(screenSize.height<450){
+      if (screenSize.height < 450) {
         cardHeight = screenSize.height * 0.425;
-      }else{
+      } else {
         cardHeight = screenSize.height * 0.25;
       }
     } else {
@@ -150,10 +150,53 @@ class _CreateCardState extends State<CreateCard> {
                           setState(() {
                             cardNumber = newStr;
                           });
+
+                          var ccNumResults =
+                              _ccValidator.validateCCNum(cardNumber);
+
+                          if (ccNumResults.isValid) {
+                            setState(() {
+                              if (ccNumResults.ccType == CreditCardType.visa) {
+                                txartelmota = CardType.visa;
+                              } else if (ccNumResults.ccType ==
+                                  CreditCardType.discover) {
+                                txartelmota = CardType.discover;
+                              } else if (ccNumResults.ccType ==
+                                  CreditCardType.mastercard) {
+                                txartelmota = CardType.masterCard;
+                              } else if (ccNumResults.ccType ==
+                                  CreditCardType.dinersclub) {
+                                txartelmota = CardType.dinersClub;
+                              } else if (ccNumResults.ccType ==
+                                  CreditCardType.jcb) {
+                                txartelmota = CardType.jcb;
+                              } else if (ccNumResults.ccType ==
+                                  CreditCardType.maestro) {
+                                txartelmota = CardType.maestro;
+                              } else if (ccNumResults.ccType ==
+                                  CreditCardType.elo) {
+                                txartelmota = CardType.elo;
+                              } else if (ccNumResults.ccType ==
+                                  CreditCardType.amex) {
+                                txartelmota = CardType.americanExpress;
+                              } else if (ccNumResults.ccType ==
+                                      CreditCardType.hiper ||
+                                  ccNumResults.ccType ==
+                                      CreditCardType.hipercard ||
+                                  ccNumResults.ccType ==
+                                      CreditCardType.unionpay ||
+                                  ccNumResults.ccType == CreditCardType.mir ||
+                                  ccNumResults.ccType ==
+                                      CreditCardType.unknown) {
+                                txartelmota = CardType.other;
+                              }
+                            });
+                          }
                         },
                         validator: (_) {
                           var ccNumResults =
                               _ccValidator.validateCCNum(cardNumber);
+
                           if (ccNumResults.isValid) {
                             return null;
                           } else if (ccNumResults.message ==
@@ -229,7 +272,8 @@ class _CreateCardState extends State<CreateCard> {
                         horizontal: 20, vertical: 25),
                     child: TextFormField(
                         decoration: const InputDecoration(hintText: 'CVV'),
-                        maxLength: 3,
+                        maxLength:
+                            txartelmota == CardType.americanExpress ? 4 : 3,
                         onChanged: (value) {
                           setState(() {
                             cvv = value;
@@ -242,43 +286,10 @@ class _CreateCardState extends State<CreateCard> {
                           var cvvResults = _ccValidator.validateCVV(
                               cvv, ccNumResults.ccType);
 
-                          setState(() {
-                            if (ccNumResults.ccType == CreditCardType.visa) {
-                              txartelmota = CardType.visa;
-                            } else if (ccNumResults.ccType ==
-                                CreditCardType.discover) {
-                              txartelmota = CardType.discover;
-                            } else if (ccNumResults.ccType ==
-                                CreditCardType.mastercard) {
-                              txartelmota = CardType.masterCard;
-                            } else if (ccNumResults.ccType ==
-                                CreditCardType.dinersclub) {
-                              txartelmota = CardType.dinersClub;
-                            } else if (ccNumResults.ccType ==
-                                CreditCardType.jcb) {
-                              txartelmota = CardType.jcb;
-                            } else if (ccNumResults.ccType ==
-                                CreditCardType.maestro) {
-                              txartelmota = CardType.maestro;
-                            } else if (ccNumResults.ccType ==
-                                CreditCardType.elo) {
-                              txartelmota = CardType.elo;
-                            } else if (ccNumResults.ccType ==
-                                    CreditCardType.hiper ||
-                                ccNumResults.ccType ==
-                                    CreditCardType.hipercard ||
-                                ccNumResults.ccType == CreditCardType.amex ||
-                                ccNumResults.ccType ==
-                                    CreditCardType.unionpay ||
-                                ccNumResults.ccType == CreditCardType.mir ||
-                                ccNumResults.ccType == CreditCardType.unknown) {
-                              txartelmota = CardType.other;
-                            }
-                          });
                           if (cvvResults.isValid) {
                             return null;
                           } else {
-                            return 'Iraungitze-data okerra';
+                            return 'CVV okerra';
                           }
                         }),
                   ),

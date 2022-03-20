@@ -10,8 +10,10 @@ import 'package:credit_card_validator/credit_card_validator.dart';
 import 'package:credit_card_type_detector/credit_card_type_detector.dart';
 import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/logic/transaction_logic.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
+import 'package:intl/intl.dart';
 
 class ShowCard extends StatefulWidget {
   const ShowCard({Key? key, required this.title}) : super(key: key);
@@ -36,11 +38,15 @@ class _ShowCardState extends State<ShowCard> {
   double cardWidth = 0.0;
   double cardHeight = 0.0;
   double kontudirua = 0.0;
+  double minWidthKontudirua = 0.0;
+  double maxWidthKontudirua = 0.0;
 
   double kontuDiruaTextSize = 0.0;
   double kontuDiruErreala = 0.0;
 
   bool _isLoading = true;
+
+  var transactionDocList;
 
   late FocusNode _focusNode;
   TextEditingController cardNumberCtrl = TextEditingController();
@@ -51,7 +57,7 @@ class _ShowCardState extends State<ShowCard> {
 
   @override
   void initState() {
-    getCardInfo();
+    getInfoFromDB();
     super.initState();
     _focusNode = FocusNode();
     _focusNode.addListener(() {
@@ -80,11 +86,15 @@ class _ShowCardState extends State<ShowCard> {
       }
       kontuDiruErreala = screenSize.width * 0.1;
       kontuDiruaTextSize = screenSize.width * 0.05;
+      minWidthKontudirua = screenSize.width * 0.2;
+      maxWidthKontudirua = screenSize.width * 0.5;
     } else {
       cardWidth = screenSize.width * 0.35;
       cardHeight = screenSize.height * 0.4;
       kontuDiruErreala = screenSize.width * 0.05;
       kontuDiruaTextSize = screenSize.width * 0.025;
+      minWidthKontudirua = screenSize.width * 0.2;
+      maxWidthKontudirua = screenSize.width * 0.8;
     }
 
     return Scaffold(
@@ -147,6 +157,9 @@ class _ShowCardState extends State<ShowCard> {
                                   width: screenSize.width * 0.025,
                                 ),
                                 Container(
+                                  constraints: BoxConstraints(
+                                      minWidth: minWidthKontudirua,
+                                      maxWidth: maxWidthKontudirua),
                                   padding: const EdgeInsets.all(3),
                                   decoration: BoxDecoration(
                                     color: Colors.pink[400],
@@ -157,6 +170,7 @@ class _ShowCardState extends State<ShowCard> {
                                     '$kontudirua €',
                                     style:
                                         TextStyle(fontSize: kontuDiruErreala),
+                                    overflow: TextOverflow.clip,
                                   ),
                                 ),
                                 TextButton(
@@ -216,22 +230,31 @@ class _ShowCardState extends State<ShowCard> {
                                                 labelStyle: TextStyle(
                                                     color: eremuKolorea),
                                                 labelText:
-                                                    'Zenbat diru sartu nahi duzu?',
-                                                hintText: '10€',
+                                                    'Zenbat diru sartu nahi duzu? (€)',
+                                                hintText: '10',
                                                 hintStyle: TextStyle(
                                                     color: eremuKolorea)),
                                             validator: (value) {
-
                                               if (isNumeric(value!)) {
-                                                double sartutakoZenb =double.parse(value);
-                                                if(sartutakoZenb<0){
+                                                double sartutakoZenb =
+                                                    double.parse(value);
+                                                if (sartutakoZenb < 0) {
                                                   return 'Zenbaki positiboa sartu behar duzu';
                                                 }
+                                                final now = DateTime.now();
+                                                String currentDate =
+                                                    DateFormat('yMd').format(
+                                                        now); // DD/MM/YYYY
+
+                                                TransactionLogic.addTransaction(
+                                                    transMota: 'dirua_sartu',
+                                                    zenbat: '+$sartutakoZenb',
+                                                    transDate: currentDate);
                                                 setState(() {
                                                   kontudirua += sartutakoZenb;
                                                 });
                                                 return null;
-                                              }else{
+                                              } else {
                                                 return 'Diru konpurua sartu behar da';
                                               }
                                             }),
@@ -243,12 +266,14 @@ class _ShowCardState extends State<ShowCard> {
                                       textStyle: const TextStyle(fontSize: 20),
                                     ),
                                     onPressed: () {
-                                      bool isFormValid = formAmountMoneyKey.currentState?.validate() ?? false;
-                                      if(isFormValid){
-
-                                      setState(() {
-                                        _showMoneyamount = false;
-                                      });
+                                      bool isFormValid = formAmountMoneyKey
+                                              .currentState
+                                              ?.validate() ??
+                                          false;
+                                      if (isFormValid) {
+                                        setState(() {
+                                          _showMoneyamount = false;
+                                        });
                                       }
                                     },
                                     child: const Icon(Icons.save),
@@ -281,10 +306,89 @@ class _ShowCardState extends State<ShowCard> {
                             ),
                             Container(
                               height: screenSize.height * 0.4,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
+                              width: screenSize.width * 0.7,
+                              decoration: BoxDecoration(
+                                color: Colors.pink[400],
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
+                                    const BorderRadius.all(Radius.circular(5)),
+                              ),
+                              child: Expanded(
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: transactionDocList.length,
+                                  itemBuilder: (_, int index) {
+                                    return Hero(
+                                      tag: transactionDocList[index],
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Container(
+                                            decoration: const BoxDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topRight,
+                                                end: Alignment(0.4, 0.5),
+                                                colors: <Color>[
+                                                  Color.fromARGB(
+                                                      235, 153, 0, 76),
+                                                  Color.fromARGB(
+                                                      235, 204, 0, 102)
+                                                ],
+                                                tileMode: TileMode.repeated,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                            ),
+                                            width: screenSize.height * 0.2,
+                                            height: screenSize.height * 0.1,
+                                            margin: const EdgeInsets.all(20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                        'Transakzio izena: '),
+                                                    Text(transactionDocList[
+                                                        index]['trans_mota']),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  width: screenSize.width * 0.2,
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                        'Transakzio data: '),
+                                                    Text('Data: ' +
+                                                        transactionDocList[
+                                                            index]['data'])
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  width: screenSize.width * 0.2,
+                                                ),
+                                                Text(
+                                                  transactionDocList[index]
+                                                      ['zenbat'],
+                                                  style: const TextStyle(
+                                                      fontSize: 40),
+                                                ),
+                                              ],
+                                            )),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             )
                           ],
@@ -301,27 +405,53 @@ class _ShowCardState extends State<ShowCard> {
     );
   }
 
-  Future<String?> getCardInfo() async {
+  Future<String?> getInfoFromDB() async {
     setState(() {
       _isLoading = true;
     });
 
     String userCred = '';
+    double sumAllTransactions = 0.0;
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
       userCred =
           authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
       String cardId = '';
+      // await _firestore
+      //     .collection('credcard')
+      //     .where('userUID', isEqualTo: userCred)
+      //     .get()
+      //     .then((querySnapshot) {
+      //   cardId = querySnapshot.docs.first.id;
+      // });
+
+      // await FirebaseFirestore.instance
+      //     .collection('credcard')
+      //     .doc(cardId)
+      //     .get()
+      //     .then((querySnapshot) {
+      //   setState(() {
+      //     cardNumber = querySnapshot['txartelZenbakia'];
+      //     cardHolderName = querySnapshot['titularra'];
+      //     expiryDate = querySnapshot['iraungitzea'];
+      //     cvv = querySnapshot['cvv'];
+      //     txartelmota = getCardCast(querySnapshot['txartelmota']);
+      //   });
+      // });
+
       await _firestore
+          .collection('users')
+          .doc(userCred)
           .collection('credcard')
-          .where('userUID', isEqualTo: userCred)
           .get()
           .then((querySnapshot) {
         cardId = querySnapshot.docs.first.id;
       });
 
       await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCred)
           .collection('credcard')
           .doc(cardId)
           .get()
@@ -334,6 +464,25 @@ class _ShowCardState extends State<ShowCard> {
           txartelmota = getCardCast(querySnapshot['txartelmota']);
         });
       });
+
+      await _firestore
+          .collection('users')
+          .doc(userCred)
+          .collection('moneyTransactions')
+          .get()
+          .then((querySnapshot) {
+        transactionDocList = querySnapshot.docs;
+        for (var doc in querySnapshot.docs) {
+          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
+          String getTransString = doc['zenbat'];
+          String getTransStringNoSign = getTransString.substring(1);
+          double transDoubleValue = double.parse(getTransStringNoSign);
+          sumAllTransactions += transDoubleValue;
+        }
+      });
+      setState(() {
+        kontudirua = sumAllTransactions;
+      });
     } else {
       firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
 
@@ -341,9 +490,35 @@ class _ShowCardState extends State<ShowCard> {
 
       String cardId = '';
 
+      //   await firedart.Firestore.instance
+      //       .collection('credcard')
+      //       .where('userUID', isEqualTo: userId)
+      //       .get()
+      //       .then((querySnapshot) {
+      //     if (querySnapshot.isNotEmpty) {
+      //       cardId = querySnapshot.first.id;
+      //     }
+      //   });
+
+      //   await firedart.Firestore.instance
+      //       .collection('credcard')
+      //       .document(cardId)
+      //       .get()
+      //       .then((querySnapshot) {
+      //     setState(() {
+      //       cardNumber = querySnapshot['txartelZenbakia'];
+      //       cardHolderName = querySnapshot['titularra'];
+      //       expiryDate = querySnapshot['iraungitzea'];
+      //       cvv = querySnapshot['cvv'];
+      //       txartelmota = getCardCast(querySnapshot['txartelmota']);
+      //     });
+      //   });
+      // }
+
       await firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
           .collection('credcard')
-          .where('userUID', isEqualTo: userId)
           .get()
           .then((querySnapshot) {
         if (querySnapshot.isNotEmpty) {
@@ -352,6 +527,8 @@ class _ShowCardState extends State<ShowCard> {
       });
 
       await firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
           .collection('credcard')
           .document(cardId)
           .get()
@@ -363,6 +540,25 @@ class _ShowCardState extends State<ShowCard> {
           cvv = querySnapshot['cvv'];
           txartelmota = getCardCast(querySnapshot['txartelmota']);
         });
+      });
+
+      await firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
+          .collection('moneyTransactions')
+          .get()
+          .then((querySnapshot) {
+        transactionDocList = querySnapshot;
+        for (var doc in querySnapshot) {
+          String getTransString = doc['zenbat'];
+          String getTransStringNoSign = getTransString.substring(1);
+          double transDoubleValue = double.parse(getTransStringNoSign);
+          sumAllTransactions += transDoubleValue;
+        }
+      });
+
+      setState(() {
+        kontudirua = sumAllTransactions;
       });
     }
 
@@ -384,6 +580,8 @@ class _ShowCardState extends State<ShowCard> {
       txartelmota = CardType.jcb;
     } else if (cardType == 'CardType.maestro') {
       txartelmota = CardType.maestro;
+    } else if (cardType == 'CardType.americanExpress') {
+      txartelmota = CardType.americanExpress;
     } else if (cardType == 'CardType.elo') {
       txartelmota = CardType.elo;
     } else {
