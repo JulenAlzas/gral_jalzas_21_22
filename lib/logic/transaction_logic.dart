@@ -4,13 +4,14 @@ import 'package:firedart/auth/exceptions.dart' show AuthException;
 import 'package:firedart/firedart.dart' as firedart;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionLogic {
   static Future<String?> addTransaction(
       {required String transMota,
       required String zenbat,
-      required String transDate}) async {
+      required Timestamp transDate}) async {
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -38,6 +39,8 @@ class TransactionLogic {
 
         String userId = auth.userId;
 
+        var dateFormatedInDateTime = transDate.toDate();
+
         await firedart.Firestore.instance
             .collection('users')
             .document(userId)
@@ -45,7 +48,7 @@ class TransactionLogic {
             .document(randomId())
             .set(
           {
-          'data': transDate,
+          'data': dateFormatedInDateTime,
           'trans_mota': transMota,
           'zenbat': zenbat,
           },

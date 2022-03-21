@@ -43,6 +43,13 @@ class _ShowCardState extends State<ShowCard> {
 
   double kontuDiruaTextSize = 0.0;
   double kontuDiruErreala = 0.0;
+  double transContainerHeight = 0.0;
+  double transContainerWidth = 0.0;
+  double transBuilderHeight = 0.0;
+  double transBuilderWidth = 0.0;
+  double transBuilderSizedSize = 0.0;
+  double transAmountFontSize = 0.0;
+  double widthForTransAmount = 0.0;
 
   bool _isLoading = true;
 
@@ -88,13 +95,27 @@ class _ShowCardState extends State<ShowCard> {
       kontuDiruaTextSize = screenSize.width * 0.05;
       minWidthKontudirua = screenSize.width * 0.2;
       maxWidthKontudirua = screenSize.width * 0.5;
+      transContainerHeight = screenSize.height * 0.4;
+      transContainerWidth = screenSize.width * 0.99;
+      transBuilderWidth = screenSize.width * 0.99;
+      transBuilderHeight = screenSize.height * 0.075;
+      transBuilderSizedSize = screenSize.width * 0.05;
+      transAmountFontSize = 35;
+      widthForTransAmount =(transBuilderWidth /3)-(transBuilderSizedSize *2);
     } else {
       cardWidth = screenSize.width * 0.35;
       cardHeight = screenSize.height * 0.4;
-      kontuDiruErreala = screenSize.width * 0.05;
-      kontuDiruaTextSize = screenSize.width * 0.025;
+      kontuDiruErreala = screenSize.width * 0.06;
+      kontuDiruaTextSize = screenSize.width * 0.03;
       minWidthKontudirua = screenSize.width * 0.2;
-      maxWidthKontudirua = screenSize.width * 0.8;
+      maxWidthKontudirua = screenSize.width * 0.5;
+      transContainerHeight = screenSize.height * 0.4;
+      transContainerWidth = screenSize.width * 0.6;
+      transBuilderWidth = screenSize.width * 0.6;
+      transBuilderHeight = screenSize.height * 0.07;
+      transBuilderSizedSize = screenSize.width * 0.1;
+      transAmountFontSize = 35;
+      widthForTransAmount =(transBuilderWidth /3)-(transBuilderSizedSize *2)+100;
     }
 
     return Scaffold(
@@ -170,7 +191,6 @@ class _ShowCardState extends State<ShowCard> {
                                     '$kontudirua €',
                                     style:
                                         TextStyle(fontSize: kontuDiruErreala),
-                                    overflow: TextOverflow.clip,
                                   ),
                                 ),
                                 TextButton(
@@ -241,17 +261,38 @@ class _ShowCardState extends State<ShowCard> {
                                                 if (sartutakoZenb < 0) {
                                                   return 'Zenbaki positiboa sartu behar duzu';
                                                 }
-                                                final now = DateTime.now();
-                                                String currentDate =
-                                                    DateFormat('yMd').format(
-                                                        now); // DD/MM/YYYY
+                                                if (sartutakoZenb > 10000) {
+                                                  return 'Gehienez 10.000€ sartu ditzazkezu';
+                                                }
+                                                if (sartutakoZenb < 10) {
+                                                  return 'Gutxienez 10 sartu ditzazkezu';
+                                                }
+                                                // final now = DateTime.now();
 
+                                                // String currentDate =
+                                                //     DateFormat('yMd').format(
+                                                //         now); //
+
+                                                var dateTimestamp =
+                                                    Timestamp.now();
+                                                // DateTime currentPhoneDate = DateTime.now(); //DateTime
+                                                // final DateFormat formatter =
+                                                //     DateFormat(
+                                                //         'dd/MM/yyyy, hh:mm:ss aa'); //your date format here
+                                                // var date =
+                                                //     dateTimestamp.toDate();
+                                                // var currentDate =
+                                                //     formatter.format(date);
+
+                                                // Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
                                                 TransactionLogic.addTransaction(
                                                     transMota: 'dirua_sartu',
                                                     zenbat: '+$sartutakoZenb',
-                                                    transDate: currentDate);
+                                                    transDate: dateTimestamp);
                                                 setState(() {
-                                                  kontudirua += sartutakoZenb;
+                                                  // kontudirua += sartutakoZenb;
+                                                  // if(){}
+                                                  // transactionDocList.
                                                 });
                                                 return null;
                                               } else {
@@ -274,6 +315,7 @@ class _ShowCardState extends State<ShowCard> {
                                         setState(() {
                                           _showMoneyamount = false;
                                         });
+                                        updateTransactions();
                                       }
                                     },
                                     child: const Icon(Icons.save),
@@ -305,92 +347,130 @@ class _ShowCardState extends State<ShowCard> {
                               height: screenSize.height * 0.015,
                             ),
                             Container(
-                              height: screenSize.height * 0.4,
-                              width: screenSize.width * 0.7,
-                              decoration: BoxDecoration(
-                                color: Colors.pink[400],
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5)),
-                              ),
-                              child: Expanded(
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: transactionDocList.length,
-                                  itemBuilder: (_, int index) {
-                                    return Hero(
-                                      tag: transactionDocList[index],
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Container(
-                                            decoration: const BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topRight,
-                                                end: Alignment(0.4, 0.5),
-                                                colors: <Color>[
-                                                  Color.fromARGB(
-                                                      235, 153, 0, 76),
-                                                  Color.fromARGB(
-                                                      235, 204, 0, 102)
-                                                ],
-                                                tileMode: TileMode.repeated,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)),
-                                            ),
-                                            width: screenSize.height * 0.2,
-                                            height: screenSize.height * 0.1,
-                                            margin: const EdgeInsets.all(20),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Text(
-                                                        'Transakzio izena: '),
-                                                    Text(transactionDocList[
-                                                        index]['trans_mota']),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: screenSize.width * 0.2,
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Text(
-                                                        'Transakzio data: '),
-                                                    Text('Data: ' +
-                                                        transactionDocList[
-                                                            index]['data'])
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: screenSize.width * 0.2,
-                                                ),
-                                                Text(
-                                                  transactionDocList[index]
-                                                      ['zenbat'],
-                                                  style: const TextStyle(
-                                                      fontSize: 40),
-                                                ),
-                                              ],
-                                            )),
-                                      ),
-                                    );
-                                  },
+                                height: transContainerHeight,
+                                width: transContainerWidth,
+                                decoration: BoxDecoration(
+                                  color: Colors.pink[400],
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
                                 ),
-                              ),
-                            )
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Transakzioak',
+                                      style: TextStyle(
+                                          fontSize: transAmountFontSize,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: transactionDocList.length,
+                                        itemBuilder: (_, int index) {
+                                          return Hero(
+                                            tag: transactionDocList[index],
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.topRight,
+                                                      end: Alignment(0.4, 0.5),
+                                                      colors: <Color>[
+                                                        Color.fromARGB(
+                                                            235, 153, 0, 76),
+                                                        Color.fromARGB(
+                                                            235, 204, 0, 102)
+                                                      ],
+                                                      tileMode:
+                                                          TileMode.repeated,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20)),
+                                                  ),
+                                                  width: transBuilderWidth,
+                                                  height: transBuilderHeight,
+                                                  margin:
+                                                      const EdgeInsets.all(5),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          const Text(
+                                                              'Transakzio izena: '),
+                                                          Text(transactionDocList[
+                                                                  index]
+                                                              ['trans_mota']),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            transBuilderSizedSize,
+                                                      ),
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          const Text(
+                                                              'Transakzio data: '),
+                                                          Text(getTime(
+                                                              transactionDocList[
+                                                                      index]
+                                                                  ['data']))
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            transBuilderSizedSize,
+                                                      ),
+                                                      SizedBox(
+                                                        width: widthForTransAmount
+                                                            ,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.fitWidth,
+                                                          child: Text(
+                                                            transactionDocList[
+                                                                    index]
+                                                                ['zenbat'],
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    transAmountFontSize,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .clip),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ))
                           ],
                         ),
                       ],
@@ -469,6 +549,7 @@ class _ShowCardState extends State<ShowCard> {
           .collection('users')
           .doc(userCred)
           .collection('moneyTransactions')
+          .orderBy('data', descending: false)
           .get()
           .then((querySnapshot) {
         transactionDocList = querySnapshot.docs;
@@ -546,6 +627,7 @@ class _ShowCardState extends State<ShowCard> {
           .collection('users')
           .document(userId)
           .collection('moneyTransactions')
+          .orderBy('data', descending: false)
           .get()
           .then((querySnapshot) {
         transactionDocList = querySnapshot;
@@ -592,5 +674,87 @@ class _ShowCardState extends State<ShowCard> {
 
   bool isNumeric(String moneyNum) {
     return double.tryParse(moneyNum) != null;
+  }
+
+  Future<String?> updateTransactions() async {
+    // setState(() {
+    //   _isLoading = true;
+    // });
+
+    String userCred = '';
+    double sumAllTransactions = 0.0;
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      userCred =
+          authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+
+      await _firestore
+          .collection('users')
+          .doc(userCred)
+          .collection('moneyTransactions')
+          .orderBy('data', descending: false)
+          .get()
+          .then((querySnapshot) {
+        setState(() {
+          transactionDocList = querySnapshot.docs;
+        });
+        for (var doc in querySnapshot.docs) {
+          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
+          String getTransString = doc['zenbat'];
+          String getTransStringNoSign = getTransString.substring(1);
+          double transDoubleValue = double.parse(getTransStringNoSign);
+          sumAllTransactions += transDoubleValue;
+        }
+      });
+      setState(() {
+        kontudirua = sumAllTransactions;
+      });
+    } else {
+      firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
+
+      String userId = auth.userId;
+
+      await firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
+          .collection('moneyTransactions')
+          .orderBy('data', descending: false)
+          .get()
+          .then((querySnapshot) {
+        setState(() {
+          transactionDocList = querySnapshot;
+        });
+
+        for (var doc in querySnapshot) {
+          String getTransString = doc['zenbat'];
+          String getTransStringNoSign = getTransString.substring(1);
+          double transDoubleValue = double.parse(getTransStringNoSign);
+          sumAllTransactions += transDoubleValue;
+        }
+      });
+
+      setState(() {
+        kontudirua = sumAllTransactions;
+      });
+    }
+
+    // setState(() {
+    //   _isLoading = false;
+    // });
+  }
+}
+
+String getTime(var time) {
+  if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+    //Timestamp mota da time aldagaia
+
+    final DateFormat formatter = DateFormat('dd/MM/yyyy, hh:mm');
+    var date = time.toDate();
+    return formatter.format(date);
+  } else {
+    //DateTime formatua badu data aldagaiak
+
+    final DateFormat formatter = DateFormat('dd/MM/yyyy, hh:mm');
+    return formatter.format(time);
   }
 }
