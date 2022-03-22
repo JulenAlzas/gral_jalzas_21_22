@@ -40,6 +40,7 @@ class _ShowCardState extends State<ShowCard> {
   double kontudirua = 0.0;
   double minWidthKontudirua = 0.0;
   double maxWidthKontudirua = 0.0;
+   double sartutakodirua = 0.0;
 
   double kontuDiruaTextSize = 0.0;
   double kontuDiruErreala = 0.0;
@@ -258,6 +259,9 @@ class _ShowCardState extends State<ShowCard> {
                                               if (isNumeric(value!)) {
                                                 double sartutakoZenb =
                                                     double.parse(value);
+                                                 setState(() {
+                                                  sartutakodirua = sartutakoZenb;
+                                                });
                                                 if (sartutakoZenb < 0) {
                                                   return 'Zenbaki positiboa sartu behar duzu';
                                                 }
@@ -273,8 +277,8 @@ class _ShowCardState extends State<ShowCard> {
                                                 //     DateFormat('yMd').format(
                                                 //         now); //
 
-                                                var dateTimestamp =
-                                                    Timestamp.now();
+                                                // var dateTimestamp =
+                                                //     Timestamp.now();
                                                 // DateTime currentPhoneDate = DateTime.now(); //DateTime
                                                 // final DateFormat formatter =
                                                 //     DateFormat(
@@ -285,15 +289,11 @@ class _ShowCardState extends State<ShowCard> {
                                                 //     formatter.format(date);
 
                                                 // Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
-                                                TransactionLogic.addTransaction(
-                                                    transMota: 'dirua_sartu',
-                                                    zenbat: '+$sartutakoZenb',
-                                                    transDate: dateTimestamp);
-                                                setState(() {
-                                                  // kontudirua += sartutakoZenb;
-                                                  // if(){}
-                                                  // transactionDocList.
-                                                });
+                                                // TransactionLogic.addTransaction(
+                                                //     transMota: 'dirua_sartu',
+                                                //     zenbat: '+$sartutakoZenb',
+                                                //     transDate: dateTimestamp);
+
                                                 return null;
                                               } else {
                                                 return 'Diru konpurua sartu behar da';
@@ -312,6 +312,13 @@ class _ShowCardState extends State<ShowCard> {
                                               ?.validate() ??
                                           false;
                                       if (isFormValid) {
+                                        var dateTimestamp =
+                                                    Timestamp.now();
+
+                                                TransactionLogic.addTransaction(
+                                                    transMota: 'dirua_sartu',
+                                                    zenbat: '+$sartutakodirua',
+                                                    transDate: dateTimestamp);
                                         setState(() {
                                           _showMoneyamount = false;
                                         });
@@ -445,8 +452,7 @@ class _ShowCardState extends State<ShowCard> {
                                                             transBuilderSizedSize,
                                                       ),
                                                       SizedBox(
-                                                        width: widthForTransAmount
-                                                            ,
+                                                        width: widthForTransAmount,
                                                         child: FittedBox(
                                                           fit: BoxFit.fitWidth,
                                                           child: Text(
@@ -556,8 +562,7 @@ class _ShowCardState extends State<ShowCard> {
         for (var doc in querySnapshot.docs) {
           //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
-          String getTransStringNoSign = getTransString.substring(1);
-          double transDoubleValue = double.parse(getTransStringNoSign);
+          double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;
         }
       });
@@ -633,8 +638,7 @@ class _ShowCardState extends State<ShowCard> {
         transactionDocList = querySnapshot;
         for (var doc in querySnapshot) {
           String getTransString = doc['zenbat'];
-          String getTransStringNoSign = getTransString.substring(1);
-          double transDoubleValue = double.parse(getTransStringNoSign);
+          double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;
         }
       });
@@ -701,8 +705,7 @@ class _ShowCardState extends State<ShowCard> {
         for (var doc in querySnapshot.docs) {
           //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
-          String getTransStringNoSign = getTransString.substring(1);
-          double transDoubleValue = double.parse(getTransStringNoSign);
+          double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;
         }
       });
@@ -727,8 +730,7 @@ class _ShowCardState extends State<ShowCard> {
 
         for (var doc in querySnapshot) {
           String getTransString = doc['zenbat'];
-          String getTransStringNoSign = getTransString.substring(1);
-          double transDoubleValue = double.parse(getTransStringNoSign);
+          double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;
         }
       });
