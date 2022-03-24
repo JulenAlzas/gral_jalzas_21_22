@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
+import 'package:gral_jalzas_21_22/screens/charts.dart';
 import 'package:gral_jalzas_21_22/screens/create_card.dart';
 import 'package:gral_jalzas_21_22/screens/edit_card.dart';
 import 'package:gral_jalzas_21_22/screens/joko1.dart';
@@ -126,6 +127,17 @@ class LoginHome extends StatelessWidget {
                       );
                     }
                   });
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.bar_chart),
+                title: const Text('Diagramak'),
+                onTap: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Charts()),
+                      );
                 },
               )
             ],
