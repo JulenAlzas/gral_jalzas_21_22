@@ -203,11 +203,14 @@ class _Joko1State extends State<Joko1> {
                                       hintStyle:
                                           TextStyle(color: eremuKolorea)),
                                   validator: (value) {
-                                    if((spinColor == Colors.pink)){
+                                    if((spinColor == Colors.pink)){                                      
 
                                       if (isNumeric(value!)) {
                                       double sartutakoZenb =
                                           double.parse(value);
+                                      if(kontudirua<=0 || kontudirua-sartutakoZenb<0){
+                                        return 'Kontuan dirua falta zaizu';
+                                      }
 
                                       setState(() {
                                         sartutakodirua = sartutakoZenb;
@@ -308,17 +311,18 @@ class _Joko1State extends State<Joko1> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Text('IRABAZI DUZU!!',
+                      child: const Text('x3: IRABAZI DUZU!!',
                           style: TextStyle(
                               fontSize: 40, fontWeight: FontWeight.bold)),
                     );
                   });
 
               var dateTimestamp = Timestamp.now();
+              double irabazitakoa = sartutakodirua*3;
 
               TransactionLogic.addTransaction(
                   transMota: 'joko1_irabazi',
-                  zenbat: '+$sartutakodirua',
+                  zenbat: '+$irabazitakoa',
                   transDate: dateTimestamp);
               
               updateTransactions();

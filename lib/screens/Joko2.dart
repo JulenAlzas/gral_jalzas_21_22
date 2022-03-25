@@ -258,6 +258,12 @@ class _Joko2State extends State<Joko2> {
                                             double sartutakoZenb =
                                                 double.parse(value);
 
+                                            if (kontudirua <= 0 ||
+                                                kontudirua - sartutakoZenb <
+                                                    0) {
+                                              return 'Kontuan dirua falta zaizu';
+                                            }
+
                                             setState(() {
                                               sartutakodirua = sartutakoZenb;
                                             });
@@ -587,7 +593,7 @@ class _Joko2State extends State<Joko2> {
                     var dateTimestamp = Timestamp.now();
                     double galdutakoa = sartutakodirua;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
+                        transMota: 'joko2_galdu',
                         zenbat: '-$galdutakoa',
                         transDate: dateTimestamp);
 

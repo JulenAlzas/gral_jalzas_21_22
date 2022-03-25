@@ -26,7 +26,9 @@ class _ChartsState extends State<Charts> {
 
   double transakzioMax = 0.0;
   bool _isLoading = true;
+  bool daytype = false;
   var transactionDocList;
+  double dataIntervals = 0.0;
   List<ChartDataDonut> _chartDonutData = [];
   List<_ChartData>? chartData = <_ChartData>[
     // _ChartData(DateTime(2015, 1, 1), 21, 28),
@@ -85,52 +87,51 @@ class _ChartsState extends State<Charts> {
                     children: [
                       Center(
                           child: Container(
-                              child: SfCircularChart(series: <CircularSeries>[
-                        // Renders doughnut chart
-                        DoughnutSeries<ChartDataDonut, String>(
-                            dataSource: _chartDonutData,
-                            pointColorMapper: (ChartDataDonut data, _) =>
-                                data.color,
-                            xValueMapper: (ChartDataDonut data, _) => data.x,
-                            yValueMapper: (ChartDataDonut data, _) => data.y,
-                            dataLabelMapper: (ChartDataDonut data, _) => data.x,
-                            dataLabelSettings:
-                                const DataLabelSettings(isVisible: true),
-                            explode: true,
-                            explodeGesture: ActivationMode.singleTap)
-                      ]))),
-                      Center(
-                          child: Container(
-                              child: SfCircularChart(series: <CircularSeries>[
-                        // Renders doughnut chart
-                        PieSeries<ChartDataDonut, String>(
-                            dataSource: _chartDonutData,
-                            pointColorMapper: (ChartDataDonut data, _) =>
-                                data.color,
-                            xValueMapper: (ChartDataDonut data, _) => data.x,
-                            yValueMapper: (ChartDataDonut data, _) => data.y,
-                            dataLabelMapper: (ChartDataDonut data, _) => data.x,
-                            dataLabelSettings:
-                                const DataLabelSettings(isVisible: true))
-                      ]))),
+                              child: SfCircularChart(
+                                  title: ChartTitle(
+                                      text:
+                                          'Transakzio guztien diagrama'),
+                                  legend: Legend(
+                                      isVisible: true,
+                                      overflowMode:
+                                          LegendItemOverflowMode.wrap),
+                                  series: <CircularSeries>[
+                            // Renders doughnut chart
+                            DoughnutSeries<ChartDataDonut, String>(
+                                dataSource: _chartDonutData,
+                                pointColorMapper: (ChartDataDonut data, _) =>
+                                    data.color,
+                                xValueMapper: (ChartDataDonut data, _) =>
+                                    data.x,
+                                yValueMapper: (ChartDataDonut data, _) =>
+                                    data.y,
+                                dataLabelMapper: (ChartDataDonut data, _) =>
+                                    data.y.toString(),
+                                dataLabelSettings:
+                                    const DataLabelSettings(isVisible: true),
+                                explode: true,
+                                explodeGesture: ActivationMode.singleTap)
+                          ]))),
                       Center(
                         child: SfCartesianChart(
                           zoomPanBehavior: _zoomPanBehavior,
                           plotAreaBorderWidth: 0,
-                          title: ChartTitle(text: 'Inflation - Consumer price'),
+                          title: ChartTitle(text: 'Eguneroko transak. totalak'),
                           legend:
                               Legend(overflowMode: LegendItemOverflowMode.wrap),
                           primaryXAxis: DateTimeAxis(
                             edgeLabelPlacement: EdgeLabelPlacement.shift,
                             dateFormat: DateFormat.yMd(),
-                            intervalType: DateTimeIntervalType.months,
-                            interval: 0.5,
+                            intervalType: daytype
+                                ? DateTimeIntervalType.days
+                                : DateTimeIntervalType.months,
+                            interval: dataIntervals,
                           ),
                           primaryYAxis: NumericAxis(
                               labelFormat: '{value}€',
                               minimum: 0,
                               maximum: transakzioMax,
-                              interval: transakzioMax/5,
+                              interval: transakzioMax / 5,
                               majorGridLines: const MajorGridLines(
                                   color: Colors.transparent)),
                           series: _getDefaultLineSeries(),
@@ -196,6 +197,28 @@ class _ChartsState extends State<Charts> {
           .get()
           .then((querySnapshot) {
         transactionDocList = querySnapshot.docs;
+
+        DateTime nearestData = querySnapshot.docs.first['data'].toDate();
+        DateTime latestData = querySnapshot.docs.last['data'].toDate();
+
+        if (nearestData.year == latestData.year) {
+          if (nearestData.month == latestData.month) {
+            daytype = true;
+            int daysDif = latestData.day - nearestData.day;
+            dataIntervals = daysDif / 5;
+          } else {
+            int monthsDif = latestData.month - nearestData.month;
+            dataIntervals = monthsDif / 5;
+          }
+        } else {
+          if (latestData.month >= nearestData.month ||
+              latestData.year - nearestData.year > 1) {
+            dataIntervals = 12;
+          } else {
+            int monthsDif = (12 - nearestData.month) + latestData.month;
+            dataIntervals = monthsDif / 5;
+          }
+        }
         //     var newMap = groupBy(querySnapshot.docs.toList(), (QueryDocumentSnapshot e) {
         // return e.data;
         // });
@@ -210,15 +233,19 @@ class _ChartsState extends State<Charts> {
           double transDoubleValue = double.parse(getTransString);
 
           DateTime currentDate = doc['data'].toDate();
-          bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
+
+          // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
+          bool zerodaysDifference = (getDate.year == currentDate.year &&
+              getDate.month == currentDate.month &&
+              getDate.day == currentDate.day);
 
           if (zerodaysDifference) {
             if (transDoubleValue > 0) {
               amountGained1day += transDoubleValue;
               irabazitakoa += transDoubleValue;
             } else {
-              amountLost1day += transDoubleValue;
-              galdutakoa += transDoubleValue * (-1);
+              amountLost1day += transDoubleValue * (-1);
+              galdutakoa += transDoubleValue;
             }
 
             if (doc.id == querySnapshot.docs.last.id) {
@@ -249,8 +276,8 @@ class _ChartsState extends State<Charts> {
               amountGained1day += transDoubleValue;
               irabazitakoa += transDoubleValue;
             } else {
-              amountLost1day += transDoubleValue;
-              galdutakoa += transDoubleValue * (-1);
+              amountLost1day += transDoubleValue * (-1);
+              galdutakoa += transDoubleValue;
             }
 
             if (doc.id == querySnapshot.docs.last.id) {
@@ -306,9 +333,9 @@ class _ChartsState extends State<Charts> {
 
     final List<ChartDataDonut> chartDonutData = [
       ChartDataDonut(
-          'Irabazia', irabazitakoDirua, const Color.fromRGBO(9, 0, 136, 1)),
+          'Transakzio +', irabazitakoDirua, const Color.fromRGBO(9, 0, 136, 1)),
       ChartDataDonut(
-          'Galdua', galdutakoDirua, const Color.fromRGBO(147, 0, 119, 1)),
+          'Transakzio -', galdutakoDirua, const Color.fromRGBO(147, 0, 119, 1)),
     ];
 
     _chartDonutData = chartDonutData;
@@ -325,17 +352,17 @@ class _ChartsState extends State<Charts> {
           animationDuration: 2500,
           dataSource: chartData!,
           xValueMapper: (_ChartData sales, _) => sales.date,
-          yValueMapper: (_ChartData sales, _) => sales.irabazitakoa,
+          yValueMapper: (_ChartData sales, _) => sales.irabazitakoa1Egun,
           width: 2,
-          name: 'Irabaziak',
+          name: 'Transak. +',
           markerSettings: const MarkerSettings(isVisible: true)),
       LineSeries<_ChartData, DateTime>(
           animationDuration: 2500,
           dataSource: chartData!,
           width: 2,
-          name: 'Galtzeak',
+          name: 'Transak. -',
           xValueMapper: (_ChartData sales, _) => sales.date,
-          yValueMapper: (_ChartData sales, _) => sales.galdutakoa,
+          yValueMapper: (_ChartData sales, _) => sales.galdutakoa1Egun,
           markerSettings: const MarkerSettings(isVisible: true))
     ];
   }
@@ -349,10 +376,10 @@ class ChartDataDonut {
 }
 
 class _ChartData {
-  _ChartData(this.date, this.irabazitakoa, this.galdutakoa);
+  _ChartData(this.date, this.irabazitakoa1Egun, this.galdutakoa1Egun);
   final DateTime date;
-  final double irabazitakoa;
-  final double galdutakoa;
+  final double irabazitakoa1Egun;
+  final double galdutakoa1Egun;
 }
 
 class BackgroundHome extends StatelessWidget {
