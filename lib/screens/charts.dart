@@ -2,13 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/screens/chartsExample.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
+import 'package:gral_jalzas_21_22/screens/gallery_scaffold.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/firedart.dart' as firedart;
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import "package:collection/collection.dart";
 
@@ -89,8 +92,7 @@ class _ChartsState extends State<Charts> {
                           child: Container(
                               child: SfCircularChart(
                                   title: ChartTitle(
-                                      text:
-                                          'Transakzio guztien diagrama'),
+                                      text: 'Transakzio guztien diagrama'),
                                   legend: Legend(
                                       isVisible: true,
                                       overflowMode:
@@ -137,6 +139,14 @@ class _ChartsState extends State<Charts> {
                           series: _getDefaultLineSeries(),
                           tooltipBehavior: TooltipBehavior(enable: true),
                         ),
+                      ),
+                      GalleryScaffold(
+                        listTileIcon: const Icon(Icons.insert_chart),
+                        title: 'Series Legend Custom Symbol',
+                        subtitle:
+                            'A series legend using a custom symbol renderer',
+                        childBuilder: () =>
+                            LegendWithCustomSymbol.withRandomData(),
                       ),
                       SizedBox(
                         height: screenSize.height * 0.4,
