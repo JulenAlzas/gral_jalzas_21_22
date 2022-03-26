@@ -17,8 +17,14 @@
 // EXCLUDE_FROM_GALLERY_DOCS_START
 import 'dart:math';
 // EXCLUDE_FROM_GALLERY_DOCS_END
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
+import 'package:firedart/firedart.dart' as firedart;
+import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
+import 'package:intl/intl.dart';
 
 /// Example custom renderer that renders [IconData].
 ///
@@ -37,174 +43,217 @@ class IconRenderer extends charts.CustomSymbolRenderer {
       color = color.withOpacity(0.26);
     }
 
-    return  SizedBox.fromSize(
-        size: size, child:  Icon(iconData, color: color, size: 12.0));
+    return SizedBox.fromSize(
+        size: size, child: Icon(iconData, color: color, size: 12.0));
   }
 }
 
-class LegendWithCustomSymbol extends StatelessWidget {
-  final List<charts.Series<dynamic, String>> seriesList;
-  final bool animate;
-
-  LegendWithCustomSymbol(this.seriesList, {this.animate = false});
-
-  factory LegendWithCustomSymbol.withSampleData() {
-    return  LegendWithCustomSymbol(
-      _createSampleData(),
-      // Disable animations for image tests.
-      animate: false,
-    );
-  }
-
-  // EXCLUDE_FROM_GALLERY_DOCS_START
-  // This section is excluded from being copied to the gallery.
-  // It is used for creating random series data to demonstrate animation in
-  // the example app only.
-  factory LegendWithCustomSymbol.withRandomData() {
-    return  LegendWithCustomSymbol(_createRandomData());
-  }
-
-  /// Create random data.
-  static List<charts.Series<OrdinalSales, String>> _createRandomData() {
-    final random =  Random();
-
-    final desktopSalesData = [
-       OrdinalSales('2014', random.nextInt(100)),
-       OrdinalSales('2015', random.nextInt(100)),
-       OrdinalSales('2016', random.nextInt(100)),
-       OrdinalSales('2017', random.nextInt(100)),
-    ];
-
-    final tabletSalesData = [
-       OrdinalSales('2014', random.nextInt(100)),
-       OrdinalSales('2015', random.nextInt(100)),
-       OrdinalSales('2016', random.nextInt(100)),
-       OrdinalSales('2017', random.nextInt(100)),
-    ];
-
-    final mobileSalesData = [
-       OrdinalSales('2014', random.nextInt(100)),
-       OrdinalSales('2015', random.nextInt(100)),
-       OrdinalSales('2016', random.nextInt(100)),
-       OrdinalSales('2017', random.nextInt(100)),
-    ];
-
-    final otherSalesData = [
-       OrdinalSales('2014', random.nextInt(100)),
-       OrdinalSales('2015', random.nextInt(100)),
-       OrdinalSales('2016', random.nextInt(100)),
-       OrdinalSales('2017', random.nextInt(100)),
-    ];
-
-    return [
-       charts.Series<OrdinalSales, String>(
-        id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: desktopSalesData,
-      ),
-       charts.Series<OrdinalSales, String>(
-        id: 'Tablet',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: tabletSalesData,
-      ),
-       charts.Series<OrdinalSales, String>(
-        id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: mobileSalesData,
-      ),
-       charts.Series<OrdinalSales, String>(
-        id: 'Other',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: otherSalesData,
-      )
-    ];
-  }
-  // EXCLUDE_FROM_GALLERY_DOCS_END
+class LegendWithCustomSymbol extends StatefulWidget {
+  const LegendWithCustomSymbol({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return  charts.BarChart(
-      seriesList,
-      animate: animate,
-      barGroupingType: charts.BarGroupingType.grouped,
-      // Add the legend behavior to the chart to turn on legends.
-      // By default the legend will display above the chart.
-      //
-      // To change the symbol used in the legend, set the renderer attribute of
-      // symbolRendererKey to a SymbolRenderer.
-      behaviors: [ charts.SeriesLegend()],
-      defaultRenderer:  charts.BarRendererConfig(
-          symbolRenderer:  IconRenderer(Icons.cloud)),
-    );
-  }
+  State<LegendWithCustomSymbol> createState() => _LegendWithCustomSymbolState();
 
   /// Create series list with multiple series
-  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
-    final desktopSalesData = [
-       OrdinalSales('2014', 5),
-       OrdinalSales('2015', 25),
-       OrdinalSales('2016', 100),
-       OrdinalSales('2017', 75),
-    ];
+}
 
-    final tabletSalesData = [
-       OrdinalSales('2014', 25),
-       OrdinalSales('2015', 50),
-       OrdinalSales('2016', 10),
-       OrdinalSales('2017', 20),
-    ];
+class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
+  List<charts.Series<dynamic, String>> seriesList = [];
+  final bool animate = false;
+  bool isloading = true;
 
-    final mobileSalesData = [
-       OrdinalSales('2014', 10),
-       OrdinalSales('2015', 15),
-       OrdinalSales('2016', 50),
-       OrdinalSales('2017', 45),
-    ];
+  @override
+  void initState() {
+    _getDataDB();
+    super.initState();
+  }
 
-    final otherSalesData = [
-       OrdinalSales('2014', 20),
-       OrdinalSales('2015', 35),
-       OrdinalSales('2016', 15),
-       OrdinalSales('2017', 10),
-    ];
+  // EXCLUDE_FROM_GALLERY_DOCS_END
+  @override
+  Widget build(BuildContext context) {
+    if (isloading) {
+      return const KargatzeAnimazioa();
+    } else {
+      return charts.BarChart(
+        seriesList,
+        animate: animate,
+        barGroupingType: charts.BarGroupingType.grouped,
+        animationDuration: Duration.zero,
+        barRendererDecorator: charts.BarLabelDecorator<String>(),
+        //Irristatzea horizontala lortzeko
+        domainAxis: charts.OrdinalAxisSpec(
+            viewport: charts.OrdinalViewport(
+          '2020',
+          03,
+        )),
+        behaviors: [
+          charts.SeriesLegend(),
+          charts.InitialHintBehavior(maxHintTranslate: 2.0),
+          charts.PanAndZoomBehavior(),
+        ],
 
-    return [
-       charts.Series<OrdinalSales, String>(
-        id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: desktopSalesData,
+        defaultRenderer:
+            charts.BarRendererConfig(symbolRenderer: IconRenderer(Icons.cloud)),
+      );
+    }
+  }
+
+  void _getDataDB() async {
+    setState(() {
+      isloading = true;
+    });
+
+    List<AmountDateTrans> kontuanSartutakoa = [];
+    List<AmountDateTrans> kontuanIrabazitakoa = [];
+    List<AmountDateTrans> kontuanGaldutakoa = [];
+
+    String userCred = '';
+    double sumAllTransactions = 0.0;
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      userCred =
+          authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+
+      await _firestore
+          .collection('users')
+          .doc(userCred)
+          .collection('moneyTransactions')
+          .orderBy('data', descending: false)
+          .get()
+          .then((querySnapshot) {
+        DateTime getDate = DateTime(1555, 1, 1);
+
+        double amountGained1day = 0.0;
+        double amountLost1day = 0.0;
+        double amountAdded1day = 0.0;
+
+        for (var doc in querySnapshot.docs) {
+          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
+          String getTransString = doc['zenbat'];
+          double transDoubleValue = double.parse(getTransString);
+
+          DateTime currentDate = doc['data'].toDate();
+          String transMota = doc['trans_mota'].split('_')[1];
+
+          // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
+          bool zerodaysDifference = (getDate.year == currentDate.year &&
+              getDate.month == currentDate.month &&
+              getDate.day == currentDate.day);
+
+          if (zerodaysDifference) {
+            if (transMota == 'irabazi') {
+              amountGained1day += transDoubleValue;
+            } else if (transMota == 'galdu') {
+              amountLost1day += transDoubleValue * (-1);
+            } else {
+              amountAdded1day += transDoubleValue;
+            }
+
+            if (doc.id == querySnapshot.docs.last.id) {
+              getDate = currentDate;
+              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+              kontuanIrabazitakoa
+                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+            }
+          } else {
+            if (getDate != DateTime(1555, 1, 1)) {
+              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+              kontuanIrabazitakoa
+                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+              amountGained1day = 0.0;
+              amountLost1day = 0.0;
+              amountAdded1day = 0.0;
+            }
+            if (transMota == 'irabazi') {
+              amountGained1day += transDoubleValue;
+            } else if (transMota == 'galdu') {
+              amountLost1day += transDoubleValue * (-1);
+            } else {
+              amountAdded1day += transDoubleValue;
+            }
+
+            if (doc.id == querySnapshot.docs.last.id) {
+              getDate = currentDate;
+              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+              kontuanIrabazitakoa
+                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+            }
+          }
+          getDate = currentDate;
+        }
+      });
+    } else {
+      firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
+
+      String userId = auth.userId;
+
+      double irabazitakoa = 0.0;
+      double galdutakoa = 0.0;
+      await firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
+          .collection('moneyTransactions')
+          .orderBy('data', descending: false)
+          .get()
+          .then((querySnapshot) {
+        for (var doc in querySnapshot) {
+          String getTransString = doc['zenbat'];
+          double transDoubleValue = double.parse(getTransString);
+          if (getTransString.substring(0, 1) == '+') {
+            irabazitakoa += transDoubleValue;
+          } else {
+            galdutakoa += transDoubleValue;
+          }
+        }
+      });
+    }
+
+    seriesList = [
+      charts.Series<AmountDateTrans, String>(
+        id: 'Sartutakoa',
+        domainFn: (AmountDateTrans sales, _) =>
+            DateFormat('yyyy-MM-dd').format(sales.date),
+        measureFn: (AmountDateTrans sales, _) => sales.sales,
+        data: kontuanSartutakoa,
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        labelAccessorFn: (AmountDateTrans sales, _) => 'aaaa: \$${sales.sales.toString()}'
+        ,
       ),
-       charts.Series<OrdinalSales, String>(
-        id: 'Tablet',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: tabletSalesData,
+      charts.Series<AmountDateTrans, String>(
+        id: 'Irabazia',
+        domainFn: (AmountDateTrans sales, _) =>
+            DateFormat('yyyy-MM-dd').format(sales.date),
+        measureFn: (AmountDateTrans sales, _) => sales.sales,
+        data: kontuanIrabazitakoa,
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+        labelAccessorFn: (AmountDateTrans sales, _) =>
+            '\$${sales.sales.toString()}',
       ),
-       charts.Series<OrdinalSales, String>(
-        id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: mobileSalesData,
+      charts.Series<AmountDateTrans, String>(
+        id: 'Galdua',
+        domainFn: (AmountDateTrans sales, _) =>
+            DateFormat('yyyy-MM-dd').format(sales.date),
+        measureFn: (AmountDateTrans sales, _) => sales.sales,
+        data: kontuanGaldutakoa,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+        labelAccessorFn: (AmountDateTrans sales, _) =>
+            '\$${sales.sales.toString()}',
       ),
-       charts.Series<OrdinalSales, String>(
-        id: 'Other',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: otherSalesData,
-      )
     ];
+
+    setState(() {
+      isloading = false;
+    });
   }
 }
 
 /// Sample ordinal data type.
-class OrdinalSales {
-  final String year;
+class AmountDateTrans {
+  final DateTime date;
   final int sales;
 
-  OrdinalSales(this.year, this.sales);
+  AmountDateTrans(this.date, this.sales);
 }

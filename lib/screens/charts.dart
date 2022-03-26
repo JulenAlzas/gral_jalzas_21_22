@@ -7,6 +7,7 @@ import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/gallery_scaffold.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
@@ -140,13 +141,16 @@ class _ChartsState extends State<Charts> {
                           tooltipBehavior: TooltipBehavior(enable: true),
                         ),
                       ),
-                      GalleryScaffold(
-                        listTileIcon: const Icon(Icons.insert_chart),
-                        title: 'Series Legend Custom Symbol',
-                        subtitle:
-                            'A series legend using a custom symbol renderer',
-                        childBuilder: () =>
-                            LegendWithCustomSymbol.withRandomData(),
+                      Container(
+                        width: screenSize.width,
+                        height: screenSize.height + 0.4,
+                        child: GalleryScaffold(
+                          title: 'Series Legend Custom Symbol',
+                          subtitle:
+                              'A series legend using a custom symbol renderer',
+                          childBuilder: () =>
+                              const LegendWithCustomSymbol(),
+                        ),
                       ),
                       SizedBox(
                         height: screenSize.height * 0.4,
