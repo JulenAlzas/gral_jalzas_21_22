@@ -77,23 +77,26 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
       return charts.BarChart(
         seriesList,
         animate: animate,
-        barGroupingType: charts.BarGroupingType.grouped,
+        // barGroupingType: charts.BarGroupingType.grouped,
         animationDuration: Duration.zero,
-        barRendererDecorator: charts.BarLabelDecorator<String>(),
+      //Renderrak bata bestearekin gainjartzen dira
+      // barRendererDecorator: charts.BarLabelDecorator<String>(),
+        // domainAxis:  const charts.OrdinalAxisSpec(),
         //Irristatzea horizontala lortzeko
         domainAxis: charts.OrdinalAxisSpec(
             viewport: charts.OrdinalViewport(
-          '2020',
-          03,
+          DateFormat('yyyy-MM-dd').format(seriesList[0].data[0].date),//Hasiera data
+          3,//Zenbat erakutsi
         )),
         behaviors: [
           charts.SeriesLegend(),
-          charts.InitialHintBehavior(maxHintTranslate: 2.0),
+          // charts.InitialHintBehavior(maxHintTranslate: 5.0),
           charts.PanAndZoomBehavior(),
         ],
 
         defaultRenderer:
-            charts.BarRendererConfig(symbolRenderer: IconRenderer(Icons.cloud)),
+            charts.BarRendererConfig(symbolRenderer: IconRenderer(Icons.cloud),
+            barRendererDecorator: charts.BarLabelDecorator<String>(),),
       );
     }
   }
@@ -213,14 +216,13 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
 
     seriesList = [
       charts.Series<AmountDateTrans, String>(
+        labelAccessorFn: (AmountDateTrans sales, _) => sales.sales.toString(),
         id: 'Sartutakoa',
         domainFn: (AmountDateTrans sales, _) =>
             DateFormat('yyyy-MM-dd').format(sales.date),
         measureFn: (AmountDateTrans sales, _) => sales.sales,
         data: kontuanSartutakoa,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        labelAccessorFn: (AmountDateTrans sales, _) => 'aaaa: \$${sales.sales.toString()}'
-        ,
       ),
       charts.Series<AmountDateTrans, String>(
         id: 'Irabazia',
@@ -228,9 +230,9 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
             DateFormat('yyyy-MM-dd').format(sales.date),
         measureFn: (AmountDateTrans sales, _) => sales.sales,
         data: kontuanIrabazitakoa,
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         labelAccessorFn: (AmountDateTrans sales, _) =>
-            '\$${sales.sales.toString()}',
+            sales.sales.toString(),
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
       ),
       charts.Series<AmountDateTrans, String>(
         id: 'Galdua',
@@ -238,9 +240,9 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
             DateFormat('yyyy-MM-dd').format(sales.date),
         measureFn: (AmountDateTrans sales, _) => sales.sales,
         data: kontuanGaldutakoa,
-        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         labelAccessorFn: (AmountDateTrans sales, _) =>
-            '\$${sales.sales.toString()}',
+            sales.sales.toString(),
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
       ),
     ];
 
