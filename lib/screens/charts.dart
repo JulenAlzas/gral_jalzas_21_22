@@ -63,22 +63,6 @@ class _ChartsState extends State<Charts> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    double swiperobjectWidth = 0.0;
-    double swiperobjectHeight = 0.0;
-
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      swiperobjectWidth = screenSize.width * 0.7;
-      swiperobjectHeight = screenSize.width * 0.7;
-    } else {
-      swiperobjectWidth = screenSize.width * 0.25;
-      swiperobjectHeight = screenSize.width * 0.25;
-    }
-
-    List<String> gameImages = [
-      'assets/erruletaJokoa.png',
-      'assets/slotGame.png',
-    ];
-
     return Scaffold(
       appBar: appBarDetails(context),
       body: SingleChildScrollView(
@@ -89,69 +73,9 @@ class _ChartsState extends State<Charts> {
                   const BackgroundHome(),
                   Column(
                     children: [
-                      Center(
-                          child: Container(
-                              child: SfCircularChart(
-                                  title: ChartTitle(
-                                      text: 'Transakzio guztien diagrama'),
-                                  legend: Legend(
-                                      isVisible: true,
-                                      overflowMode:
-                                          LegendItemOverflowMode.wrap),
-                                  series: <CircularSeries>[
-                            // Renders doughnut chart
-                            DoughnutSeries<ChartDataDonut, String>(
-                                dataSource: _chartDonutData,
-                                pointColorMapper: (ChartDataDonut data, _) =>
-                                    data.color,
-                                xValueMapper: (ChartDataDonut data, _) =>
-                                    data.x,
-                                yValueMapper: (ChartDataDonut data, _) =>
-                                    data.y,
-                                dataLabelMapper: (ChartDataDonut data, _) =>
-                                    data.y.toString(),
-                                dataLabelSettings:
-                                    const DataLabelSettings(isVisible: true),
-                                explode: true,
-                                explodeGesture: ActivationMode.singleTap)
-                          ]))),
-                      Center(
-                        child: SfCartesianChart(
-                          zoomPanBehavior: _zoomPanBehavior,
-                          plotAreaBorderWidth: 0,
-                          title: ChartTitle(text: 'Eguneroko transak. totalak'),
-                          legend:
-                              Legend(overflowMode: LegendItemOverflowMode.wrap),
-                          primaryXAxis: DateTimeAxis(
-                            edgeLabelPlacement: EdgeLabelPlacement.shift,
-                            dateFormat: DateFormat.yMd(),
-                            intervalType: daytype
-                                ? DateTimeIntervalType.days
-                                : DateTimeIntervalType.months,
-                            interval: dataIntervals,
-                          ),
-                          primaryYAxis: NumericAxis(
-                              labelFormat: '{value}€',
-                              minimum: 0,
-                              maximum: transakzioMax,
-                              interval: transakzioMax / 5,
-                              majorGridLines: const MajorGridLines(
-                                  color: Colors.transparent)),
-                          series: _getDefaultLineSeries(),
-                          tooltipBehavior: TooltipBehavior(enable: true),
-                        ),
-                      ),
-                      Container(
-                        width: screenSize.width,
-                        height: screenSize.height + 0.4,
-                        child: GalleryScaffold(
-                          title: 'Series Legend Custom Symbol',
-                          subtitle:
-                              'A series legend using a custom symbol renderer',
-                          childBuilder: () =>
-                              const LegendWithCustomSymbol(),
-                        ),
-                      ),
+                      DonutDiagrama(chartDonutData: _chartDonutData),
+                      lerroDiagrama(),
+                      BarraDiagrama(screenSize: screenSize),
                       SizedBox(
                         height: screenSize.height * 0.4,
                       )
@@ -159,6 +83,32 @@ class _ChartsState extends State<Charts> {
                   )
                 ],
               ),
+      ),
+    );
+  }
+
+  Center lerroDiagrama() {
+    return Center(
+      child: SfCartesianChart(
+        zoomPanBehavior: _zoomPanBehavior,
+        plotAreaBorderWidth: 0,
+        title: ChartTitle(text: 'Eguneroko transak. totalak'),
+        legend: Legend(overflowMode: LegendItemOverflowMode.wrap),
+        primaryXAxis: DateTimeAxis(
+          edgeLabelPlacement: EdgeLabelPlacement.shift,
+          dateFormat: DateFormat.yMd(),
+          intervalType:
+              daytype ? DateTimeIntervalType.days : DateTimeIntervalType.months,
+          interval: dataIntervals,
+        ),
+        primaryYAxis: NumericAxis(
+            labelFormat: '{value}€',
+            minimum: 0,
+            maximum: transakzioMax,
+            interval: transakzioMax / 5,
+            majorGridLines: const MajorGridLines(color: Colors.transparent)),
+        series: _getDefaultLineSeries(),
+        tooltipBehavior: TooltipBehavior(enable: true),
       ),
     );
   }
@@ -195,7 +145,6 @@ class _ChartsState extends State<Charts> {
     });
 
     String userCred = '';
-    double sumAllTransactions = 0.0;
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
       userCred =
@@ -215,24 +164,7 @@ class _ChartsState extends State<Charts> {
         DateTime nearestData = querySnapshot.docs.first['data'].toDate();
         DateTime latestData = querySnapshot.docs.last['data'].toDate();
 
-        if (nearestData.year == latestData.year) {
-          if (nearestData.month == latestData.month) {
-            daytype = true;
-            int daysDif = latestData.day - nearestData.day;
-            dataIntervals = daysDif / 5;
-          } else {
-            int monthsDif = latestData.month - nearestData.month;
-            dataIntervals = monthsDif / 5;
-          }
-        } else {
-          if (latestData.month >= nearestData.month ||
-              latestData.year - nearestData.year > 1) {
-            dataIntervals = 12;
-          } else {
-            int monthsDif = (12 - nearestData.month) + latestData.month;
-            dataIntervals = monthsDif / 5;
-          }
-        }
+        calculateIntervals(nearestData, latestData);
         //     var newMap = groupBy(querySnapshot.docs.toList(), (QueryDocumentSnapshot e) {
         // return e.data;
         // });
@@ -254,7 +186,7 @@ class _ChartsState extends State<Charts> {
               getDate.day == currentDate.day);
 
           if (zerodaysDifference) {
-            if (transDoubleValue > 0) {
+            if (isPossitive(transDoubleValue)) {
               amountGained1day += transDoubleValue;
               irabazitakoa += transDoubleValue;
             } else {
@@ -262,31 +194,18 @@ class _ChartsState extends State<Charts> {
               galdutakoa += transDoubleValue;
             }
 
-            if (doc.id == querySnapshot.docs.last.id) {
-              getDate = currentDate;
-              if (transakzioMax < amountGained1day) {
-                transakzioMax = amountGained1day;
-              }
-              if (transakzioMax < amountLost1day) {
-                transakzioMax = amountLost1day;
-              }
-              chartData!
-                  .add(_ChartData(getDate, amountGained1day, amountLost1day));
-            }
+            getDate = ifLastDocumetAddAndroidWeb(doc, querySnapshot, getDate,
+                currentDate, amountGained1day, amountLost1day);
           } else {
-            if (getDate != DateTime(1555, 1, 1)) {
-              if (transakzioMax < amountGained1day) {
-                transakzioMax = amountGained1day;
-              }
-              if (transakzioMax < amountLost1day) {
-                transakzioMax = amountLost1day;
-              }
+            if (isNotInitializedDate(getDate)) {
+              setTransMaxIfPossible(amountGained1day, amountLost1day);
               chartData!
                   .add(_ChartData(getDate, amountGained1day, amountLost1day));
               amountGained1day = 0.0;
               amountLost1day = 0.0;
             }
-            if (transDoubleValue > 0) {
+
+            if (isPossitive(transDoubleValue)) {
               amountGained1day += transDoubleValue;
               irabazitakoa += transDoubleValue;
             } else {
@@ -294,25 +213,18 @@ class _ChartsState extends State<Charts> {
               galdutakoa += transDoubleValue;
             }
 
-            if (doc.id == querySnapshot.docs.last.id) {
-              getDate = currentDate;
-              if (transakzioMax < amountGained1day) {
-                transakzioMax = amountGained1day;
-              }
-              if (transakzioMax < amountLost1day) {
-                transakzioMax = amountLost1day;
-              }
-              chartData!
-                  .add(_ChartData(getDate, amountGained1day, amountLost1day));
-            }
+            getDate = ifLastDocumetAddAndroidWeb(doc, querySnapshot, getDate,
+                currentDate, amountGained1day, amountLost1day);
           }
           getDate = currentDate;
         }
       });
       setState(() {
+        _chartDonutData;
         chartData;
         galdutakoDirua = galdutakoa;
         irabazitakoDirua = irabazitakoa;
+        setDonutData();
       });
     } else {
       firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
@@ -328,23 +240,82 @@ class _ChartsState extends State<Charts> {
           .orderBy('data', descending: false)
           .get()
           .then((querySnapshot) {
+        transactionDocList = querySnapshot;
+
+        DateTime nearestData = querySnapshot.first['data'].toDate();
+        DateTime latestData = querySnapshot.last['data'].toDate();
+
+        calculateIntervals(nearestData, latestData);
+
+        //     var newMap = groupBy(querySnapshot.docs.toList(), (QueryDocumentSnapshot e) {
+        // return e.data;
+        // });
+
+        DateTime getDate = DateTime(1555, 1, 1);
+        double amountGained1day = 0.0;
+        double amountLost1day = 0.0;
+
         for (var doc in querySnapshot) {
+          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
-          if (getTransString.substring(0, 1) == '+') {
-            irabazitakoa += transDoubleValue;
+          DateTime currentDate = doc['data'].toDate();
+
+          // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
+          bool zerodaysDifference = (getDate.year == currentDate.year &&
+              getDate.month == currentDate.month &&
+              getDate.day == currentDate.day);
+
+          if (zerodaysDifference) {
+            if (isPossitive(transDoubleValue)) {
+              amountGained1day += transDoubleValue;
+              irabazitakoa += transDoubleValue;
+            } else {
+              amountLost1day += transDoubleValue * (-1);
+              galdutakoa += transDoubleValue;
+            }
+
+            getDate = ifLastDocumendAddDesktop(doc, querySnapshot, getDate,
+                currentDate, amountGained1day, amountLost1day);
           } else {
-            galdutakoa += transDoubleValue;
+            if (isNotInitializedDate(getDate)) {
+              setTransMaxIfPossible(amountGained1day, amountLost1day);
+              chartData!
+                  .add(_ChartData(getDate, amountGained1day, amountLost1day));
+              amountGained1day = 0.0;
+              amountLost1day = 0.0;
+            }
+
+            if (isPossitive(transDoubleValue)) {
+              amountGained1day += transDoubleValue;
+              irabazitakoa += transDoubleValue;
+            } else {
+              amountLost1day += transDoubleValue * (-1);
+              galdutakoa += transDoubleValue;
+            }
+
+            getDate = ifLastDocumendAddDesktop(doc, querySnapshot, getDate,
+                currentDate, amountGained1day, amountLost1day);
           }
+          getDate = currentDate;
         }
       });
 
       setState(() {
+        _chartDonutData;
+        chartData;
         galdutakoDirua = galdutakoa;
         irabazitakoDirua = irabazitakoa;
+        setDonutData();
       });
     }
 
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void setDonutData() {
     final List<ChartDataDonut> chartDonutData = [
       ChartDataDonut(
           'Transakzio +', irabazitakoDirua, const Color.fromRGBO(9, 0, 136, 1)),
@@ -353,10 +324,81 @@ class _ChartsState extends State<Charts> {
     ];
 
     _chartDonutData = chartDonutData;
+  }
 
-    setState(() {
-      _isLoading = false;
-    });
+  void setTransMaxIfPossible(double amountGained1day, double amountLost1day) {
+    if (transakzioMax < amountGained1day) {
+      transakzioMax = amountGained1day;
+    }
+    if (transakzioMax < amountLost1day) {
+      transakzioMax = amountLost1day;
+    }
+  }
+
+  bool isNotInitializedDate(DateTime getDate) =>
+      getDate != DateTime(1555, 1, 1);
+
+  bool isPossitive(double transDoubleValue) => transDoubleValue > 0;
+
+  DateTime ifLastDocumendAddDesktop(
+      firedart.Document doc,
+      List<firedart.Document> querySnapshot,
+      DateTime getDate,
+      DateTime currentDate,
+      double amountGained1day,
+      double amountLost1day) {
+    if (doc.id == querySnapshot.last.id) {
+      getDate = currentDate;
+      if (transakzioMax < amountGained1day) {
+        transakzioMax = amountGained1day;
+      }
+      if (transakzioMax < amountLost1day) {
+        transakzioMax = amountLost1day;
+      }
+      chartData!.add(_ChartData(getDate, amountGained1day, amountLost1day));
+    }
+    return getDate;
+  }
+
+  DateTime ifLastDocumetAddAndroidWeb(
+      QueryDocumentSnapshot<Map<String, dynamic>> doc,
+      QuerySnapshot<Map<String, dynamic>> querySnapshot,
+      DateTime getDate,
+      DateTime currentDate,
+      double amountGained1day,
+      double amountLost1day) {
+    if (doc.id == querySnapshot.docs.last.id) {
+      getDate = currentDate;
+      if (transakzioMax < amountGained1day) {
+        transakzioMax = amountGained1day;
+      }
+      if (transakzioMax < amountLost1day) {
+        transakzioMax = amountLost1day;
+      }
+      chartData!.add(_ChartData(getDate, amountGained1day, amountLost1day));
+    }
+    return getDate;
+  }
+
+  void calculateIntervals(DateTime nearestData, DateTime latestData) {
+    if (nearestData.year == latestData.year) {
+      if (nearestData.month == latestData.month) {
+        daytype = true;
+        int daysDif = latestData.day - nearestData.day;
+        dataIntervals = daysDif / 5;
+      } else {
+        int monthsDif = latestData.month - nearestData.month;
+        dataIntervals = monthsDif / 5;
+      }
+    } else {
+      if (latestData.month >= nearestData.month ||
+          latestData.year - nearestData.year > 1) {
+        dataIntervals = 12;
+      } else {
+        int monthsDif = (12 - nearestData.month) + latestData.month;
+        dataIntervals = monthsDif / 5;
+      }
+    }
   }
 
   /// The method returns line series to chart.
@@ -379,6 +421,59 @@ class _ChartsState extends State<Charts> {
           yValueMapper: (_ChartData sales, _) => sales.galdutakoa1Egun,
           markerSettings: const MarkerSettings(isVisible: true))
     ];
+  }
+}
+
+class BarraDiagrama extends StatelessWidget {
+  const BarraDiagrama({
+    Key? key,
+    required this.screenSize,
+  }) : super(key: key);
+
+  final Size screenSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: screenSize.width,
+      height: screenSize.height + 0.4,
+      child: GalleryScaffold(
+        title: 'Series Legend Custom Symbol',
+        subtitle: 'A series legend using a custom symbol renderer',
+        childBuilder: () => const LegendWithCustomSymbol(),
+      ),
+    );
+  }
+}
+
+class DonutDiagrama extends StatelessWidget {
+  const DonutDiagrama({
+    Key? key,
+    required List<ChartDataDonut> chartDonutData,
+  })  : _chartDonutData = chartDonutData,
+        super(key: key);
+
+  final List<ChartDataDonut> _chartDonutData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: SfCircularChart(
+            title: ChartTitle(text: 'Transakzio guztien diagrama'),
+            legend: Legend(
+                isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+            series: <CircularSeries>[
+          // Renders doughnut chart
+          DoughnutSeries<ChartDataDonut, String>(
+              dataSource: _chartDonutData,
+              pointColorMapper: (ChartDataDonut data, _) => data.color,
+              xValueMapper: (ChartDataDonut data, _) => data.x,
+              yValueMapper: (ChartDataDonut data, _) => data.y,
+              dataLabelMapper: (ChartDataDonut data, _) => data.y.toString(),
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
+              explode: true,
+              explodeGesture: ActivationMode.singleTap)
+        ]));
   }
 }
 

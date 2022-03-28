@@ -111,7 +111,6 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
     List<AmountDateTrans> kontuanGaldutakoa = [];
 
     String userCred = '';
-    double sumAllTransactions = 0.0;
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
       userCred =
@@ -134,7 +133,6 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
           //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
-
           DateTime currentDate = doc['data'].toDate();
           String transMota = doc['trans_mota'].split('_')[1];
 
@@ -152,18 +150,11 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
               amountAdded1day += transDoubleValue;
             }
 
-            if (doc.id == querySnapshot.docs.last.id) {
-              getDate = currentDate;
-              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
-              kontuanIrabazitakoa
-                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
-              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
-            }
+            getDate = ifLastDocumetAddAndroidWeb(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
           } else {
-            if (getDate != DateTime(1555, 1, 1)) {
+            if (isNotInitializedDate(getDate)) {
               kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
-              kontuanIrabazitakoa
-                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+              kontuanIrabazitakoa.add(AmountDateTrans(getDate, amountGained1day.toInt()));
               kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
               amountGained1day = 0.0;
               amountLost1day = 0.0;
@@ -177,13 +168,7 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
               amountAdded1day += transDoubleValue;
             }
 
-            if (doc.id == querySnapshot.docs.last.id) {
-              getDate = currentDate;
-              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
-              kontuanIrabazitakoa
-                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
-              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
-            }
+            getDate = ifLastDocumetAddAndroidWeb(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
           }
           getDate = currentDate;
         }
@@ -202,14 +187,52 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
           .orderBy('data', descending: false)
           .get()
           .then((querySnapshot) {
+         DateTime getDate = DateTime(1555, 1, 1);
+
+        double amountGained1day = 0.0;
+        double amountLost1day = 0.0;
+        double amountAdded1day = 0.0;
+
         for (var doc in querySnapshot) {
+          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
-          if (getTransString.substring(0, 1) == '+') {
-            irabazitakoa += transDoubleValue;
+          DateTime currentDate = doc['data'].toDate();
+          String transMota = doc['trans_mota'].split('_')[1];
+
+          // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
+          bool zerodaysDifference = (getDate.year == currentDate.year && getDate.month == currentDate.month && getDate.day == currentDate.day);
+
+          if (zerodaysDifference) {
+            if (transMota == 'irabazi') {
+              amountGained1day += transDoubleValue;
+            } else if (transMota == 'galdu') {
+              amountLost1day += transDoubleValue * (-1);
+            } else {
+              amountAdded1day += transDoubleValue;
+            }
+
+            getDate = ifLastDocumendAddDesktop(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
           } else {
-            galdutakoa += transDoubleValue;
+            if (isNotInitializedDate(getDate)) {
+              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+              kontuanIrabazitakoa.add(AmountDateTrans(getDate, amountGained1day.toInt()));
+              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+              amountGained1day = 0.0;
+              amountLost1day = 0.0;
+              amountAdded1day = 0.0;
+            }
+            if (transMota == 'irabazi') {
+              amountGained1day += transDoubleValue;
+            } else if (transMota == 'galdu') {
+              amountLost1day += transDoubleValue * (-1);
+            } else {
+              amountAdded1day += transDoubleValue;
+            }
+
+            getDate = ifLastDocumendAddDesktop(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
           }
+          getDate = currentDate;
         }
       });
     }
@@ -249,6 +272,30 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
     setState(() {
       isloading = false;
     });
+  }
+
+  DateTime ifLastDocumetAddAndroidWeb(QueryDocumentSnapshot<Map<String, dynamic>> doc, QuerySnapshot<Map<String, dynamic>> querySnapshot, DateTime getDate, DateTime currentDate, List<AmountDateTrans> kontuanSartutakoa, double amountAdded1day, List<AmountDateTrans> kontuanIrabazitakoa, double amountGained1day, List<AmountDateTrans> kontuanGaldutakoa, double amountLost1day) {
+    if (doc.id == querySnapshot.docs.last.id) {
+      getDate = currentDate;
+      kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+      kontuanIrabazitakoa
+          .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+      kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+    }
+    return getDate;
+  }
+
+  bool isNotInitializedDate(DateTime getDate) => getDate != DateTime(1555, 1, 1);
+
+  DateTime ifLastDocumendAddDesktop(firedart.Document doc, List<firedart.Document> querySnapshot, DateTime getDate, DateTime currentDate, List<AmountDateTrans> kontuanSartutakoa, double amountAdded1day, List<AmountDateTrans> kontuanIrabazitakoa, double amountGained1day, List<AmountDateTrans> kontuanGaldutakoa, double amountLost1day) {
+    if (doc.id == querySnapshot.last.id) {
+      getDate = currentDate;
+      kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+      kontuanIrabazitakoa
+          .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+      kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+    }
+    return getDate;
   }
 }
 
