@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'package:credit_card_validator/validation_results.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';

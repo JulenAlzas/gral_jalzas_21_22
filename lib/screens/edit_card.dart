@@ -434,27 +434,6 @@ class _EditCardState extends State<EditCard> {
           authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
       String cardId = '';
-      // await _firestore
-      //     .collection('credcard')
-      //     .where('userUID', isEqualTo: userCred)
-      //     .get()
-      //     .then((querySnapshot) {
-      //   cardId = querySnapshot.docs.first.id;
-      // });
-
-      // await FirebaseFirestore.instance
-      //     .collection('credcard')
-      //     .doc(cardId)
-      //     .get()
-      //     .then((querySnapshot) {
-      //   setState(() {
-      //     cardNumber = querySnapshot['txartelZenbakia'];
-      //     cardHolderName = querySnapshot['titularra'];
-      //     expiryDate = querySnapshot['iraungitzea'];
-      //     cvv = querySnapshot['cvv'];
-      //     txartelmota = getCardCast(querySnapshot['txartelmota']);
-      //   });
-      // });
 
       await _firestore
           .collection('users')

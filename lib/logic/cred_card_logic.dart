@@ -175,6 +175,65 @@ class CredCardLogic {
     }
   }
 
+  static Future<bool> existTransactions() async {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+      try {
+        String userCredential =
+            authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+
+        String docId = '';
+        await _firestore
+            .collection('users')
+            .doc(userCredential)
+            .collection('moneyTransactions')
+            .orderBy('data', descending: false)
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            docId = querySnapshot.docs.first.id;
+          }
+        });
+
+        if (docId == '') {
+          return false;
+        }
+        return true;
+      } on authforandroid.FirebaseAuthException catch (e) {
+        return false;
+      }
+    } else {
+      try {
+        firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
+
+        String userId = auth.userId;
+
+        String docId = '';
+
+        await firedart.Firestore.instance
+            .collection('users')
+            .document(userId)
+            .collection('moneyTransactions')
+             .orderBy('data', descending: false)
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.isNotEmpty) {
+            docId = querySnapshot.first.id;
+          }
+        });
+
+        if (docId == '') {
+          return false;
+        }
+
+        return true;
+      } on authforandroid.FirebaseAuthException catch (e) {
+        return false;
+      }
+    }
+  }
+
   static editCard(
       {required String txartelZenbakia,
       required String iraungitzea,

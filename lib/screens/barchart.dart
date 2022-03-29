@@ -48,16 +48,16 @@ class IconRenderer extends charts.CustomSymbolRenderer {
   }
 }
 
-class LegendWithCustomSymbol extends StatefulWidget {
-  const LegendWithCustomSymbol({Key? key}) : super(key: key);
+class BarChart extends StatefulWidget {
+  const BarChart({Key? key}) : super(key: key);
 
   @override
-  State<LegendWithCustomSymbol> createState() => _LegendWithCustomSymbolState();
+  State<BarChart> createState() => _BarChartState();
 
   /// Create series list with multiple series
 }
 
-class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
+class _BarChartState extends State<BarChart> {
   List<charts.Series<dynamic, String>> seriesList = [];
   final bool animate = false;
   bool isloading = true;
@@ -197,7 +197,7 @@ class _LegendWithCustomSymbolState extends State<LegendWithCustomSymbol> {
           //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
-          DateTime currentDate = doc['data'].toDate();
+          DateTime currentDate = doc['data'];
           String transMota = doc['trans_mota'].split('_')[1];
 
           // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;

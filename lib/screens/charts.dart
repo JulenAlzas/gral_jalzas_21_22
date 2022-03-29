@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
-import 'package:gral_jalzas_21_22/screens/chartsExample.dart';
+import 'package:gral_jalzas_21_22/screens/barchart.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/gallery_scaffold.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
@@ -32,13 +32,9 @@ class _ChartsState extends State<Charts> {
   bool _isLoading = true;
   bool daytype = false;
   var transactionDocList;
-  double dataIntervals = 0.0;
+  double dataIntervals = 3.0;
   List<ChartDataDonut> _chartDonutData = [];
   List<_ChartData>? chartData = <_ChartData>[
-    // _ChartData(DateTime(2015, 1, 1), 21, 28),
-    // _ChartData(DateTime(2015, 1, 3), 24, 44),
-    // _ChartData(DateTime(2015, 1, 5), 36, 48),
-    // _ChartData(DateTime(2015, 1, 10), 20, 40),
   ];
 
   @override
@@ -76,9 +72,6 @@ class _ChartsState extends State<Charts> {
                       DonutDiagrama(chartDonutData: _chartDonutData),
                       lerroDiagrama(),
                       BarraDiagrama(screenSize: screenSize),
-                      SizedBox(
-                        height: screenSize.height * 0.4,
-                      )
                     ],
                   )
                 ],
@@ -242,8 +235,8 @@ class _ChartsState extends State<Charts> {
           .then((querySnapshot) {
         transactionDocList = querySnapshot;
 
-        DateTime nearestData = querySnapshot.first['data'].toDate();
-        DateTime latestData = querySnapshot.last['data'].toDate();
+        DateTime nearestData = querySnapshot.first['data'];
+        DateTime latestData = querySnapshot.last['data'];
 
         calculateIntervals(nearestData, latestData);
 
@@ -259,7 +252,7 @@ class _ChartsState extends State<Charts> {
           //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
-          DateTime currentDate = doc['data'].toDate();
+          DateTime currentDate = doc['data'];
 
           // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
           bool zerodaysDifference = (getDate.year == currentDate.year &&
@@ -383,9 +376,11 @@ class _ChartsState extends State<Charts> {
   void calculateIntervals(DateTime nearestData, DateTime latestData) {
     if (nearestData.year == latestData.year) {
       if (nearestData.month == latestData.month) {
+        if(latestData.month-nearestData.day>5){
+          int daysDif = latestData.day - nearestData.day;
+          dataIntervals = daysDif / 5;
+        }
         daytype = true;
-        int daysDif = latestData.day - nearestData.day;
-        dataIntervals = daysDif / 5;
       } else {
         int monthsDif = latestData.month - nearestData.month;
         dataIntervals = monthsDif / 5;
@@ -436,11 +431,11 @@ class BarraDiagrama extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: screenSize.width,
-      height: screenSize.height + 0.4,
+      height: screenSize.height * 0.4,
       child: GalleryScaffold(
-        title: 'Series Legend Custom Symbol',
-        subtitle: 'A series legend using a custom symbol renderer',
-        childBuilder: () => const LegendWithCustomSymbol(),
+        title: 'Barra-diagrama',
+        subtitle: 'Irabazi/galtze/sartutakoDirua',
+        childBuilder: () => const BarChart(),
       ),
     );
   }

@@ -61,7 +61,6 @@ class _ShowCardState extends State<ShowCard> {
   TextEditingController expiryFieldCtrl = TextEditingController();
 
   GlobalKey<FormState> formCardKey = GlobalKey<FormState>();
-  final CreditCardValidator _ccValidator = CreditCardValidator();
 
   @override
   void initState() {

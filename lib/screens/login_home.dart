@@ -133,11 +133,30 @@ class LoginHome extends StatelessWidget {
                 leading: const Icon(Icons.bar_chart),
                 title: const Text('Diagramak'),
                 onTap: () {
-                  Navigator.push(
+                  CredCardLogic.existTransactions().then((transExist) {
+                    if (transExist) {
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const Charts()),
+                        MaterialPageRoute(builder: (context) => const Charts()),
                       );
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Errorea:'),
+                              content: const Text(
+                                  'Ez da transakziorik existitzen grafikoak sortzeko.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          });
+                    }
+                  });
                 },
               )
             ],
