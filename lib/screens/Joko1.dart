@@ -13,6 +13,7 @@ import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/firedart.dart' as firedart;
+import 'package:lottie/lottie.dart';
 
 class Joko1 extends StatefulWidget {
   const Joko1({Key? key}) : super(key: key);
@@ -203,37 +204,35 @@ class _Joko1State extends State<Joko1> {
                                       hintStyle:
                                           TextStyle(color: eremuKolorea)),
                                   validator: (value) {
-                                    if((spinColor == Colors.pink)){                                      
-
+                                    if ((spinColor == Colors.pink)) {
                                       if (isNumeric(value!)) {
-                                      double sartutakoZenb =
-                                          double.parse(value);
-                                      if(kontudirua<=0 || kontudirua-sartutakoZenb<0){
-                                        return 'Kontuan dirua falta zaizu';
-                                      }
+                                        double sartutakoZenb =
+                                            double.parse(value);
+                                        if (kontudirua <= 0 ||
+                                            kontudirua - sartutakoZenb < 0) {
+                                          return 'Kontuan dirua falta zaizu';
+                                        }
 
-                                      setState(() {
-                                        sartutakodirua = sartutakoZenb;
-                                      });
-                                      if (sartutakoZenb < 0) {
-                                        return 'Zenbaki positiboa sartu behar duzu';
-                                      }
-                                      if (sartutakoZenb > 10000) {
-                                        return 'Gehienez 10.000€ sartu ditzazkezu';
-                                      }
-                                      if (sartutakoZenb < 10) {
-                                        return 'Gutxienez 10 sartu ditzazkezu';
-                                      }
+                                        setState(() {
+                                          sartutakodirua = sartutakoZenb;
+                                        });
+                                        if (sartutakoZenb < 0) {
+                                          return 'Zenbaki positiboa sartu behar duzu';
+                                        }
+                                        if (sartutakoZenb > 10000) {
+                                          return 'Gehienez 10.000€ sartu ditzazkezu';
+                                        }
+                                        if (sartutakoZenb < 10) {
+                                          return 'Gutxienez 10 sartu ditzazkezu';
+                                        }
 
-                                      return null;
-                                    } else {
+                                        return null;
+                                      } else {
                                         return 'Diru konpurua sartu!';
                                       }
-
-                                    }else{
+                                    } else {
                                       return null;
                                     }
-                                    
                                   }),
                             )),
                       ],
@@ -311,20 +310,35 @@ class _Joko1State extends State<Joko1> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Text('x3: IRABAZI DUZU!!',
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold)),
+                      child: SizedBox(
+                        height: screenSize.height * 0.5,
+                        child: Column(
+                          children: [
+                            const Text('x3: IRABAZI DUZU!!',
+                                style: TextStyle(
+                                    fontSize: 35, fontWeight: FontWeight.bold)),
+                            Stack(
+                              children: [
+                                Lottie.network(
+                                    'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                Lottie.network(
+                                    'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     );
                   });
 
               var dateTimestamp = Timestamp.now();
-              double irabazitakoa = sartutakodirua*3;
+              double irabazitakoa = sartutakodirua * 3;
 
               TransactionLogic.addTransaction(
                   transMota: 'joko1_irabazi',
                   zenbat: '+$irabazitakoa',
                   transDate: dateTimestamp);
-              
+
               updateTransactions();
             } else {
               showDialog(
@@ -345,7 +359,7 @@ class _Joko1State extends State<Joko1> {
                   transMota: 'joko1_galdu',
                   zenbat: '-$sartutakodirua',
                   transDate: dateTimestamp);
-              
+
               updateTransactions();
             }
           },
@@ -464,66 +478,64 @@ class _Joko1State extends State<Joko1> {
     );
   }
 
-  ClipRRect fruituAukeraketa(double widthBuilder, double heightBuilder,
+  Container fruituAukeraketa(double widthBuilder, double heightBuilder,
       List<String> fruitImages, Size screenSize) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: widthBuilder,
-        height: heightBuilder,
-        color: Colors.red,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Hautatu fruitu bat',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.blueAccent), borderRadius: const BorderRadius.all(Radius.circular(20)), color: Colors.transparent),
+      width: widthBuilder,
+      height: heightBuilder,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'Hautatu fruitu bat',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+              textAlign: TextAlign.center,
             ),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: fruitImages.length,
-                itemBuilder: (_, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndexOfFruits = index;
-                        spinColor = Colors.pink;
-                      });
-                    },
-                    child: Hero(
-                      tag: fruitImages[index],
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          color: selectedIndexOfFruits == index
-                              ? Colors.blue.withOpacity(0.5)
-                              : Colors.transparent,
-                          width: screenSize.height * 0.1,
-                          height: screenSize.height * 0.1,
-                          margin: const EdgeInsets.all(10),
-                          child: FadeInImage(
-                            placeholder:
-                                const AssetImage('assets/no-image.jpg'),
-                            image: AssetImage(fruitImages[index]),
-                            fit: BoxFit.cover,
-                          ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: fruitImages.length,
+              itemBuilder: (_, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndexOfFruits = index;
+                      spinColor = Colors.pink;
+                    });
+                  },
+                  child: Hero(
+                    tag: fruitImages[index],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        color: selectedIndexOfFruits == index
+                            ? Colors.blue.withOpacity(0.5)
+                            : Colors.transparent,
+                        width: screenSize.height * 0.1,
+                        height: screenSize.height * 0.1,
+                        margin: const EdgeInsets.all(10),
+                        child: FadeInImage(
+                          placeholder:
+                              const AssetImage('assets/no-image.jpg'),
+                          image: AssetImage(fruitImages[index]),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -552,6 +564,7 @@ class _Joko1State extends State<Joko1> {
         TextButton.icon(
             onPressed: () {
               LoginAuth.signOut();
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Homepage()),
@@ -636,7 +649,6 @@ class _Joko1State extends State<Joko1> {
   }
 
   Future<String?> updateTransactions() async {
-
     String userCred = '';
     double sumAllTransactions = 0.0;
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
@@ -704,7 +716,7 @@ class GameBackground extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/background_games.jpg"),
+          image: AssetImage("assets/backgroundSlots.jpg"),
           fit: BoxFit.cover,
         ),
       ),

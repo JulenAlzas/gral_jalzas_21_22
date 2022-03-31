@@ -127,6 +127,7 @@ class _ShowCardState extends State<ShowCard> {
           TextButton.icon(
               onPressed: () {
                 LoginAuth.signOut();
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const Homepage()),

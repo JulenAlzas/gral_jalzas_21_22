@@ -86,6 +86,7 @@ class _EditCardState extends State<EditCard> {
           TextButton.icon(
               onPressed: () {
                 LoginAuth.signOut();
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const Homepage()),

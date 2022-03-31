@@ -7,6 +7,7 @@ import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/gallery_scaffold.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -32,7 +33,7 @@ class _ChartsState extends State<Charts> {
   bool _isLoading = true;
   bool daytype = false;
   var transactionDocList;
-  double dataIntervals = 3.0;
+  double dataIntervals = 1.0;
   List<ChartDataDonut> _chartDonutData = [];
   List<_ChartData>? chartData = <_ChartData>[
   ];
@@ -63,7 +64,7 @@ class _ChartsState extends State<Charts> {
       appBar: appBarDetails(context),
       body: SingleChildScrollView(
         child: _isLoading
-            ? const KargatzeAnimazioa()
+            ? Lottie.network('https://assets2.lottiefiles.com/packages/lf20_r7h02cq4.json')
             : Stack(
                 children: [
                   const BackgroundHome(),
@@ -115,6 +116,7 @@ class _ChartsState extends State<Charts> {
         TextButton.icon(
             onPressed: () {
               LoginAuth.signOut();
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Homepage()),
@@ -302,7 +304,7 @@ class _ChartsState extends State<Charts> {
         setDonutData();
       });
     }
-
+    // await Future.delayed(const Duration(seconds: 3));
     setState(() {
       _isLoading = false;
     });
@@ -375,9 +377,9 @@ class _ChartsState extends State<Charts> {
 
   void calculateIntervals(DateTime nearestData, DateTime latestData) {
     if (nearestData.year == latestData.year) {
+      int daysDif = latestData.day - nearestData.day;
       if (nearestData.month == latestData.month) {
-        if(latestData.month-nearestData.day>5){
-          int daysDif = latestData.day - nearestData.day;
+        if(latestData.month-nearestData.day>=5){
           dataIntervals = daysDif / 5;
         }
         daytype = true;

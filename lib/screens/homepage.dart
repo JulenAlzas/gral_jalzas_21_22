@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/register_screen.dart';
+import 'package:intl/intl.dart';
 
 import 'background.dart';
 
@@ -30,29 +32,71 @@ class OngiEtorri extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SafeArea(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'YouPlay4You',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline2
-                        ?.copyWith(color: Colors.white),
-                  ),
-                  const SizedBox(height: 20),
-                  CardImage(screenWidth: screenWidth),
-                  const SizedBox(height: 20),
-                  const CustomButtons(),
-                ]),
-          )
-        ],
-      ),
+    DateTime currentTimestamp = DateTime.now();
+    DateFormat formatterDate = DateFormat('dd/MM/yyyy');
+    DateFormat formatteOrduMin = DateFormat.jm();
+    var currentDate = formatterDate.format(currentTimestamp);
+    var currentOrduMin = formatteOrduMin.format(currentTimestamp);
+
+    return Row(
+      children: [
+        Container(
+          width: screenWidth * 0.3,
+          height: screenSize.height,
+          decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/sideImage.jpg'),
+            fit: BoxFit.cover),
+          ),
+        ),
+        Container(
+          width: screenWidth*0.7,
+          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(currentOrduMin, style: TextStyle(fontSize: 30, fontFamily: 'avenir', fontWeight: FontWeight.w500),),
+              Text(currentDate, style: TextStyle(fontSize: 15, fontFamily: 'avenir', color: Colors.grey),),
+              SizedBox(height: screenSize.height*0.05),
+              Text(
+                'UPlay4U',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2
+                    ?.copyWith(color: Colors.white),
+              ),
+              const SizedBox(height: 20),
+              CardImage(screenWidth: screenWidth),
+              SizedBox(height: screenSize.height*0.15),
+              const CustomButtons(),
+            ],
+          ),
+        )
+      ],
     );
+
+    // return SingleChildScrollView(
+    //   child: Column(
+    //     children: [
+    //       SafeArea(
+    //         child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.center,
+    //             children: [
+    //               Text(
+    //                 'YouPlay4You',
+    //                 style: Theme.of(context)
+    //                     .textTheme
+    //                     .headline2
+    //                     ?.copyWith(color: Colors.white),
+    //               ),
+    //               const SizedBox(height: 20),
+    //               CardImage(screenWidth: screenWidth),
+    //               const SizedBox(height: 20),
+    //               const CustomButtons(),
+    //             ]),
+    //       )
+    //     ],
+    //   ),
+    // );
   }
 }
 
@@ -63,15 +107,15 @@ class CustomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        CustomButton(
+      children: [
+        const CustomButton(
             myname: 'login', myiconName: Icons.login, mycolor: Colors.pink),
         CustomButton(
             myname: 'register',
             myiconName: Icons.app_registration,
-            mycolor: Colors.pink),
+            mycolor: Colors.pink.withOpacity(0.1)),
       ],
     );
   }
@@ -80,7 +124,7 @@ class CustomButtons extends StatelessWidget {
 class CustomButton extends StatelessWidget {
   final String myname;
   final IconData myiconName;
-  final MaterialColor mycolor;
+  final Color mycolor;
 
   const CustomButton({
     Key? key,
@@ -91,24 +135,27 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      heroTag: myname,
-      onPressed: () {
-        if (myname == 'login') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
-          );
-        } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RegisterScreen()),
-          );
-        }
-      },
-      label: Text(myname),
-      icon: Icon(myiconName),
-      backgroundColor: mycolor,
+    return SizedBox(
+      width:  MediaQuery.of(context).size.width*0.5,
+      child: FloatingActionButton.extended(
+        heroTag: myname,
+        onPressed: () {
+          if (myname == 'login') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RegisterScreen()),
+            );
+          }
+        },
+        label: Text(myname),
+        icon: Icon(myiconName),
+        backgroundColor: mycolor,
+      ),
     );
   }
 }

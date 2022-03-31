@@ -17,6 +17,7 @@ import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/firedart.dart' as firedart;
+import 'package:lottie/lottie.dart';
 
 class Joko2 extends StatefulWidget {
   const Joko2({Key? key}) : super(key: key);
@@ -360,9 +361,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x5: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x5: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -383,9 +400,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x5: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x5: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -405,9 +438,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x3: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x3: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -427,9 +476,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x3: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x3: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -450,9 +515,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x4: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x4: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -473,9 +554,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x4: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x4: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -496,9 +593,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x5: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x5: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -519,9 +632,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x5: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x5: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -541,9 +670,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x2: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x2: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -563,9 +708,25 @@ class _Joko2State extends State<Joko2> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('x2: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
+                            child: SizedBox(
+                              height: screenSize.height * 0.5,
+                              child: Column(
+                                children: [
+                                  const Text('x2: IRABAZI DUZU!!',
+                                      style: TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: [
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                      Lottie.network(
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         });
                     var dateTimestamp = Timestamp.now();
@@ -856,6 +1017,7 @@ class _Joko2State extends State<Joko2> {
         TextButton.icon(
             onPressed: () {
               LoginAuth.signOut();
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Homepage()),
