@@ -42,8 +42,8 @@ class RegisterBackground extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(255, 199, 237, 1),
                     borderRadius: BorderRadius.circular(25),
-                    boxShadow: const[
-                       BoxShadow(
+                    boxShadow: const [
+                      BoxShadow(
                         color: Colors.black45,
                         blurRadius: 50.0,
                       )
@@ -204,23 +204,23 @@ class RegisterBackground extends StatelessWidget {
                                           builder: (context) =>
                                               const LoginScreen()),
                                     );
-                                  }else{
+                                  } else {
                                     String error = value.toString();
                                     showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('Errorea:'),
-                                    content:  Text(error),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'OK'),
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                });
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Errorea:'),
+                                            content: Text(error),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   }
                                 });
                               }

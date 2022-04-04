@@ -13,9 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// Bar chart with custom symbol in legend example.
-// EXCLUDE_FROM_GALLERY_DOCS_START
-import 'dart:math';
 // EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -79,14 +76,15 @@ class _BarChartState extends State<BarChart> {
         animate: animate,
         // barGroupingType: charts.BarGroupingType.grouped,
         animationDuration: Duration.zero,
-      //Renderrak bata bestearekin gainjartzen dira
-      // barRendererDecorator: charts.BarLabelDecorator<String>(),
+        //Renderrak bata bestearekin gainjartzen dira
+        // barRendererDecorator: charts.BarLabelDecorator<String>(),
         // domainAxis:  const charts.OrdinalAxisSpec(),
         //Irristatzea horizontala lortzeko
         domainAxis: charts.OrdinalAxisSpec(
             viewport: charts.OrdinalViewport(
-          DateFormat('yyyy-MM-dd').format(seriesList[0].data[0].date),//Hasiera data
-          3,//Zenbat erakutsi
+          DateFormat('yyyy-MM-dd')
+              .format(seriesList[0].data[0].date), //Hasiera data
+          3, //Zenbat erakutsi
         )),
         behaviors: [
           charts.SeriesLegend(),
@@ -94,9 +92,10 @@ class _BarChartState extends State<BarChart> {
           charts.PanAndZoomBehavior(),
         ],
 
-        defaultRenderer:
-            charts.BarRendererConfig(symbolRenderer: IconRenderer(Icons.cloud),
-            barRendererDecorator: charts.BarLabelDecorator<String>(),),
+        defaultRenderer: charts.BarRendererConfig(
+          symbolRenderer: IconRenderer(Icons.cloud),
+          barRendererDecorator: charts.BarLabelDecorator<String>(),
+        ),
       );
     }
   }
@@ -150,12 +149,25 @@ class _BarChartState extends State<BarChart> {
               amountAdded1day += transDoubleValue;
             }
 
-            getDate = ifLastDocumetAddAndroidWeb(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
+            getDate = ifLastDocumetAddAndroidWeb(
+                doc,
+                querySnapshot,
+                getDate,
+                currentDate,
+                kontuanSartutakoa,
+                amountAdded1day,
+                kontuanIrabazitakoa,
+                amountGained1day,
+                kontuanGaldutakoa,
+                amountLost1day);
           } else {
             if (isNotInitializedDate(getDate)) {
-              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
-              kontuanIrabazitakoa.add(AmountDateTrans(getDate, amountGained1day.toInt()));
-              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+              kontuanSartutakoa
+                  .add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+              kontuanIrabazitakoa
+                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+              kontuanGaldutakoa
+                  .add(AmountDateTrans(getDate, amountLost1day.toInt()));
               amountGained1day = 0.0;
               amountLost1day = 0.0;
               amountAdded1day = 0.0;
@@ -168,7 +180,17 @@ class _BarChartState extends State<BarChart> {
               amountAdded1day += transDoubleValue;
             }
 
-            getDate = ifLastDocumetAddAndroidWeb(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
+            getDate = ifLastDocumetAddAndroidWeb(
+                doc,
+                querySnapshot,
+                getDate,
+                currentDate,
+                kontuanSartutakoa,
+                amountAdded1day,
+                kontuanIrabazitakoa,
+                amountGained1day,
+                kontuanGaldutakoa,
+                amountLost1day);
           }
           getDate = currentDate;
         }
@@ -178,8 +200,6 @@ class _BarChartState extends State<BarChart> {
 
       String userId = auth.userId;
 
-      double irabazitakoa = 0.0;
-      double galdutakoa = 0.0;
       await firedart.Firestore.instance
           .collection('users')
           .document(userId)
@@ -187,7 +207,7 @@ class _BarChartState extends State<BarChart> {
           .orderBy('data', descending: false)
           .get()
           .then((querySnapshot) {
-         DateTime getDate = DateTime(1555, 1, 1);
+        DateTime getDate = DateTime(1555, 1, 1);
 
         double amountGained1day = 0.0;
         double amountLost1day = 0.0;
@@ -201,7 +221,9 @@ class _BarChartState extends State<BarChart> {
           String transMota = doc['trans_mota'].split('_')[1];
 
           // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
-          bool zerodaysDifference = (getDate.year == currentDate.year && getDate.month == currentDate.month && getDate.day == currentDate.day);
+          bool zerodaysDifference = (getDate.year == currentDate.year &&
+              getDate.month == currentDate.month &&
+              getDate.day == currentDate.day);
 
           if (zerodaysDifference) {
             if (transMota == 'irabazi') {
@@ -212,12 +234,25 @@ class _BarChartState extends State<BarChart> {
               amountAdded1day += transDoubleValue;
             }
 
-            getDate = ifLastDocumendAddDesktop(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
+            getDate = ifLastDocumendAddDesktop(
+                doc,
+                querySnapshot,
+                getDate,
+                currentDate,
+                kontuanSartutakoa,
+                amountAdded1day,
+                kontuanIrabazitakoa,
+                amountGained1day,
+                kontuanGaldutakoa,
+                amountLost1day);
           } else {
             if (isNotInitializedDate(getDate)) {
-              kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
-              kontuanIrabazitakoa.add(AmountDateTrans(getDate, amountGained1day.toInt()));
-              kontuanGaldutakoa.add(AmountDateTrans(getDate, amountLost1day.toInt()));
+              kontuanSartutakoa
+                  .add(AmountDateTrans(getDate, amountAdded1day.toInt()));
+              kontuanIrabazitakoa
+                  .add(AmountDateTrans(getDate, amountGained1day.toInt()));
+              kontuanGaldutakoa
+                  .add(AmountDateTrans(getDate, amountLost1day.toInt()));
               amountGained1day = 0.0;
               amountLost1day = 0.0;
               amountAdded1day = 0.0;
@@ -230,7 +265,17 @@ class _BarChartState extends State<BarChart> {
               amountAdded1day += transDoubleValue;
             }
 
-            getDate = ifLastDocumendAddDesktop(doc, querySnapshot, getDate, currentDate, kontuanSartutakoa, amountAdded1day, kontuanIrabazitakoa, amountGained1day, kontuanGaldutakoa, amountLost1day);
+            getDate = ifLastDocumendAddDesktop(
+                doc,
+                querySnapshot,
+                getDate,
+                currentDate,
+                kontuanSartutakoa,
+                amountAdded1day,
+                kontuanIrabazitakoa,
+                amountGained1day,
+                kontuanGaldutakoa,
+                amountLost1day);
           }
           getDate = currentDate;
         }
@@ -253,8 +298,7 @@ class _BarChartState extends State<BarChart> {
             DateFormat('yyyy-MM-dd').format(sales.date),
         measureFn: (AmountDateTrans sales, _) => sales.sales,
         data: kontuanIrabazitakoa,
-        labelAccessorFn: (AmountDateTrans sales, _) =>
-            sales.sales.toString(),
+        labelAccessorFn: (AmountDateTrans sales, _) => sales.sales.toString(),
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
       ),
       charts.Series<AmountDateTrans, String>(
@@ -263,8 +307,7 @@ class _BarChartState extends State<BarChart> {
             DateFormat('yyyy-MM-dd').format(sales.date),
         measureFn: (AmountDateTrans sales, _) => sales.sales,
         data: kontuanGaldutakoa,
-        labelAccessorFn: (AmountDateTrans sales, _) =>
-            sales.sales.toString(),
+        labelAccessorFn: (AmountDateTrans sales, _) => sales.sales.toString(),
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
       ),
     ];
@@ -274,7 +317,17 @@ class _BarChartState extends State<BarChart> {
     });
   }
 
-  DateTime ifLastDocumetAddAndroidWeb(QueryDocumentSnapshot<Map<String, dynamic>> doc, QuerySnapshot<Map<String, dynamic>> querySnapshot, DateTime getDate, DateTime currentDate, List<AmountDateTrans> kontuanSartutakoa, double amountAdded1day, List<AmountDateTrans> kontuanIrabazitakoa, double amountGained1day, List<AmountDateTrans> kontuanGaldutakoa, double amountLost1day) {
+  DateTime ifLastDocumetAddAndroidWeb(
+      QueryDocumentSnapshot<Map<String, dynamic>> doc,
+      QuerySnapshot<Map<String, dynamic>> querySnapshot,
+      DateTime getDate,
+      DateTime currentDate,
+      List<AmountDateTrans> kontuanSartutakoa,
+      double amountAdded1day,
+      List<AmountDateTrans> kontuanIrabazitakoa,
+      double amountGained1day,
+      List<AmountDateTrans> kontuanGaldutakoa,
+      double amountLost1day) {
     if (doc.id == querySnapshot.docs.last.id) {
       getDate = currentDate;
       kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));
@@ -285,9 +338,20 @@ class _BarChartState extends State<BarChart> {
     return getDate;
   }
 
-  bool isNotInitializedDate(DateTime getDate) => getDate != DateTime(1555, 1, 1);
+  bool isNotInitializedDate(DateTime getDate) =>
+      getDate != DateTime(1555, 1, 1);
 
-  DateTime ifLastDocumendAddDesktop(firedart.Document doc, List<firedart.Document> querySnapshot, DateTime getDate, DateTime currentDate, List<AmountDateTrans> kontuanSartutakoa, double amountAdded1day, List<AmountDateTrans> kontuanIrabazitakoa, double amountGained1day, List<AmountDateTrans> kontuanGaldutakoa, double amountLost1day) {
+  DateTime ifLastDocumendAddDesktop(
+      firedart.Document doc,
+      List<firedart.Document> querySnapshot,
+      DateTime getDate,
+      DateTime currentDate,
+      List<AmountDateTrans> kontuanSartutakoa,
+      double amountAdded1day,
+      List<AmountDateTrans> kontuanIrabazitakoa,
+      double amountGained1day,
+      List<AmountDateTrans> kontuanGaldutakoa,
+      double amountLost1day) {
     if (doc.id == querySnapshot.last.id) {
       getDate = currentDate;
       kontuanSartutakoa.add(AmountDateTrans(getDate, amountAdded1day.toInt()));

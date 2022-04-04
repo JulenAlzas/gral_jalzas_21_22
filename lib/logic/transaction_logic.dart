@@ -1,10 +1,7 @@
-import 'package:awesome_card/awesome_card.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-import 'package:firedart/auth/exceptions.dart' show AuthException;
 import 'package:firedart/firedart.dart' as firedart;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionLogic {
@@ -19,11 +16,12 @@ class TransactionLogic {
         String userCredential =
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
-
-        await _firestore.collection('users')
+        await _firestore
+            .collection('users')
             .doc(userCredential)
             .collection('moneyTransactions')
-            .doc().set({
+            .doc()
+            .set({
           'data': transDate,
           'trans_mota': transMota,
           'zenbat': zenbat,
@@ -48,15 +46,15 @@ class TransactionLogic {
             .document(randomId())
             .set(
           {
-          'data': dateFormatedInDateTime,
-          'trans_mota': transMota,
-          'zenbat': zenbat,
+            'data': dateFormatedInDateTime,
+            'trans_mota': transMota,
+            'zenbat': zenbat,
           },
         );
 
         return 'Trans eguneratua';
       } on authforandroid.FirebaseAuthException catch (e) {
-          return 'Errorea: $e';
+        return 'Errorea: $e';
       }
     }
   }

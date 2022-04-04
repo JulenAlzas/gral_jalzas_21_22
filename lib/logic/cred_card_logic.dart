@@ -1,6 +1,5 @@
 import 'package:awesome_card/awesome_card.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
-import 'package:firedart/auth/exceptions.dart' show AuthException;
 import 'package:firedart/firedart.dart' as firedart;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -132,7 +131,7 @@ class CredCardLogic {
           return false;
         }
         return true;
-      } on authforandroid.FirebaseAuthException catch (e) {
+      } on authforandroid.FirebaseAuthException catch (_) {
         return false;
       }
     } else {
@@ -169,7 +168,7 @@ class CredCardLogic {
         }
 
         return true;
-      } on authforandroid.FirebaseAuthException catch (e) {
+      } on authforandroid.FirebaseAuthException catch (_) {
         return false;
       }
     }
@@ -200,7 +199,7 @@ class CredCardLogic {
           return false;
         }
         return true;
-      } on authforandroid.FirebaseAuthException catch (e) {
+      } on authforandroid.FirebaseAuthException catch (_) {
         return false;
       }
     } else {
@@ -215,7 +214,7 @@ class CredCardLogic {
             .collection('users')
             .document(userId)
             .collection('moneyTransactions')
-             .orderBy('data', descending: false)
+            .orderBy('data', descending: false)
             .get()
             .then((querySnapshot) {
           if (querySnapshot.isNotEmpty) {
@@ -228,7 +227,7 @@ class CredCardLogic {
         }
 
         return true;
-      } on authforandroid.FirebaseAuthException catch (e) {
+      } on authforandroid.FirebaseAuthException catch (_) {
         return false;
       }
     }
@@ -328,7 +327,7 @@ class CredCardLogic {
         //   },
         // );
 
-         await firedart.Firestore.instance
+        await firedart.Firestore.instance
             .collection('users')
             .document(userId)
             .collection('credcard')
@@ -355,9 +354,72 @@ class CredCardLogic {
           },
         );
 
-        
-
         return 'Erab eguneratua';
+      } on authforandroid.FirebaseAuthException catch (e) {
+        return 'Errorea: $e';
+      }
+    }
+  }
+
+  static deleteCard() async {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+      try {
+        String userCredential =
+            authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+
+        String docId = '';
+
+        await _firestore
+            .collection('users')
+            .doc(userCredential)
+            .collection('credcard')
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            docId = querySnapshot.docs.first.id;
+          }
+        });
+
+        await _firestore
+            .collection('users')
+            .doc(userCredential)
+            .collection('credcard')
+            .doc(docId)
+            .delete();
+
+        return 'Erab ezabatua';
+      } on authforandroid.FirebaseAuthException catch (e) {
+        return 'Errorea: $e';
+      }
+    } else {
+      try {
+        firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
+
+        String userId = auth.userId;
+
+        String docId = '';
+
+        await firedart.Firestore.instance
+            .collection('users')
+            .document(userId)
+            .collection('credcard')
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.isNotEmpty) {
+            docId = querySnapshot.first.id;
+          }
+        });
+
+        await firedart.Firestore.instance
+            .collection('users')
+            .document(userId)
+            .collection('credcard')
+            .document(docId)
+            .delete();
+
+        return 'Erab ezabatua';
       } on authforandroid.FirebaseAuthException catch (e) {
         return 'Errorea: $e';
       }

@@ -43,7 +43,6 @@ class _EditProfileState extends State<EditProfile> {
   bool _oldPassisVisible = false;
   bool updateRecentLogRequired = false;
 
-
   @override
   void initState() {
     getUserEmail();
@@ -58,15 +57,14 @@ class _EditProfileState extends State<EditProfile> {
 
     return WillPopScope(
       onWillPop: () async {
-        if(_mustWriteOldPassWell){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Pasahitz zaharra ondo jar ezazu edo berlogeatu.')));
-      }else{
-        Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginHome()));
-      }
+        if (_mustWriteOldPassWell) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content:
+                  Text('Pasahitz zaharra ondo jar ezazu edo berlogeatu.')));
+        } else {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LoginHome()));
+        }
         return false;
       },
       child: Scaffold(
@@ -96,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
         children: <Widget>[
           const SizedBox(height: 15),
           Container(
-            height: screenSize.height *0.1,
+            height: screenSize.height * 0.1,
             padding: const EdgeInsets.only(left: 30),
             child: ListView(
               children: const [
@@ -196,7 +194,7 @@ class _EditProfileState extends State<EditProfile> {
                               _oldPassisVisible = false;
                               updateRecentLogRequired = false;
                               _oldpassw = '';
-                              wrongPassCount =0;
+                              wrongPassCount = 0;
                               _mustWriteOldPassWell = false;
                             });
                             showDialog(
@@ -287,7 +285,9 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
-                          } else if (profileEditResult == 'too-many-requests' || profileEditResult == 'TOO_MANY_ATTEMPTS_TRY_LATER') {
+                          } else if (profileEditResult == 'too-many-requests' ||
+                              profileEditResult ==
+                                  'TOO_MANY_ATTEMPTS_TRY_LATER') {
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -620,7 +620,6 @@ class _EditProfileState extends State<EditProfile> {
         });
       });
     } else {
-
       await firedart.FirebaseAuth.instance.getUser().then((user) {
         userCred = user.id;
       });

@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:credit_card_validator/validation_results.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';
@@ -11,6 +10,7 @@ import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/create_card.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
+import 'package:gral_jalzas_21_22/screens/login_home.dart';
 import 'package:gral_jalzas_21_22/screens/show_card.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/firedart.dart' as firedart;
@@ -320,102 +320,194 @@ class _EditCardState extends State<EditCard> {
                       ],
                     ),
                   ),
-                  Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(16.0),
-                        primary: Colors.white,
-                        textStyle: const TextStyle(fontSize: 20),
-                        backgroundColor: Colors.deepPurple,
-                      ),
-                      onPressed: () {
-                        bool isFormValid =
-                            formCardKey.currentState?.validate() ?? false;
-                        if (isFormValid) {
-                          CredCardLogic.isCardCreatedForCurrentUser()
-                              .then((cardExists) {
-                            if (cardExists) {
-                              CredCardLogic.editCard(
-                                      txartelZenbakia: cardNumber,
-                                      iraungitzea: expiryDate,
-                                      cvv: cvv,
-                                      titularra: cardHolderName,
-                                      txartelmota: txartelmota)
-                                  .then((result) {
-                                if (result == 'Erab eguneratua') {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text('Mezua:'),
-                                          content: const Text(
-                                              'Kred txartela eguneratu da.'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, 'OK'),
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      });
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.white,
+                          textStyle: const TextStyle(fontSize: 20),
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                        onPressed: () {
+                          bool isFormValid =
+                              formCardKey.currentState?.validate() ?? false;
+                          if (isFormValid) {
+                            CredCardLogic.isCardCreatedForCurrentUser()
+                                .then((cardExists) {
+                              if (cardExists) {
+                                CredCardLogic.editCard(
+                                        txartelZenbakia: cardNumber,
+                                        iraungitzea: expiryDate,
+                                        cvv: cvv,
+                                        titularra: cardHolderName,
+                                        txartelmota: txartelmota)
+                                    .then((result) {
+                                  if (result == 'Erab eguneratua') {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Mezua:'),
+                                            content: const Text(
+                                                'Kred txartela eguneratu da.'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
 
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const ShowCard(
-                                              title: 'Diru-zorroa',
-                                            )),
-                                  );
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text('Errorea:'),
-                                          content: Text(result),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, 'OK'),
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                }
-                              });
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text('Mezua:'),
-                                      content: const Text(
-                                          'Ez duzu kreditu txartela!.'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const ShowCard(
+                                                title: 'Diru-zorroa',
+                                              )),
                                     );
-                                  });
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const CreateCard(
-                                          title: 'Sortu txartela',
-                                        )),
-                              );
-                            }
-                          });
-                        }
-                      },
-                      child: const Text('Aldatu'),
-                    ),
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Errorea:'),
+                                            content: Text(result),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  }
+                                });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Mezua:'),
+                                        content: const Text(
+                                            'Ez duzu kreditu txartela!.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const CreateCard(
+                                            title: 'Sortu txartela',
+                                          )),
+                                );
+                              }
+                            });
+                          }
+                        },
+                        child: const Text('Aldatu'),
+                      ),
+                      SizedBox(width: screenSize.width * 0.05),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.white,
+                          textStyle: const TextStyle(fontSize: 20),
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                        onPressed: () {
+                          bool isFormValid =
+                              formCardKey.currentState?.validate() ?? false;
+                          if (isFormValid) {
+                            CredCardLogic.isCardCreatedForCurrentUser()
+                                .then((cardExists) {
+                              if (cardExists) {
+                                CredCardLogic.deleteCard().then((result) {
+                                  if (result == 'Erab ezabatua') {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Mezua:'),
+                                            content: const Text(
+                                                'Kred txartela ezabatu da.'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginHome()),
+                                                  );
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Errorea:'),
+                                            content: Text(result),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  }
+                                });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Mezua:'),
+                                        content: const Text(
+                                            'Ez duzu kreditu txartela!.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const CreateCard(
+                                            title: 'Sortu txartela',
+                                          )),
+                                );
+                              }
+                            });
+                          }
+                        },
+                        child: const Icon(Icons.delete),
+                      )
+                    ],
                   )
                 ],
               ),

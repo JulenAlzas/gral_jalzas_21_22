@@ -47,15 +47,14 @@ class _DeleteAccountState extends State<DeleteAccount> {
 
     return WillPopScope(
       onWillPop: () async {
-        if(_mustWriteOldPassWell){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Pasahitz zaharra ondo jar ezazu edo berlogeatu.')));
-      }else{
-        Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginHome()));
-      }
+        if (_mustWriteOldPassWell) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content:
+                  Text('Pasahitz zaharra ondo jar ezazu edo berlogeatu.')));
+        } else {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LoginHome()));
+        }
         return false;
       },
       child: Scaffold(
@@ -130,8 +129,8 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                 builder: (context) {
                                   return AlertDialog(
                                     title: const Text('Mezua'),
-                                    content: const Text(
-                                        'Erabiltzailea ezabatu da.'),
+                                    content:
+                                        const Text('Erabiltzailea ezabatu da.'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () =>
@@ -141,13 +140,12 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                     ],
                                   );
                                 });
-                              Navigator.pop(context);
-                              Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const LoginScreen()),
-                                          );
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
+                            );
                           } else if (profileEditResult == 'wrong-password') {
                             setState(() {
                               wrongPassCount++;
@@ -234,12 +232,12 @@ class _DeleteAccountState extends State<DeleteAccount> {
       child: SizedBox(
         width: screenSize.width * 0.85,
         child: TextFormField(
-          enabled: false,
+            enabled: false,
             style: TextStyle(color: eremuKolorea),
             initialValue: initialText,
             onChanged: (changedValue) {
               setState(() {
-                  _email = changedValue;
+                _email = changedValue;
               });
             },
             decoration: InputDecoration(
@@ -257,17 +255,17 @@ class _DeleteAccountState extends State<DeleteAccount> {
                 hintText: hintext,
                 hintStyle: TextStyle(color: eremuKolorea)),
             validator: (value) {
-                String pattern =
-                    r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$';
+              String pattern =
+                  r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$';
 
-                RegExp regExp = RegExp(pattern);
-                if (value != null &&
-                    regExp.hasMatch(value) &&
-                    value.length <= 254) {
-                  return null;
-                } else {
-                  return 'E-posta ez da zuzena';
-                }
+              RegExp regExp = RegExp(pattern);
+              if (value != null &&
+                  regExp.hasMatch(value) &&
+                  value.length <= 254) {
+                return null;
+              } else {
+                return 'E-posta ez da zuzena';
+              }
             }),
       ),
     );
@@ -316,15 +314,16 @@ class _DeleteAccountState extends State<DeleteAccount> {
                       ),
                     )),
                 validator: (value) {
-                    String pattern =
-                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
+                  String pattern =
+                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
-                    RegExp regExp = RegExp(pattern);
-                    if (value != null && regExp.hasMatch(value)) {
-                      return null;
-                    } else {
-                      return 'Passhitz zaharrak gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
-                    }                },
+                  RegExp regExp = RegExp(pattern);
+                  if (value != null && regExp.hasMatch(value)) {
+                    return null;
+                  } else {
+                    return 'Passhitz zaharrak gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
+                  }
+                },
               ),
             ),
           ],
@@ -371,15 +370,15 @@ class _DeleteAccountState extends State<DeleteAccount> {
                   ),
                 )),
             validator: (value) {
-                String pattern =
-                    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
+              String pattern =
+                  r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
-                RegExp regExp = RegExp(pattern);
-                if (value != null && regExp.hasMatch(value)) {
-                  return null;
-                } else {
-                  return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
-                }
+              RegExp regExp = RegExp(pattern);
+              if (value != null && regExp.hasMatch(value)) {
+                return null;
+              } else {
+                return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
+              }
             },
           ),
         ),
@@ -434,7 +433,6 @@ class _DeleteAccountState extends State<DeleteAccount> {
       setState(() {
         _email = currentUser!.email!;
       });
-
     }
     setState(() {
       _isLoading = false;

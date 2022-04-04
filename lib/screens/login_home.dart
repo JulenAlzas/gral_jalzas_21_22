@@ -105,7 +105,7 @@ class LoginHome extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.credit_card_rounded),
-                title: const Text('Txartel aldaketa'),
+                title: const Text('Txartela modifikatu'),
                 onTap: () {
                   CredCardLogic.isCardCreatedForCurrentUser()
                       .then((cardExists) {

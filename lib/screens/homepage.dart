@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/register_screen.dart';
@@ -44,19 +43,29 @@ class OngiEtorri extends StatelessWidget {
           width: screenWidth * 0.3,
           height: screenSize.height,
           decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/sideImage.jpg'),
-            fit: BoxFit.cover),
+            image: DecorationImage(
+                image: AssetImage('assets/sideImage.jpg'), fit: BoxFit.cover),
           ),
         ),
         Container(
-          width: screenWidth*0.7,
+          width: screenWidth * 0.7,
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(currentOrduMin, style: TextStyle(fontSize: 30, fontFamily: 'avenir', fontWeight: FontWeight.w500),),
-              Text(currentDate, style: TextStyle(fontSize: 15, fontFamily: 'avenir', color: Colors.grey),),
-              SizedBox(height: screenSize.height*0.05),
+              Text(
+                currentOrduMin,
+                style: const TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'avenir',
+                    fontWeight: FontWeight.w500),
+              ),
+              Text(
+                currentDate,
+                style: const TextStyle(
+                    fontSize: 15, fontFamily: 'avenir', color: Colors.grey),
+              ),
+              SizedBox(height: screenSize.height * 0.05),
               Text(
                 'UPlay4U',
                 style: Theme.of(context)
@@ -66,7 +75,7 @@ class OngiEtorri extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               CardImage(screenWidth: screenWidth),
-              SizedBox(height: screenSize.height*0.15),
+              SizedBox(height: screenSize.height * 0.15),
               const CustomButtons(),
             ],
           ),
@@ -136,7 +145,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width:  MediaQuery.of(context).size.width*0.5,
+      width: MediaQuery.of(context).size.width * 0.5,
       child: FloatingActionButton.extended(
         heroTag: myname,
         onPressed: () {

@@ -1,13 +1,12 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-class LoginProvider extends ChangeNotifier{
 
+class LoginProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  
+
   String _pass = '';
 
-  String get pass{
+  String get pass {
     return _pass;
   }
 
@@ -20,19 +19,14 @@ class LoginProvider extends ChangeNotifier{
   double formHeight = 275;
   bool seePassButton = false;
 
-
-  bool isValidForm(){
-
-    if(formKey.currentState != null && formKey.currentState!.validate()){
+  bool isValidForm() {
+    if (formKey.currentState != null && formKey.currentState!.validate()) {
       formHeight = 275;
-    }
-    else if(formKey.currentState != null){
+    } else if (formKey.currentState != null) {
       formHeight = 320;
     }
-  notifyListeners();
+    notifyListeners();
 
-    return formKey.currentState?.validate()??false;
+    return formKey.currentState?.validate() ?? false;
   }
-
-
 }

@@ -1,14 +1,9 @@
-import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:credit_card_validator/validation_results.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/firedart.dart' as firedart;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';
-import 'package:credit_card_validator/credit_card_validator.dart';
-import 'package:credit_card_type_detector/credit_card_type_detector.dart';
-import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/logic/transaction_logic.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
@@ -40,7 +35,7 @@ class _ShowCardState extends State<ShowCard> {
   double kontudirua = 0.0;
   double minWidthKontudirua = 0.0;
   double maxWidthKontudirua = 0.0;
-   double sartutakodirua = 0.0;
+  double sartutakodirua = 0.0;
 
   double kontuDiruaTextSize = 0.0;
   double kontuDiruErreala = 0.0;
@@ -54,7 +49,7 @@ class _ShowCardState extends State<ShowCard> {
 
   bool _isLoading = true;
 
-  var transactionDocList;
+  var transactionDocList = [];
 
   late FocusNode _focusNode;
   TextEditingController cardNumberCtrl = TextEditingController();
@@ -101,7 +96,8 @@ class _ShowCardState extends State<ShowCard> {
       transBuilderHeight = screenSize.height * 0.075;
       transBuilderSizedSize = screenSize.width * 0.05;
       transAmountFontSize = 35;
-      widthForTransAmount =(transBuilderWidth /3)-(transBuilderSizedSize *2);
+      widthForTransAmount =
+          (transBuilderWidth / 3) - (transBuilderSizedSize * 2);
     } else {
       cardWidth = screenSize.width * 0.35;
       cardHeight = screenSize.height * 0.4;
@@ -115,7 +111,8 @@ class _ShowCardState extends State<ShowCard> {
       transBuilderHeight = screenSize.height * 0.07;
       transBuilderSizedSize = screenSize.width * 0.1;
       transAmountFontSize = 35;
-      widthForTransAmount =(transBuilderWidth /3)-(transBuilderSizedSize *2)+100;
+      widthForTransAmount =
+          (transBuilderWidth / 3) - (transBuilderSizedSize * 2) + 100;
     }
 
     return Scaffold(
@@ -259,8 +256,9 @@ class _ShowCardState extends State<ShowCard> {
                                               if (isNumeric(value!)) {
                                                 double sartutakoZenb =
                                                     double.parse(value);
-                                                 setState(() {
-                                                  sartutakodirua = sartutakoZenb;
+                                                setState(() {
+                                                  sartutakodirua =
+                                                      sartutakoZenb;
                                                 });
                                                 if (sartutakoZenb < 0) {
                                                   return 'Zenbaki positiboa sartu behar duzu';
@@ -312,13 +310,12 @@ class _ShowCardState extends State<ShowCard> {
                                               ?.validate() ??
                                           false;
                                       if (isFormValid) {
-                                        var dateTimestamp =
-                                                    Timestamp.now();
+                                        var dateTimestamp = Timestamp.now();
 
-                                                TransactionLogic.addTransaction(
-                                                    transMota: 'dirua_sartu',
-                                                    zenbat: '+$sartutakodirua',
-                                                    transDate: dateTimestamp);
+                                        TransactionLogic.addTransaction(
+                                            transMota: 'dirua_sartu',
+                                            zenbat: '+$sartutakodirua',
+                                            transDate: dateTimestamp);
                                         setState(() {
                                           _showMoneyamount = false;
                                         });
@@ -452,7 +449,8 @@ class _ShowCardState extends State<ShowCard> {
                                                             transBuilderSizedSize,
                                                       ),
                                                       SizedBox(
-                                                        width: widthForTransAmount,
+                                                        width:
+                                                            widthForTransAmount,
                                                         child: FittedBox(
                                                           fit: BoxFit.fitWidth,
                                                           child: Text(

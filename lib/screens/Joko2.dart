@@ -71,7 +71,8 @@ class _Joko2State extends State<Joko2> {
   int lemonIndex = 3;
   int orangeIndex = 4;
   int raspberryIndex = 5;
-  var transactionDocList;
+  var transactionDocList = [];
+  // ignore: unused_field
   bool _isLoading = true;
 
   List<String> fruitImages = [
@@ -303,7 +304,7 @@ class _Joko2State extends State<Joko2> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: widthButtonContainer * 0.2,
                         child: botoiInplementazioa(
                             fruitImages, screenSize.width * 0.15),
@@ -1073,8 +1074,6 @@ class _Joko2State extends State<Joko2> {
       firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
 
       String userId = auth.userId;
-
-      String cardId = '';
 
       await firedart.Firestore.instance
           .collection('users')

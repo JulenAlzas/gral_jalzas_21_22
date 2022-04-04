@@ -19,9 +19,8 @@ class RegisterAuth {
         authforandroid.UserCredential userCredential = await authforandroid
             .FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
-        
-        userCredential = await authforandroid
-            .FirebaseAuth.instance
+
+        userCredential = await authforandroid.FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
 
         _firestore.collection('users').doc(userCredential.user!.uid).set({
@@ -43,7 +42,7 @@ class RegisterAuth {
     } else {
       try {
         var auth = firedart.FirebaseAuth.instance;
-        User? currentUser ;
+        User? currentUser;
         await auth.signUp(email, password).then((user) {
           currentUser = user;
         });

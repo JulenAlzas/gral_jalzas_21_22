@@ -38,8 +38,9 @@ class _Joko1State extends State<Joko1> {
   double heightButtonContainer = 0.0;
   double sartutakodirua = 0.0;
 
+  // ignore: unused_field
   bool _isLoading = true;
-  var transactionDocList;
+  var transactionDocList = [];
   double kontudirua = 0.0;
   CardType txartelmota = CardType.other;
 
@@ -164,7 +165,7 @@ class _Joko1State extends State<Joko1> {
                       tileMode: TileMode
                           .repeated, // repeats the gradient over the canvas
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                   ),
                   child: Container(
                     margin: const EdgeInsets.all(5),
@@ -253,7 +254,7 @@ class _Joko1State extends State<Joko1> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                     width: widthButtonContainer * 0.2,
                     child: botoiInplementazioa(fruitImages))
               ],
@@ -482,7 +483,9 @@ class _Joko1State extends State<Joko1> {
       List<String> fruitImages, Size screenSize) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.blueAccent), borderRadius: const BorderRadius.all(Radius.circular(20)), color: Colors.transparent),
+          border: Border.all(color: Colors.blueAccent),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          color: Colors.transparent),
       width: widthBuilder,
       height: heightBuilder,
       child: Column(
@@ -523,8 +526,7 @@ class _Joko1State extends State<Joko1> {
                         height: screenSize.height * 0.1,
                         margin: const EdgeInsets.all(10),
                         child: FadeInImage(
-                          placeholder:
-                              const AssetImage('assets/no-image.jpg'),
+                          placeholder: const AssetImage('assets/no-image.jpg'),
                           image: AssetImage(fruitImages[index]),
                           fit: BoxFit.cover,
                         ),
@@ -620,8 +622,6 @@ class _Joko1State extends State<Joko1> {
       firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
 
       String userId = auth.userId;
-
-      String cardId = '';
 
       await firedart.Firestore.instance
           .collection('users')

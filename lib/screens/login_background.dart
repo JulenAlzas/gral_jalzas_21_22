@@ -63,8 +63,8 @@ class _LoginBackgroundState extends State<LoginBackground> {
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(255, 199, 237, 1),
                     borderRadius: BorderRadius.circular(25),
-                    boxShadow: const[
-                       BoxShadow(
+                    boxShadow: const [
+                      BoxShadow(
                         color: Colors.black45,
                         blurRadius: 50.0,
                       )

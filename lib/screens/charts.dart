@@ -3,19 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/barchart.dart';
-import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
 import 'package:gral_jalzas_21_22/screens/gallery_scaffold.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/firedart.dart' as firedart;
-import 'package:charts_flutter/flutter.dart' as charts;
-
-import "package:collection/collection.dart";
 
 class Charts extends StatefulWidget {
   const Charts({Key? key}) : super(key: key);
@@ -32,11 +27,10 @@ class _ChartsState extends State<Charts> {
   double transakzioMax = 0.0;
   bool _isLoading = true;
   bool daytype = false;
-  var transactionDocList;
+  var transactionDocList = [];
   double dataIntervals = 1.0;
   List<ChartDataDonut> _chartDonutData = [];
-  List<_ChartData>? chartData = <_ChartData>[
-  ];
+  List<_ChartData>? chartData = <_ChartData>[];
 
   @override
   void initState() {
@@ -64,7 +58,8 @@ class _ChartsState extends State<Charts> {
       appBar: appBarDetails(context),
       body: SingleChildScrollView(
         child: _isLoading
-            ? Lottie.network('https://assets2.lottiefiles.com/packages/lf20_r7h02cq4.json')
+            ? Lottie.network(
+                'https://assets2.lottiefiles.com/packages/lf20_r7h02cq4.json')
             : Stack(
                 children: [
                   const BackgroundHome(),
@@ -379,7 +374,7 @@ class _ChartsState extends State<Charts> {
     if (nearestData.year == latestData.year) {
       int daysDif = latestData.day - nearestData.day;
       if (nearestData.month == latestData.month) {
-        if(latestData.month-nearestData.day>=5){
+        if (latestData.month - nearestData.day >= 5) {
           dataIntervals = daysDif / 5;
         }
         daytype = true;
