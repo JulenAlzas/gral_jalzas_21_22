@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/register_screen.dart';
@@ -5,9 +7,14 @@ import 'package:intl/intl.dart';
 
 import 'background.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
 
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,20 +29,46 @@ class Homepage extends StatelessWidget {
   }
 }
 
-class OngiEtorri extends StatelessWidget {
+class OngiEtorri extends StatefulWidget {
   const OngiEtorri({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<OngiEtorri> createState() => _OngiEtorriState();
+}
+
+class _OngiEtorriState extends State<OngiEtorri> {
+  DateTime currentTimestamp = DateTime.now();
+  DateFormat formatterDate = DateFormat('dd/MM/yyyy');
+  DateFormat formatteOrduMin = DateFormat.jm();
+  String currentOrduMin = '';
+  String currentDate = '';
+  
+
+  @override
+  void initState() {
+    currentDate = formatterDate.format(currentTimestamp);
+    currentOrduMin = formatteOrduMin.format(currentTimestamp);
+    var firstOrduMin = formatteOrduMin.format(currentTimestamp);
+    super.initState();
+    Timer.periodic(const Duration(seconds: 1), (timer) { 
+      DateTime currentTime = DateTime.now();
+      DateFormat currentOrduMinFormat = DateFormat.jm();
+      var currentOrduMinEvery1s = currentOrduMinFormat.format(currentTime);
+      if(firstOrduMin != currentOrduMinEvery1s){
+        setState(() {
+          currentOrduMin = currentOrduMinEvery1s;
+        });
+      }
+
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
-    DateTime currentTimestamp = DateTime.now();
-    DateFormat formatterDate = DateFormat('dd/MM/yyyy');
-    DateFormat formatteOrduMin = DateFormat.jm();
-    var currentDate = formatterDate.format(currentTimestamp);
-    var currentOrduMin = formatteOrduMin.format(currentTimestamp);
 
     return Row(
       children: [
