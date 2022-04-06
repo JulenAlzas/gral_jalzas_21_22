@@ -46,6 +46,7 @@ class _ShowCardState extends State<ShowCard> {
   double transBuilderSizedSize = 0.0;
   double transAmountFontSize = 0.0;
   double widthForTransAmount = 0.0;
+  double widthTransData = 0.0;
 
   bool _isLoading = true;
 
@@ -98,6 +99,7 @@ class _ShowCardState extends State<ShowCard> {
       transAmountFontSize = 35;
       widthForTransAmount =
           (transBuilderWidth / 3) - (transBuilderSizedSize * 2);
+      widthTransData = widthForTransAmount+screenSize.width*0.08;
     } else {
       cardWidth = screenSize.width * 0.35;
       cardHeight = screenSize.height * 0.4;
@@ -113,6 +115,7 @@ class _ShowCardState extends State<ShowCard> {
       transAmountFontSize = 35;
       widthForTransAmount =
           (transBuilderWidth / 3) - (transBuilderSizedSize * 2) + 100;
+      widthTransData = widthForTransAmount+screenSize.width*0.03;
     }
 
     return Scaffold(
@@ -418,7 +421,7 @@ class _ShowCardState extends State<ShowCard> {
                                                                 .center,
                                                         children: [
                                                           const Text(
-                                                              'Transakzio izena: '),
+                                                              'Transak. izena: '),
                                                           Text(transactionDocList[
                                                                   index]
                                                               ['trans_mota']),
@@ -437,11 +440,17 @@ class _ShowCardState extends State<ShowCard> {
                                                                 .center,
                                                         children: [
                                                           const Text(
-                                                              'Transakzio data: '),
-                                                          Text(getTime(
-                                                              transactionDocList[
-                                                                      index]
-                                                                  ['data']))
+                                                              'Transak. data: '),
+                                                          SizedBox(
+                                                            width: widthTransData,
+                                                            child: FittedBox(
+                                                              fit: BoxFit.fitWidth,
+                                                              child: Text(getTime(
+                                                                  transactionDocList[
+                                                                          index]
+                                                                      ['data'])),
+                                                            ),
+                                                          )
                                                         ],
                                                       ),
                                                       SizedBox(

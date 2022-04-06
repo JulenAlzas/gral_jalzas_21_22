@@ -74,6 +74,7 @@ class _Joko2State extends State<Joko2> {
   var transactionDocList = [];
   // ignore: unused_field
   bool _isLoading = true;
+  bool animationhasEnded = true;
 
   List<String> fruitImages = [
     'assets/Apple.png',
@@ -92,11 +93,11 @@ class _Joko2State extends State<Joko2> {
       Colors.yellow,
       Colors.purple,
     ];
-    const colorizeTextStyle = TextStyle(
-        fontSize: 50.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold);
+    TextStyle colorizeTextStyle = const TextStyle();
 
     final screenSize = MediaQuery.of(context).size;
 
+    colorizeTextStyle= TextStyle( fontSize: screenSize.width*0.1, fontFamily: 'Horizon', fontWeight: FontWeight.bold);
     double widthKonbinazioak = 0.0;
     double konfigImageSize = 0.0;
     double fortunewidth = 0.0;
@@ -136,7 +137,7 @@ class _Joko2State extends State<Joko2> {
       fortuneBarPaddTop = screenSize.width * 0.035;
       fortuneBarPaddRight = screenSize.width * 0.01;
       widthButtonContainer = screenSize.width * 0.75;
-      heightButtonContainer = screenSize.width * 0.2;
+      heightButtonContainer = screenSize.width * 0.1;
     }
 
     return Scaffold(
@@ -350,7 +351,11 @@ class _Joko2State extends State<Joko2> {
                 ),
                 height: fortuneheight,
                 physics: DirectionalPanPhysics.vertical(),
+                onAnimationStart: () {
+                  animationhasEnded = false;
+                },
                 onAnimationEnd: () {
+                  animationhasEnded = true;
                   if (selectedRandomIntFirst == appleIndex &&
                       selectedRandomIntSecond == appleIndex &&
                       selectedRandomIntThird == appleIndex) {
@@ -373,9 +378,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -412,9 +417,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -450,9 +455,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -488,9 +493,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -527,9 +532,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -566,9 +571,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -605,9 +610,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -644,9 +649,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -682,9 +687,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -720,9 +725,9 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                     ],
                                   )
                                 ],
@@ -975,7 +980,7 @@ class _Joko2State extends State<Joko2> {
       backgroundColor: spinColor,
       onPressed: () {
         bool isFormValid = formGame2Bet.currentState?.validate() ?? false;
-        if (isFormValid) {
+        if (isFormValid && animationhasEnded) {
           setState(() {
             spinColor = Colors.pink;
             selectedFirst.add(

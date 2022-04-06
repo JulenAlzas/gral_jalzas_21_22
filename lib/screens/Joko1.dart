@@ -43,6 +43,7 @@ class _Joko1State extends State<Joko1> {
   var transactionDocList = [];
   double kontudirua = 0.0;
   CardType txartelmota = CardType.other;
+  bool animationhasEnded= true;
 
   @override
   void initState() {
@@ -90,7 +91,7 @@ class _Joko1State extends State<Joko1> {
       widthBuilder = screenSize.width * 0.38;
       heightBuilder = screenSize.height * 0.15;
       widthButtonContainer = screenSize.width * 0.75;
-      heightButtonContainer = screenSize.width * 0.2;
+      heightButtonContainer = screenSize.width * 0.1;
     }
 
     return Scaffold(
@@ -281,7 +282,7 @@ class _Joko1State extends State<Joko1> {
       backgroundColor: spinColor,
       onPressed: () {
         bool isFormValid = formGame1Bet.currentState?.validate() ?? false;
-        if (selectedIndexOfFruits != -1 && isFormValid) {
+        if (selectedIndexOfFruits != -1 && isFormValid && animationhasEnded) {
           setState(() {
             spinColor = Colors.pink;
             selected.add(
@@ -302,7 +303,11 @@ class _Joko1State extends State<Joko1> {
         height: heightRoullette,
         width: widthRoullette,
         child: FortuneWheel(
+          onAnimationStart:(){
+            animationhasEnded=false;
+          } ,
           onAnimationEnd: () {
+            animationhasEnded = true;
             if (selectedRandomInt == selectedIndexOfFruits) {
               showDialog(
                   context: context,
@@ -312,8 +317,9 @@ class _Joko1State extends State<Joko1> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: SizedBox(
-                        height: screenSize.height * 0.5,
+                        height: screenSize.height * 0.7,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text('x3: IRABAZI DUZU!!',
                                 style: TextStyle(
@@ -321,9 +327,9 @@ class _Joko1State extends State<Joko1> {
                             Stack(
                               children: [
                                 Lottie.network(
-                                    'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json'),
+                                    'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                                 Lottie.network(
-                                    'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json'),
+                                    'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
                               ],
                             )
                           ],

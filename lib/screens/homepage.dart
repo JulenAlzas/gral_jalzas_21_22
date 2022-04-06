@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/register_screen.dart';
@@ -44,6 +45,8 @@ class _OngiEtorriState extends State<OngiEtorri> {
   DateFormat formatteOrduMin = DateFormat.jm();
   String currentOrduMin = '';
   String currentDate = '';
+  double loginhomeheighdistance = 0.0;
+  double fontSize = 0.0;
   
 
   @override
@@ -70,50 +73,61 @@ class _OngiEtorriState extends State<OngiEtorri> {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
 
-    return Row(
-      children: [
-        Container(
-          width: screenWidth * 0.3,
-          height: screenSize.height,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/sideImage.jpg'), fit: BoxFit.cover),
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      loginhomeheighdistance = screenSize.height * 0.01;
+      fontSize = screenWidth*0.1;
+    }
+    else{
+      loginhomeheighdistance = screenSize.height * 0.005;
+      fontSize = screenWidth*0.05;
+    }
+
+    return SingleChildScrollView(
+      child: Row(
+        children: [
+          Container(
+            width: screenWidth * 0.3,
+            height: screenSize.height,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/sideImage.jpg'), fit: BoxFit.cover),
+            ),
           ),
-        ),
-        Container(
-          width: screenWidth * 0.7,
-          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                currentOrduMin,
-                style: const TextStyle(
-                    fontSize: 30,
-                    fontFamily: 'avenir',
-                    fontWeight: FontWeight.w500),
-              ),
-              Text(
-                currentDate,
-                style: const TextStyle(
-                    fontSize: 15, fontFamily: 'avenir', color: Colors.grey),
-              ),
-              SizedBox(height: screenSize.height * 0.05),
-              Text(
-                'UPlay4U',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline2
-                    ?.copyWith(color: Colors.white),
-              ),
-              const SizedBox(height: 20),
-              CardImage(screenWidth: screenWidth),
-              SizedBox(height: screenSize.height * 0.15),
-              const CustomButtons(),
-            ],
-          ),
-        )
-      ],
+          Container(
+            width: screenWidth * 0.7,
+            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  currentOrduMin,
+                  style: TextStyle(
+                      fontSize: fontSize,
+                      fontFamily: 'avenir',
+                      fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  currentDate,
+                  style: const TextStyle(
+                      fontSize: 15, fontFamily: 'avenir', color: Colors.grey),
+                ),
+                SizedBox(height: screenSize.height * 0.01),
+                Text(
+                  'UPlay4U',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline2
+                      ?.copyWith(color: Colors.white,fontSize: fontSize),
+                ),
+                SizedBox(height: screenSize.height * 0.01),
+                CardImage(screenSize: screenSize),
+                SizedBox(height: screenSize.height * 0.01),
+                const CustomButtons(),
+              ],
+            ),
+          )
+        ],
+      ),
     );
 
     // return SingleChildScrollView(
@@ -149,6 +163,7 @@ class CustomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -179,6 +194,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5,
+      height:  MediaQuery.of(context).size.height * 0.05,
       child: FloatingActionButton.extended(
         heroTag: myname,
         onPressed: () {
@@ -205,10 +221,10 @@ class CustomButton extends StatelessWidget {
 class CardImage extends StatelessWidget {
   const CardImage({
     Key? key,
-    required this.screenWidth,
+    required this.screenSize,
   }) : super(key: key);
 
-  final double screenWidth;
+  final Size screenSize;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +235,8 @@ class CardImage extends StatelessWidget {
       child: Column(
         children: [
           FadeInImage(
-            width: screenWidth,
+            width: screenSize.width,
+            height: screenSize.height*0.3,
             placeholder: const AssetImage('assets/loading2.gif'),
             image: const AssetImage('assets/ruleta.jpg'),
             fit: BoxFit.cover,
