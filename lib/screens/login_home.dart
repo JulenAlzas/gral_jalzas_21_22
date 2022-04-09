@@ -37,179 +37,172 @@ class LoginHome extends StatelessWidget {
       'assets/slotGame.png',
     ];
 
-    return WillPopScope(
-      onWillPop: () async {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Loginera bueltatzeko atera sesiotik')));
-        return false;
-      },
-      child: Scaffold(
-        appBar: appBarDetails(context),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                child: Container(),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/Menu2.png'), fit: BoxFit.cover),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.edit),
-                title: const Text('Profila aldatu'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const EditProfile()));
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.person_remove_alt_1),
-                title: const Text('Profila ezabatu'),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DeleteAccount()));
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.wallet_travel),
-                title: const Text('Diru-zorroa'),
-                onTap: () {
-                  CredCardLogic.isCardCreatedForCurrentUser()
-                      .then((cardExists) {
-                    if (cardExists) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ShowCard(
-                                  title: 'Diru-zorroa',
-                                )),
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateCard(
-                                  title: 'Sortu txartela',
-                                )),
-                      );
-                    }
-                  });
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.credit_card_rounded),
-                title: const Text('Txartela modifikatu'),
-                onTap: () {
-                  CredCardLogic.isCardCreatedForCurrentUser()
-                      .then((cardExists) {
-                    if (cardExists) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const EditCard(
-                                  title: 'Txartel informazio aldaketa',
-                                )),
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateCard(
-                                  title: 'Sortu txartela',
-                                )),
-                      );
-                    }
-                  });
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.bar_chart),
-                title: const Text('Diagramak'),
-                onTap: () {
-                  CredCardLogic.existTransactions().then((transExist) {
-                    if (transExist) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Charts()),
-                      );
-                    } else {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Errorea:'),
-                              content: const Text(
-                                  'Ez da transakziorik existitzen grafikoak sortzeko.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'OK'),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          });
-                    }
-                  });
-                },
-              )
-            ],
-          ),
-        ),
-        body: Stack(
+    return Scaffold(
+      appBar: appBarDetails(context),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            const BackgroundHome(),
-            Center(
-              child: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  Swiper(
-                    itemCount: gameImages.length,
-                    layout: SwiperLayout.STACK,
-                    itemWidth: swiperobjectWidth,
-                    itemHeight: swiperobjectHeight,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (gameImages[index] == 'assets/erruletaJokoa.png') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Joko1()),
-                            );
-                          } else if (gameImages[index] ==
-                              'assets/slotGame.png') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Joko2()),
-                            );
-                          }
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: FadeInImage(
-                            placeholder:
-                                const AssetImage('assets/no-image.jpg'),
-                            image: AssetImage(gameImages[index]),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 30),
-                ],
-              )),
+            DrawerHeader(
+              child: Container(),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/Menu2.png'), fit: BoxFit.cover),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Profila aldatu'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EditProfile()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person_remove_alt_1),
+              title: const Text('Profila ezabatu'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DeleteAccount()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.wallet_travel),
+              title: const Text('Diru-zorroa'),
+              onTap: () {
+                CredCardLogic.isCardCreatedForCurrentUser()
+                    .then((cardExists) {
+                  if (cardExists) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ShowCard(
+                                title: 'Diru-zorroa',
+                              )),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CreateCard(
+                                title: 'Sortu txartela',
+                              )),
+                    );
+                  }
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.credit_card_rounded),
+              title: const Text('Txartela modifikatu'),
+              onTap: () {
+                CredCardLogic.isCardCreatedForCurrentUser()
+                    .then((cardExists) {
+                  if (cardExists) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EditCard(
+                                title: 'Txartel informazio aldaketa',
+                              )),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CreateCard(
+                                title: 'Sortu txartela',
+                              )),
+                    );
+                  }
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.bar_chart),
+              title: const Text('Diagramak'),
+              onTap: () {
+                CredCardLogic.existTransactions().then((transExist) {
+                  if (transExist) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Charts()),
+                    );
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Errorea:'),
+                            content: const Text(
+                                'Ez da transakziorik existitzen grafikoak sortzeko.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'OK'),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  }
+                });
+              },
             )
           ],
         ),
+      ),
+      body: Stack(
+        children: [
+          const BackgroundHome(),
+          Center(
+            child: SingleChildScrollView(
+                child: Column(
+              children: [
+                Swiper(
+                  itemCount: gameImages.length,
+                  layout: SwiperLayout.STACK,
+                  itemWidth: swiperobjectWidth,
+                  itemHeight: swiperobjectHeight,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (gameImages[index] == 'assets/erruletaJokoa.png') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Joko1()),
+                          );
+                        } else if (gameImages[index] ==
+                            'assets/slotGame.png') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Joko2()),
+                          );
+                        }
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: FadeInImage(
+                          placeholder:
+                              const AssetImage('assets/no-image.jpg'),
+                          image: AssetImage(gameImages[index]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 30),
+              ],
+            )),
+          )
+        ],
       ),
     );
   }

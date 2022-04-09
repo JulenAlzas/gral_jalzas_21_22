@@ -140,6 +140,7 @@ class _LoginBackgroundState extends State<LoginBackground> {
                                         password: loginFormProvider.pass)
                                     .then((String loginResult) {
                                   if (loginResult == "Ondo Logeatu zara") {
+                                    Navigator.pop(context);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
