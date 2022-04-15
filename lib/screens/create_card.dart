@@ -350,7 +350,7 @@ class _CreateCardState extends State<CreateCard> {
                               return AlertDialog(
                                 title: const Text('Mezua:'),
                                 content:
-                                    const Text('Iada Kreditu txartela duzu.'),
+                                    const Text('Iada kreditu txartela duzu.'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart';
@@ -57,7 +59,7 @@ class _EditProfileState extends State<EditProfile> {
 
     return WillPopScope(
       onWillPop: () async {
-        if (_mustWriteOldPassWell) {
+        if (_mustWriteOldPassWell && (Platform.isLinux || Platform.isWindows)) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content:
                   Text('Pasahitz zaharra ondo jar ezazu edo berlogeatu.')));
@@ -312,6 +314,28 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
+                          }else if (profileEditResult == 'email-already-in-use') {
+                            setState(() {
+                              wrongPassCount++;
+                              _mustWriteOldPassWell = true;
+                            });
+
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Errorea:'),
+                                    content: const Text(
+                                        'Eposta hori iada existizen da'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                });
                           } else {
                             showDialog(
                                 context: context,
@@ -551,7 +575,7 @@ class _EditProfileState extends State<EditProfile> {
   AppBar appBarDetails(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.pink,
-      title: const Text('Lehen jokoa'),
+      title: const Text('Profila aldatu'),
       elevation: 0,
       actions: [
         TextButton.icon(

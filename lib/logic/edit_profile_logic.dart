@@ -124,6 +124,8 @@ class EditProfileLogic {
               return 'wrong-password';
             } else if (e.code == 'too-many-requests') {
               return 'too-many-requests';
+            } else if (e.code == 'email-already-in-use') {
+              return e.code.toString();
             } else {
               return 'Errorea: $e';
             }
@@ -137,6 +139,8 @@ class EditProfileLogic {
           return 'wrong-password';
         } else if (e.code == 'too-many-requests') {
           return 'too-many-requests';
+        } else if (e.code == 'email-already-in-use') {
+          return e.code.toString();
         } else {
           return 'Errorea: $e';
         }
