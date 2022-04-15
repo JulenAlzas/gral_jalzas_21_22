@@ -165,12 +165,8 @@ class RegisterBackground extends StatelessWidget {
                                       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
                                   RegExp regExp = RegExp(pattern);
-                                  String pasahitz1 = registerFormProvider.pass;
-                                  String pasahitz2 =
-                                      registerFormProvider.confirmPass;
                                   if (value != null &&
-                                      regExp.hasMatch(value) &&
-                                      pasahitz1 == pasahitz2) {
+                                      regExp.hasMatch(value)) {
                                     return null;
                                   } else {
                                     return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
@@ -191,13 +187,16 @@ class RegisterBackground extends StatelessWidget {
                             ),
                             onPressed: () {
                               if (registerFormProvider.isValidForm()) {
-                                RegisterAuth.registerUsingEmailPassword(
+                              if(registerFormProvider.pass == registerFormProvider.confirmPass){
+                                  RegisterAuth.registerUsingEmailPassword(
                                         name: registerFormProvider.name,
                                         email: registerFormProvider.email,
                                         password: registerFormProvider.pass,
                                         telepNum: registerFormProvider.telepNum)
                                     .then((value) {
                                   if (value == 'erregistratua') {
+                                    registerFormProvider.pass = '';
+                                    registerFormProvider.confirmPass = '';
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -223,6 +222,24 @@ class RegisterBackground extends StatelessWidget {
                                         });
                                   }
                                 });
+                                }else{
+                                  showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Errorea:'),
+                                            content: const Text('Pasahitzak desberdinak dira'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                }
+                                
                               }
                             },
                             child: const Text('Sartu'),
