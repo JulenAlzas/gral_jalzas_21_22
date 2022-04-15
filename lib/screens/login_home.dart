@@ -210,7 +210,7 @@ class LoginHome extends StatelessWidget {
   AppBar appBarDetails(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.pink,
-      title: const Text('Lehen jokoa'),
+      title: const Text('Home'),
       elevation: 0,
       actions: [
         TextButton.icon(
