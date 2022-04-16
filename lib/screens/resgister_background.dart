@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/Provider/register_provider.dart';
+import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
@@ -165,8 +166,7 @@ class RegisterBackground extends StatelessWidget {
                                       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&])[A-Za-z\d~`!^*\(\)\-\_+=\{\}\[\]\\\/"<>|#@$!%*?&]{8,}$';
 
                                   RegExp regExp = RegExp(pattern);
-                                  if (value != null &&
-                                      regExp.hasMatch(value)) {
+                                  if (value != null && regExp.hasMatch(value)) {
                                     return null;
                                   } else {
                                     return 'Gutxienez 8 karaktere, maiuskula bat, minuskula bat, zenbaki bat eta karaktere berezi bat';
@@ -187,59 +187,89 @@ class RegisterBackground extends StatelessWidget {
                             ),
                             onPressed: () {
                               if (registerFormProvider.isValidForm()) {
-                              if(registerFormProvider.pass == registerFormProvider.confirmPass){
+                                if (registerFormProvider.pass ==
+                                    registerFormProvider.confirmPass) {
                                   RegisterAuth.registerUsingEmailPassword(
-                                        name: registerFormProvider.name,
-                                        email: registerFormProvider.email,
-                                        password: registerFormProvider.pass,
-                                        telepNum: registerFormProvider.telepNum)
-                                    .then((value) {
-                                  if (value == 'erregistratua') {
-                                    registerFormProvider.pass = '';
-                                    registerFormProvider.confirmPass = '';
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginScreen()),
-                                    );
-                                  } else {
-                                    String error = value.toString();
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text('Errorea:'),
-                                            content: Text(error),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    context, 'OK'),
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  }
-                                });
-                                }else{
+                                          name: registerFormProvider.name,
+                                          email: registerFormProvider.email,
+                                          password: registerFormProvider.pass,
+                                          telepNum:
+                                              registerFormProvider.telepNum)
+                                      .then((value) {
+                                    if (value == 'erregistratua') {
+                                      registerFormProvider.pass = '';
+                                      registerFormProvider.confirmPass = '';
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen()),
+                                      );
+                                    } else if (value == 'too-many-requests' ||
+                                        value ==
+                                            'TOO_MANY_ATTEMPTS_TRY_LATER') {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text('Errorea:'),
+                                              content: const Text(
+                                                  'Firebase kautotze kuota maximora iritxi zara. Berlogeatu eta saiatu geroago.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context, 'OK');
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const Homepage()),
+                                                    );
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    } else {
+                                      String error = value.toString();
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text('Errorea:'),
+                                              content: Text(error),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    }
+                                  });
+                                } else {
                                   showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text('Errorea:'),
-                                            content: const Text('Pasahitzak desberdinak dira'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    context, 'OK'),
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        });
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('Errorea:'),
+                                          content: const Text(
+                                              'Pasahitzak desberdinak dira'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      });
                                 }
-                                
                               }
                             },
                             child: const Text('Sartu'),

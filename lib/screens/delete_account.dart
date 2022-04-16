@@ -177,7 +177,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                   return AlertDialog(
                                     title: const Text('Errorea:'),
                                     content: const Text(
-                                        'Firebase kautotze kuota maximora iritxi zara. Denbora bat itxaron beharko duzu.'),
+                                        'Firebase kautotze kuota maximora iritxi zara. Berlogeatu eta saiatu geroago.'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
@@ -187,7 +187,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const LoginScreen()),
+                                                    const Homepage()),
                                           );
                                         },
                                         child: const Text('OK'),

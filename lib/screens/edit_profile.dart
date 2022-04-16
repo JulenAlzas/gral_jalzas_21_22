@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/logic/edit_profile_logic.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/login_home.dart';
-import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firedart/firedart.dart' as firedart;
@@ -306,7 +305,7 @@ class _EditProfileState extends State<EditProfile> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const LoginScreen()),
+                                                    const Homepage()),
                                           );
                                         },
                                         child: const Text('OK'),
@@ -314,7 +313,8 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
-                          }else if (profileEditResult == 'email-already-in-use') {
+                          } else if (profileEditResult ==
+                              'email-already-in-use') {
                             setState(() {
                               wrongPassCount++;
                               _mustWriteOldPassWell = true;

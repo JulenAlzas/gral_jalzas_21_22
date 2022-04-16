@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gral_jalzas_21_22/Provider/login_provider.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
+import 'package:gral_jalzas_21_22/screens/homepage.dart';
 import 'package:gral_jalzas_21_22/screens/login_home.dart';
 import 'package:gral_jalzas_21_22/screens/register_screen.dart';
 import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
@@ -176,6 +177,33 @@ class _LoginBackgroundState extends State<LoginBackground> {
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                     context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  } else if (loginResult ==
+                                          'too-many-requests' ||
+                                      loginResult ==
+                                          'TOO_MANY_ATTEMPTS_TRY_LATER') {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Errorea:'),
+                                            content: const Text(
+                                                'Firebase kautotze kuota maximora iritxi zara. Berlogeatu eta saiatu geroago.'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const Homepage()),
+                                                  );
+                                                },
                                                 child: const Text('OK'),
                                               ),
                                             ],

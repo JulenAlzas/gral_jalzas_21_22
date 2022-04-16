@@ -18,6 +18,8 @@ class LoginAuth {
           return "Ez da e-posta hori duen erabiltzilerik aurkitu";
         } else if (e.code == 'wrong-password') {
           return "Pasahitz okerra erabiltzaile horrentzat";
+        } else if (e.code == 'too-many-requests') {
+          return e.code.toString();
         }
         return "$e.code";
       }
