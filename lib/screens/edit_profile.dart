@@ -295,7 +295,7 @@ class _EditProfileState extends State<EditProfile> {
                                   return AlertDialog(
                                     title: const Text('Errorea:'),
                                     content: const Text(
-                                        'Firebase kautotze kuota maximora iritxi zara. Denbora bat itxaron beharko duzu.'),
+                                        'Firebase kautotze kuota maximora iritxi zara. Berlogeatu eta saiatu geroago'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
