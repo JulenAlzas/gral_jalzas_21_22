@@ -192,7 +192,7 @@ class _LoginBackgroundState extends State<LoginBackground> {
                                           return AlertDialog(
                                             title: const Text('Errorea:'),
                                             content: const Text(
-                                                'Firebase kautotze kuota maximora iritxi zara. Berlogeatu eta saiatu geroago.'),
+                                                'Firebase kautotze kuota maximora iritxi zara. Saiatu geroago.'),
                                             actions: <Widget>[
                                               TextButton(
                                                 onPressed: () {
