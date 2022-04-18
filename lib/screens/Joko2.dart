@@ -97,7 +97,10 @@ class _Joko2State extends State<Joko2> {
 
     final screenSize = MediaQuery.of(context).size;
 
-    colorizeTextStyle= TextStyle( fontSize: screenSize.width*0.1, fontFamily: 'Horizon', fontWeight: FontWeight.bold);
+    colorizeTextStyle = TextStyle(
+        fontSize: screenSize.width * 0.1,
+        fontFamily: 'Horizon',
+        fontWeight: FontWeight.bold);
     double widthKonbinazioak = 0.0;
     double konfigImageSize = 0.0;
     double fortunewidth = 0.0;
@@ -359,6 +362,14 @@ class _Joko2State extends State<Joko2> {
                   if (selectedRandomIntFirst == appleIndex &&
                       selectedRandomIntSecond == appleIndex &&
                       selectedRandomIntThird == appleIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 5;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     // _controllerTopCenter.play(); //Confettia bota
                     showDialog(
                         context: context,
@@ -378,9 +389,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -388,17 +405,17 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 5;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == bananaIndex &&
                       selectedRandomIntSecond == bananaIndex &&
                       selectedRandomIntThird == bananaIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 5;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -417,9 +434,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -427,16 +450,16 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 5;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntSecond == appleIndex &&
                       selectedRandomIntThird == appleIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 3;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -455,9 +478,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -465,16 +494,16 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 3;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == bananaIndex &&
                       selectedRandomIntSecond == bananaIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 3;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -493,9 +522,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -503,17 +538,17 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 3;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == blackberryIndex &&
                       selectedRandomIntSecond == blackberryIndex &&
                       selectedRandomIntThird == blackberryIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 4;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -532,9 +567,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -542,17 +583,17 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 4;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == lemonIndex &&
                       selectedRandomIntSecond == lemonIndex &&
                       selectedRandomIntThird == lemonIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 4;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -571,9 +612,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -581,17 +628,17 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 4;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == orangeIndex &&
                       selectedRandomIntSecond == orangeIndex &&
                       selectedRandomIntThird == orangeIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 5;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -610,9 +657,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -620,17 +673,17 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 5;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == raspberryIndex &&
                       selectedRandomIntSecond == raspberryIndex &&
                       selectedRandomIntThird == raspberryIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 5;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -649,9 +702,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -659,16 +718,16 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 5;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == orangeIndex &&
                       selectedRandomIntThird == orangeIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 2;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -687,9 +746,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -697,16 +762,16 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 2;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   } else if (selectedRandomIntFirst == raspberryIndex &&
                       selectedRandomIntThird == raspberryIndex) {
+                    var dateTimestamp = Timestamp.now();
+                    double irabazitakoa = sartutakodirua * 2;
+                    TransactionLogic.addTransaction(
+                        transMota: 'joko2_irabazi',
+                        zenbat: '+$irabazitakoa',
+                        transDate: dateTimestamp);
+
+                    updateTransactions();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -725,9 +790,15 @@ class _Joko2State extends State<Joko2> {
                                   Stack(
                                     children: [
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                       Lottie.network(
-                                          'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                        height: screenSize.height * 0.4,
+                                        width: screenSize.height * 0.3,
+                                      ),
                                     ],
                                   )
                                 ],
@@ -735,15 +806,15 @@ class _Joko2State extends State<Joko2> {
                             ),
                           );
                         });
+                  } else {
                     var dateTimestamp = Timestamp.now();
-                    double irabazitakoa = sartutakodirua * 2;
+                    double galdutakoa = sartutakodirua;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
+                        transMota: 'joko2_galdu',
+                        zenbat: '-$galdutakoa',
                         transDate: dateTimestamp);
 
                     updateTransactions();
-                  } else {
                     // _controllerTopCenter.play();
                     showDialog(
                         context: context,
@@ -757,14 +828,6 @@ class _Joko2State extends State<Joko2> {
                                     fontSize: 40, fontWeight: FontWeight.bold)),
                           );
                         });
-                    var dateTimestamp = Timestamp.now();
-                    double galdutakoa = sartutakodirua;
-                    TransactionLogic.addTransaction(
-                        transMota: 'joko2_galdu',
-                        zenbat: '-$galdutakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
                   }
                 },
                 animateFirst: false,

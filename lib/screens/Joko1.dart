@@ -43,7 +43,7 @@ class _Joko1State extends State<Joko1> {
   var transactionDocList = [];
   double kontudirua = 0.0;
   CardType txartelmota = CardType.other;
-  bool animationhasEnded= true;
+  bool animationhasEnded = true;
 
   @override
   void initState() {
@@ -303,12 +303,22 @@ class _Joko1State extends State<Joko1> {
         height: heightRoullette,
         width: widthRoullette,
         child: FortuneWheel(
-          onAnimationStart:(){
-            animationhasEnded=false;
-          } ,
+          onAnimationStart: () {
+            animationhasEnded = false;
+          },
           onAnimationEnd: () {
             animationhasEnded = true;
             if (selectedRandomInt == selectedIndexOfFruits) {
+              var dateTimestamp = Timestamp.now();
+              double irabazitakoa = sartutakodirua * 3;
+
+              TransactionLogic.addTransaction(
+                  transMota: 'joko1_irabazi',
+                  zenbat: '+$irabazitakoa',
+                  transDate: dateTimestamp);
+
+              updateTransactions();
+
               showDialog(
                   context: context,
                   builder: (context) {
@@ -327,9 +337,15 @@ class _Joko1State extends State<Joko1> {
                             Stack(
                               children: [
                                 Lottie.network(
-                                    'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                  'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                  height: screenSize.height * 0.4,
+                                  width: screenSize.height * 0.3,
+                                ),
                                 Lottie.network(
-                                    'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',height: screenSize.height * 0.4,width: screenSize.height * 0.3,),
+                                  'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                  height: screenSize.height * 0.4,
+                                  width: screenSize.height * 0.3,
+                                ),
                               ],
                             )
                           ],
@@ -337,17 +353,16 @@ class _Joko1State extends State<Joko1> {
                       ),
                     );
                   });
-
+            } else {
               var dateTimestamp = Timestamp.now();
-              double irabazitakoa = sartutakodirua * 3;
 
               TransactionLogic.addTransaction(
-                  transMota: 'joko1_irabazi',
-                  zenbat: '+$irabazitakoa',
+                  transMota: 'joko1_galdu',
+                  zenbat: '-$sartutakodirua',
                   transDate: dateTimestamp);
 
               updateTransactions();
-            } else {
+
               showDialog(
                   context: context,
                   builder: (context) {
@@ -360,14 +375,6 @@ class _Joko1State extends State<Joko1> {
                               fontSize: 40, fontWeight: FontWeight.bold)),
                     );
                   });
-              var dateTimestamp = Timestamp.now();
-
-              TransactionLogic.addTransaction(
-                  transMota: 'joko1_galdu',
-                  zenbat: '-$sartutakodirua',
-                  transDate: dateTimestamp);
-
-              updateTransactions();
             }
           },
           animateFirst: false,
