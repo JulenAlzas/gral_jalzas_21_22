@@ -140,6 +140,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                     ],
                                   );
                                 });
+                            LoginAuth.signOut();
                             Navigator.pop(context);
                             Navigator.push(
                               context,

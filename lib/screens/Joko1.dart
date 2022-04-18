@@ -313,68 +313,71 @@ class _Joko1State extends State<Joko1> {
               double irabazitakoa = sartutakodirua * 3;
 
               TransactionLogic.addTransaction(
-                  transMota: 'joko1_irabazi',
-                  zenbat: '+$irabazitakoa',
-                  transDate: dateTimestamp);
-
-              updateTransactions();
-
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: SizedBox(
-                        height: screenSize.height * 0.7,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('x3: IRABAZI DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 35, fontWeight: FontWeight.bold)),
-                            Stack(
+                      transMota: 'joko1_irabazi',
+                      zenbat: '+$irabazitakoa',
+                      transDate: dateTimestamp)
+                  .then((value) {
+                updateTransactions().then((value) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: SizedBox(
+                            height: screenSize.height * 0.7,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Lottie.network(
-                                  'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                  height: screenSize.height * 0.4,
-                                  width: screenSize.height * 0.3,
-                                ),
-                                Lottie.network(
-                                  'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                  height: screenSize.height * 0.4,
-                                  width: screenSize.height * 0.3,
-                                ),
+                                const Text('x3: IRABAZI DUZU!!',
+                                    style: TextStyle(
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.bold)),
+                                Stack(
+                                  children: [
+                                    Lottie.network(
+                                      'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                      height: screenSize.height * 0.4,
+                                      width: screenSize.height * 0.3,
+                                    ),
+                                    Lottie.network(
+                                      'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                      height: screenSize.height * 0.4,
+                                      width: screenSize.height * 0.3,
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  });
+                            ),
+                          ),
+                        );
+                      });
+                });
+              });
             } else {
               var dateTimestamp = Timestamp.now();
 
               TransactionLogic.addTransaction(
-                  transMota: 'joko1_galdu',
-                  zenbat: '-$sartutakodirua',
-                  transDate: dateTimestamp);
-
-              updateTransactions();
-
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text('GALDU DUZU!!',
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold)),
-                    );
-                  });
+                      transMota: 'joko1_galdu',
+                      zenbat: '-$sartutakodirua',
+                      transDate: dateTimestamp)
+                  .then((value) {
+                updateTransactions().then((value) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text('GALDU DUZU!!',
+                              style: TextStyle(
+                                  fontSize: 40, fontWeight: FontWeight.bold)),
+                        );
+                      });
+                });
+              });
             }
           },
           animateFirst: false,

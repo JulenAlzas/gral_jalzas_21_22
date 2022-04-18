@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:firedart/firedart.dart' as firedart;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gral_jalzas_21_22/screens/joko1.dart';
 import 'package:uuid/uuid.dart';
+import 'package:gral_jalzas_21_22/screens/joko1.dart';
 
 class TransactionLogic {
   static Future<String?> addTransaction(
@@ -51,7 +53,6 @@ class TransactionLogic {
             'zenbat': zenbat,
           },
         );
-
         return 'Trans eguneratua';
       } on authforandroid.FirebaseAuthException catch (e) {
         return 'Errorea: $e';

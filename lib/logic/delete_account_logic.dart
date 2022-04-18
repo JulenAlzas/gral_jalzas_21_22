@@ -47,6 +47,49 @@ class DeleteAccountLogic {
           auth.signOut();
           await auth.signIn(oldEmail, oldPasword);
           userId = auth.userId;
+
+          String docId = '';
+
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .collection('credcard')
+              .get()
+              .then((querySnapshot) {
+            if (querySnapshot.isNotEmpty) {
+              docId = querySnapshot.first.id;
+            }
+          });
+          if(docId!=''){
+            await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .collection('credcard')
+              .document(docId)
+              .delete();
+          }
+
+          String moneiTransID = '';
+          await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .collection('moneyTransactions')
+              .get()
+              .then((querySnapshot) {
+            if (querySnapshot.isNotEmpty) {
+              moneiTransID = querySnapshot.first.id;
+            }
+          });
+          if(moneiTransID!=''){
+            await firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .collection('credcard')
+              .document(moneiTransID)
+              .delete();
+          }
+          
+
           await firedart.Firestore.instance
               .collection('users')
               .document(userId)

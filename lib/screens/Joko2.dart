@@ -365,469 +365,493 @@ class _Joko2State extends State<Joko2> {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 5;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    // _controllerTopCenter.play(); //Confettia bota
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x5: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x5: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
+
+                    // _controllerTopCenter.play(); //Confettia bota
+
                   } else if (selectedRandomIntFirst == bananaIndex &&
                       selectedRandomIntSecond == bananaIndex &&
                       selectedRandomIntThird == bananaIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 5;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x5: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x5: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntSecond == appleIndex &&
                       selectedRandomIntThird == appleIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 3;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x3: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x3: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntFirst == bananaIndex &&
                       selectedRandomIntSecond == bananaIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 3;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x3: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x3: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntFirst == blackberryIndex &&
                       selectedRandomIntSecond == blackberryIndex &&
                       selectedRandomIntThird == blackberryIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 4;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x4: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x4: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntFirst == lemonIndex &&
                       selectedRandomIntSecond == lemonIndex &&
                       selectedRandomIntThird == lemonIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 4;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x4: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x4: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntFirst == orangeIndex &&
                       selectedRandomIntSecond == orangeIndex &&
                       selectedRandomIntThird == orangeIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 5;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x5: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x5: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntFirst == raspberryIndex &&
                       selectedRandomIntSecond == raspberryIndex &&
                       selectedRandomIntThird == raspberryIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 5;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x5: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x5: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntFirst == orangeIndex &&
                       selectedRandomIntThird == orangeIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 2;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x2: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x2: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else if (selectedRandomIntFirst == raspberryIndex &&
                       selectedRandomIntThird == raspberryIndex) {
                     var dateTimestamp = Timestamp.now();
                     double irabazitakoa = sartutakodirua * 2;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_irabazi',
-                        zenbat: '+$irabazitakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              height: screenSize.height * 0.5,
-                              child: Column(
-                                children: [
-                                  const Text('x2: IRABAZI DUZU!!',
-                                      style: TextStyle(
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold)),
-                                  Stack(
+                            transMota: 'joko2_irabazi',
+                            zenbat: '+$irabazitakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SizedBox(
+                                  height: screenSize.height * 0.5,
+                                  child: Column(
                                     children: [
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
-                                      Lottie.network(
-                                        'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
-                                        height: screenSize.height * 0.4,
-                                        width: screenSize.height * 0.3,
-                                      ),
+                                      const Text('x2: IRABAZI DUZU!!',
+                                          style: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold)),
+                                      Stack(
+                                        children: [
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/private_files/lf30_kvdn44jg.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                          Lottie.network(
+                                            'https://assets6.lottiefiles.com/datafiles/VtCIGqDsiVwFPNM/data.json',
+                                            height: screenSize.height * 0.4,
+                                            width: screenSize.height * 0.3,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                                  ),
+                                ),
+                              );
+                            });
+                      });
+                    });
                   } else {
                     var dateTimestamp = Timestamp.now();
                     double galdutakoa = sartutakodirua;
                     TransactionLogic.addTransaction(
-                        transMota: 'joko2_galdu',
-                        zenbat: '-$galdutakoa',
-                        transDate: dateTimestamp);
-
-                    updateTransactions();
-                    // _controllerTopCenter.play();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Text('GALDU DUZU!!',
-                                style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold)),
-                          );
-                        });
+                            transMota: 'joko2_galdu',
+                            zenbat: '-$galdutakoa',
+                            transDate: dateTimestamp)
+                        .then((value) {
+                      updateTransactions().then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Text('GALDU DUZU!!',
+                                    style: TextStyle(
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold)),
+                              );
+                            });
+                      });
+                    });
                   }
                 },
                 animateFirst: false,
