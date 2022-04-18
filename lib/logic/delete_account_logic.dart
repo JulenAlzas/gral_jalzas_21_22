@@ -48,53 +48,10 @@ class DeleteAccountLogic {
           await auth.signIn(oldEmail, oldPasword);
           userId = auth.userId;
 
-          String docId = '';
+          await deleteCredCard(userId);
+          await deleteAllTransactions(userId);
 
-          await firedart.Firestore.instance
-              .collection('users')
-              .document(userId)
-              .collection('credcard')
-              .get()
-              .then((querySnapshot) {
-            if (querySnapshot.isNotEmpty) {
-              docId = querySnapshot.first.id;
-            }
-          });
-          if(docId!=''){
-            await firedart.Firestore.instance
-              .collection('users')
-              .document(userId)
-              .collection('credcard')
-              .document(docId)
-              .delete();
-          }
-
-          String moneiTransID = '';
-          await firedart.Firestore.instance
-              .collection('users')
-              .document(userId)
-              .collection('moneyTransactions')
-              .get()
-              .then((querySnapshot) {
-            if (querySnapshot.isNotEmpty) {
-              moneiTransID = querySnapshot.first.id;
-            }
-          });
-          if(moneiTransID!=''){
-            await firedart.Firestore.instance
-              .collection('users')
-              .document(userId)
-              .collection('credcard')
-              .document(moneiTransID)
-              .delete();
-          }
-          
-
-          await firedart.Firestore.instance
-              .collection('users')
-              .document(userId)
-              .delete();
-          auth.deleteAccount();
+          await erabEzabatu(userId, auth);
         } on AuthException catch (e) {
           if (e.errorCode == 'INVALID_PASSWORD') {
             return 'wrong-password';
@@ -116,6 +73,56 @@ class DeleteAccountLogic {
         }
       }
     }
+  }
+
+  static Future<void> erabEzabatu(String userId, firedart.FirebaseAuth auth) async {
+    await firedart.Firestore.instance
+        .collection('users')
+        .document(userId)
+        .delete();
+    auth.deleteAccount();
+  }
+
+  static Future<void> deleteAllTransactions(String userId) async {
+    // ignore: unused_local_variable
+    String moneyTransID = '';
+    await firedart.Firestore.instance
+        .collection('users')
+        .document(userId)
+        .collection('moneyTransactions')
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.isNotEmpty) {
+        for (var doc in querySnapshot) {
+          firedart.Firestore.instance
+              .collection('users')
+              .document(userId)
+              .collection('moneyTransactions')
+              .document(doc.id)
+              .delete();
+        }
+        moneyTransID = querySnapshot.first.id;
+      }
+    });
+  }
+
+  static Future<void> deleteCredCard(String userId) async {
+    
+    await firedart.Firestore.instance
+        .collection('users')
+        .document(userId)
+        .collection('credcard')
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.isNotEmpty) {
+        firedart.Firestore.instance
+          .collection('users')
+          .document(userId)
+          .collection('credcard')
+          .document(querySnapshot.first.id)
+          .delete();
+      }
+    });
   }
 
   static Future<void> updateCredentials(

@@ -99,7 +99,7 @@ class _ShowCardState extends State<ShowCard> {
       transAmountFontSize = 35;
       widthForTransAmount =
           (transBuilderWidth / 3) - (transBuilderSizedSize * 2);
-      widthTransData = widthForTransAmount+screenSize.width*0.08;
+      widthTransData = widthForTransAmount + screenSize.width * 0.08;
     } else {
       cardWidth = screenSize.width * 0.35;
       cardHeight = screenSize.height * 0.4;
@@ -115,7 +115,7 @@ class _ShowCardState extends State<ShowCard> {
       transAmountFontSize = 35;
       widthForTransAmount =
           (transBuilderWidth / 3) - (transBuilderSizedSize * 2) + 100;
-      widthTransData = widthForTransAmount+screenSize.width*0.03;
+      widthTransData = widthForTransAmount + screenSize.width * 0.03;
     }
 
     return Scaffold(
@@ -316,13 +316,15 @@ class _ShowCardState extends State<ShowCard> {
                                         var dateTimestamp = Timestamp.now();
 
                                         TransactionLogic.addTransaction(
-                                            transMota: 'dirua_sartu',
-                                            zenbat: '+$sartutakodirua',
-                                            transDate: dateTimestamp);
-                                        setState(() {
-                                          _showMoneyamount = false;
+                                                transMota: 'dirua_sartu',
+                                                zenbat: '+$sartutakodirua',
+                                                transDate: dateTimestamp)
+                                            .then((value) {
+                                          setState(() {
+                                            _showMoneyamount = false;
+                                          });
+                                          updateTransactions();
                                         });
-                                        updateTransactions();
                                       }
                                     },
                                     child: const Icon(Icons.save),
@@ -442,13 +444,16 @@ class _ShowCardState extends State<ShowCard> {
                                                           const Text(
                                                               'Transak. data: '),
                                                           SizedBox(
-                                                            width: widthTransData,
+                                                            width:
+                                                                widthTransData,
                                                             child: FittedBox(
-                                                              fit: BoxFit.fitWidth,
+                                                              fit: BoxFit
+                                                                  .fitWidth,
                                                               child: Text(getTime(
                                                                   transactionDocList[
                                                                           index]
-                                                                      ['data'])),
+                                                                      [
+                                                                      'data'])),
                                                             ),
                                                           )
                                                         ],
