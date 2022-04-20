@@ -171,9 +171,13 @@ class EditProfileLogic {
               auth.signOut();
               await auth.signIn(oldEmail, oldPasword);
               Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
-              var resulError = resultmap['error']['message'];
-              if(resulError == 'EMAIL_EXISTS'){
-                return 'email-already-in-use';
+              if (resultmap['error'] != null) {
+                var resulError = resultmap['error']['message'];
+                if (resulError == 'EMAIL_EXISTS') {
+                  return 'email-already-in-use';
+                }else{
+                  return resulError.toString();
+                }
               }
               auth.tokenProvider.setidToken(resultmap['idToken']);
               auth.signOut();
@@ -217,9 +221,13 @@ class EditProfileLogic {
               auth.signOut();
               await auth.signIn(oldEmail, oldPasword);
               Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
-              var resulError = resultmap['error']['message'];
-              if(resulError == 'EMAIL_EXISTS'){
-                return 'email-already-in-use';
+              if (resultmap['error'] != null) {
+                var resulError = resultmap['error']['message'];
+                if (resulError == 'EMAIL_EXISTS') {
+                  return 'email-already-in-use';
+                }else{
+                  return resulError.toString();
+                }
               }
               auth.tokenProvider.setidToken(resultmap['idToken']);
               auth.signOut();
@@ -263,9 +271,13 @@ class EditProfileLogic {
               auth.signOut();
               await auth.signIn(oldEmail, oldPasword);
               Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
-              var resulError = resultmap['error']['message'];
-              if(resulError == 'EMAIL_EXISTS'){
-                return 'email-already-in-use';
+              if (resultmap['error'] != null) {
+                var resulError = resultmap['error']['message'];
+                if (resulError == 'EMAIL_EXISTS') {
+                  return 'email-already-in-use';
+                }else{
+                  return resulError.toString();
+                }
               }
               auth.tokenProvider.setidToken(resultmap['idToken']);
               auth.signOut();
@@ -299,9 +311,13 @@ class EditProfileLogic {
               auth.signOut();
               await auth.signIn(oldEmail, oldPasword);
               Map<String, dynamic> resultmap = await auth.changeEmail(newEmail);
-              var resulError = resultmap['error']['message'];
-              if(resulError == 'EMAIL_EXISTS'){
-                return 'email-already-in-use';
+              if (resultmap['error'] != null) {
+                var resulError = resultmap['error']['message'];
+                if (resulError == 'EMAIL_EXISTS') {
+                  return 'email-already-in-use';
+                }else{
+                  return resulError.toString();
+                }
               }
               auth.tokenProvider.setidToken(resultmap['idToken']);
               auth.signOut();
