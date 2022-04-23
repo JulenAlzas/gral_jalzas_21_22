@@ -267,6 +267,7 @@ class _EditProfileState extends State<EditProfile> {
                           } else if (profileEditResult == 'wrong-password') {
                             setState(() {
                               wrongPassCount++;
+                              _oldPassisVisible = true;
                               _mustWriteOldPassWell = true;
                             });
 

@@ -525,10 +525,12 @@ class _Joko1State extends State<Joko1> {
               itemBuilder: (_, int index) {
                 return GestureDetector(
                   onTap: () {
-                    setState(() {
+                    if(animationhasEnded){
+                      setState(() {
                       selectedIndexOfFruits = index;
                       spinColor = Colors.pink;
                     });
+                    }
                   },
                   child: Hero(
                     tag: fruitImages[index],

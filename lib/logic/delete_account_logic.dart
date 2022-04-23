@@ -18,9 +18,11 @@ class DeleteAccountLogic {
       try {
         await updateCredentials(oldEmail, oldPasword);
 
-        _firestore.collection('users').doc(userCredential).delete();
+        await deleteCredCardAndWeb(_firestore, userCredential);
 
-        await authforandroid.FirebaseAuth.instance.currentUser!.delete();
+        await deleteAllTransactionsAndWeb(_firestore, userCredential);
+
+        await erabEzabatuAndWeb(_firestore, userCredential);
 
         return 'Erab ezabatua';
       } on authforandroid.FirebaseAuthException catch (e) {
@@ -48,10 +50,10 @@ class DeleteAccountLogic {
           await auth.signIn(oldEmail, oldPasword);
           userId = auth.userId;
 
-          await deleteCredCard(userId);
-          await deleteAllTransactions(userId);
+          await deleteCredCardDesktop(userId);
+          await deleteAllTransactionsDesktop(userId);
 
-          await erabEzabatu(userId, auth);
+          await erabEzabatuDesktop(userId, auth);
         } on AuthException catch (e) {
           if (e.errorCode == 'INVALID_PASSWORD') {
             return 'wrong-password';
@@ -75,7 +77,54 @@ class DeleteAccountLogic {
     }
   }
 
-  static Future<void> erabEzabatu(String userId, firedart.FirebaseAuth auth) async {
+  static Future<void> erabEzabatuAndWeb(FirebaseFirestore _firestore, String userCredential) async {
+    await _firestore.collection('users').doc(userCredential).delete();
+    
+    await authforandroid.FirebaseAuth.instance.currentUser!.delete();
+  }
+
+  static Future<void> deleteAllTransactionsAndWeb(
+      FirebaseFirestore _firestore, String userCredential) async {
+    await _firestore
+        .collection('users')
+        .doc(userCredential)
+        .collection('moneyTransactions')
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var doc in querySnapshot.docs) {
+          _firestore
+              .collection('users')
+              .doc(userCredential)
+              .collection('moneyTransactions')
+              .doc(doc.id)
+              .delete();
+        }
+      }
+    });
+  }
+
+  static Future<void> deleteCredCardAndWeb(
+      FirebaseFirestore _firestore, String userCredential) async {
+    await _firestore
+        .collection('users')
+        .doc(userCredential)
+        .collection('credcard')
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        _firestore
+            .collection('users')
+            .doc(userCredential)
+            .collection('credcard')
+            .doc(querySnapshot.docs.first.id)
+            .delete();
+      }
+    });
+  }
+
+  static Future<void> erabEzabatuDesktop(
+      String userId, firedart.FirebaseAuth auth) async {
     await firedart.Firestore.instance
         .collection('users')
         .document(userId)
@@ -83,9 +132,7 @@ class DeleteAccountLogic {
     auth.deleteAccount();
   }
 
-  static Future<void> deleteAllTransactions(String userId) async {
-    // ignore: unused_local_variable
-    String moneyTransID = '';
+  static Future<void> deleteAllTransactionsDesktop(String userId) async {
     await firedart.Firestore.instance
         .collection('users')
         .document(userId)
@@ -101,13 +148,11 @@ class DeleteAccountLogic {
               .document(doc.id)
               .delete();
         }
-        moneyTransID = querySnapshot.first.id;
       }
     });
   }
 
-  static Future<void> deleteCredCard(String userId) async {
-    
+  static Future<void> deleteCredCardDesktop(String userId) async {
     await firedart.Firestore.instance
         .collection('users')
         .document(userId)
@@ -116,11 +161,11 @@ class DeleteAccountLogic {
         .then((querySnapshot) {
       if (querySnapshot.isNotEmpty) {
         firedart.Firestore.instance
-          .collection('users')
-          .document(userId)
-          .collection('credcard')
-          .document(querySnapshot.first.id)
-          .delete();
+            .collection('users')
+            .document(userId)
+            .collection('credcard')
+            .document(querySnapshot.first.id)
+            .delete();
       }
     });
   }

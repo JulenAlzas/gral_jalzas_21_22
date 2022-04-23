@@ -428,7 +428,7 @@ class _Joko2State extends State<Joko2> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: SizedBox(
-                                  height: screenSize.height * 0.5,
+                                  height: screenSize.height * 0.7,
                                   child: Column(
                                     children: [
                                       const Text('x5: IRABAZI DUZU!!',

@@ -66,9 +66,8 @@ class _EditCardState extends State<EditCard> {
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       cardWidth = screenSize.width * 0.95;
-
-      if (screenSize.height < 450) {
-        cardHeight = screenSize.height * 0.425;
+      if (screenSize.height < 500) {
+        cardHeight = screenSize.height * 0.4;
       } else {
         cardHeight = screenSize.height * 0.25;
       }
