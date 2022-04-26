@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
+import 'package:firedart/auth/exceptions.dart';
 import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart' as firedart;
 
@@ -32,18 +33,18 @@ class RegisterAuth {
         return 'erregistratua';
       } on authforandroid.FirebaseAuthException catch (e) {
         if (e.code == 'email-exists') {
-          return 'Pasahitz existitzen da';
+          return 'Eposta existitzen da';
+        } else if (e.code == 'email-already-in-use') {
+          return e.code.toString();
         } else {
           return 'Errorea: $e';
         }
-      } catch (e) {
-        return 'Errorea: $e';
       }
     } else {
       try {
         var auth = firedart.FirebaseAuth.instance;
         User? currentUser;
-        await auth.signUp(email, password).then((user) {
+         await auth.signUp(email, password).then((user) {
           currentUser = user;
         });
         await auth.signIn(email, password);
@@ -61,7 +62,10 @@ class RegisterAuth {
           },
         );
         return 'erregistratua';
-      } catch (e) {
+      }on AuthException catch (e) {
+        if(e.errorCode == 'EMAIL_EXISTS'){
+          return e.errorCode.toString();
+        }
         return 'Errorea: $e';
       }
     }

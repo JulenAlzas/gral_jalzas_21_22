@@ -232,6 +232,44 @@ class RegisterBackground extends StatelessWidget {
                                               ],
                                             );
                                           });
+                                    } else if (value ==
+                                        'requires-recent-login') {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text('Errorea:'),
+                                              content: const Text(
+                                                  'Pasahitz/Eposta aldatzeak orain dela gutxiko logeatzea behar du. Sartu pasahitz zaharra.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    } else if (value ==
+                                        'email-already-in-use' || value == 'EMAIL_EXISTS') {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text('Errorea:'),
+                                              content: const Text(
+                                                  'Eposta hori iada existizen da'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          });
                                     } else {
                                       String error = value.toString();
                                       showDialog(
