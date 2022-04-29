@@ -4,10 +4,10 @@ import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
 import 'package:gral_jalzas_21_22/screens/charts.dart';
 import 'package:gral_jalzas_21_22/screens/create_card.dart';
 import 'package:gral_jalzas_21_22/screens/edit_card.dart';
-import 'package:gral_jalzas_21_22/screens/joko1.dart';
+import 'package:gral_jalzas_21_22/screens/Joko1.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
-import 'package:gral_jalzas_21_22/screens/joko2.dart';
+import 'package:gral_jalzas_21_22/screens/Joko2.dart';
 import 'package:gral_jalzas_21_22/screens/delete_account.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 

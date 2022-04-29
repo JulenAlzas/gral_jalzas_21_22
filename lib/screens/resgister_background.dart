@@ -5,7 +5,7 @@ import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 
-import 'background.dart';
+import 'package:gral_jalzas_21_22/screens/Background.dart';
 import '../logic/register_auth.dart';
 
 class RegisterBackground extends StatelessWidget {

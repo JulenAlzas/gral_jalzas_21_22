@@ -9,7 +9,7 @@ import 'package:gral_jalzas_21_22/screens/register_screen.dart';
 import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 
-import 'background.dart';
+import 'package:gral_jalzas_21_22/screens/Background.dart';
 
 class LoginBackground extends StatefulWidget {
   const LoginBackground({Key? key}) : super(key: key);
