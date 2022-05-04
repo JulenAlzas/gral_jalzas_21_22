@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'package:gral_jalzas_21_22/screens/register_screen.dart';
 import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gral_jalzas_21_22/screens/Background.dart';
+import 'package:gral_jalzas_21_22/screens/background.dart';
 
 class LoginBackground extends StatefulWidget {
   const LoginBackground({Key? key}) : super(key: key);
@@ -23,19 +24,42 @@ class _LoginBackgroundState extends State<LoginBackground> {
 
   @override
   Widget build(BuildContext context) {
-    final loginFormProvider = Provider.of<LoginProvider>(context);
-
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       authforandroid.FirebaseAuth.instance.authStateChanges().listen((user) {
         if (user != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginHome()),
-          );
+          doesThisEmailExist(user.email).then((emaiExists) {
+            if (emaiExists) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginHome()),
+              );
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Mezua'),
+                      content: const Text('Eposta aldatu da, berlogeatu.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'OK'),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    );
+                  });
+              LoginAuth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const LoginBackground()),
+              );
+            }
+          });
         }
       });
     }
-
+    final loginFormProvider = Provider.of<LoginProvider>(context);
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
 
@@ -271,6 +295,35 @@ class _LoginBackgroundState extends State<LoginBackground> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  Future<bool> doesThisEmailExist(String? email) async {
+    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+      try {
+        String userCredential =
+            authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
+
+        await _firestore
+            .collection('users')
+            .doc(userCredential)
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot.exists && querySnapshot['email'] == email) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+
+        return false;
+      } on authforandroid.FirebaseAuthException catch (_) {
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 }
 

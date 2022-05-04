@@ -4,10 +4,10 @@ import 'package:gral_jalzas_21_22/logic/cred_card_logic.dart';
 import 'package:gral_jalzas_21_22/screens/charts.dart';
 import 'package:gral_jalzas_21_22/screens/create_card.dart';
 import 'package:gral_jalzas_21_22/screens/edit_card.dart';
-import 'package:gral_jalzas_21_22/screens/Joko1.dart';
+import 'package:gral_jalzas_21_22/screens/joko1.dart';
 import 'package:gral_jalzas_21_22/logic/login_auth.dart';
 import 'package:gral_jalzas_21_22/screens/edit_profile.dart';
-import 'package:gral_jalzas_21_22/screens/Joko2.dart';
+import 'package:gral_jalzas_21_22/screens/joko2.dart';
 import 'package:gral_jalzas_21_22/screens/delete_account.dart';
 import 'package:gral_jalzas_21_22/screens/homepage.dart';
 
@@ -75,8 +75,7 @@ class LoginHome extends StatelessWidget {
               leading: const Icon(Icons.wallet_travel),
               title: const Text('Diru-zorroa'),
               onTap: () {
-                CredCardLogic.isCardCreatedForCurrentUser()
-                    .then((cardExists) {
+                CredCardLogic.isCardCreatedForCurrentUser().then((cardExists) {
                   if (cardExists) {
                     Navigator.push(
                       context,
@@ -101,8 +100,7 @@ class LoginHome extends StatelessWidget {
               leading: const Icon(Icons.credit_card_rounded),
               title: const Text('Txartela modifikatu'),
               onTap: () {
-                CredCardLogic.isCardCreatedForCurrentUser()
-                    .then((cardExists) {
+                CredCardLogic.isCardCreatedForCurrentUser().then((cardExists) {
                   if (cardExists) {
                     Navigator.push(
                       context,
@@ -177,8 +175,7 @@ class LoginHome extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const Joko1()),
                           );
-                        } else if (gameImages[index] ==
-                            'assets/slotGame.png') {
+                        } else if (gameImages[index] == 'assets/slotGame.png') {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -189,8 +186,7 @@ class LoginHome extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: FadeInImage(
-                          placeholder:
-                              const AssetImage('assets/no-image.jpg'),
+                          placeholder: const AssetImage('assets/no-image.jpg'),
                           image: AssetImage(gameImages[index]),
                           fit: BoxFit.cover,
                         ),

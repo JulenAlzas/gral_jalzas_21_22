@@ -5,7 +5,7 @@ import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gral_jalzas_21_22/screens/Background.dart';
+import 'package:gral_jalzas_21_22/screens/background.dart';
 import '../logic/register_auth.dart';
 
 class RegisterBackground extends StatelessWidget {
@@ -252,7 +252,8 @@ class RegisterBackground extends StatelessWidget {
                                             );
                                           });
                                     } else if (value ==
-                                        'email-already-in-use' || value == 'EMAIL_EXISTS') {
+                                            'email-already-in-use' ||
+                                        value == 'EMAIL_EXISTS') {
                                       showDialog(
                                           context: context,
                                           builder: (context) {

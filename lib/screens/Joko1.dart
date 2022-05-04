@@ -157,14 +157,9 @@ class _Joko1State extends State<Joko1> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
-                      end: const Alignment(0.8,
-                          0.0), // 10% of the width, so there are ten blinds.
-                      colors: <Color>[
-                        Colors.pink[100]!,
-                        Colors.white
-                      ], // red to yellow
-                      tileMode: TileMode
-                          .repeated, // repeats the gradient over the canvas
+                      end: const Alignment(0.8, 0.0),
+                      colors: <Color>[Colors.pink[100]!, Colors.white],
+                      tileMode: TileMode.repeated,
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                   ),
@@ -525,11 +520,11 @@ class _Joko1State extends State<Joko1> {
               itemBuilder: (_, int index) {
                 return GestureDetector(
                   onTap: () {
-                    if(animationhasEnded){
+                    if (animationhasEnded) {
                       setState(() {
-                      selectedIndexOfFruits = index;
-                      spinColor = Colors.pink;
-                    });
+                        selectedIndexOfFruits = index;
+                        spinColor = Colors.pink;
+                      });
                     }
                   },
                   child: Hero(
@@ -627,7 +622,6 @@ class _Joko1State extends State<Joko1> {
           .then((querySnapshot) {
         transactionDocList = querySnapshot.docs;
         for (var doc in querySnapshot.docs) {
-          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;
@@ -685,7 +679,6 @@ class _Joko1State extends State<Joko1> {
           transactionDocList = querySnapshot.docs;
         });
         for (var doc in querySnapshot.docs) {
-          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;

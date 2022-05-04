@@ -111,7 +111,6 @@ class EditProfileLogic {
         if (updatePass) {
           try {
             if (updateRecentLogRequired && oldEmail == newEmail) {
-              //e-posta desberdina bada iada kredentzialak eguneratu dira goian
               await updateCredentials(oldEmail, oldPasword);
 
               currentUser = authforandroid.FirebaseAuth.instance.currentUser;
@@ -175,7 +174,7 @@ class EditProfileLogic {
                 var resulError = resultmap['error']['message'];
                 if (resulError == 'EMAIL_EXISTS') {
                   return 'email-already-in-use';
-                }else{
+                } else {
                   return resulError.toString();
                 }
               }
@@ -225,7 +224,7 @@ class EditProfileLogic {
                 var resulError = resultmap['error']['message'];
                 if (resulError == 'EMAIL_EXISTS') {
                   return 'email-already-in-use';
-                }else{
+                } else {
                   return resulError.toString();
                 }
               }
@@ -275,7 +274,7 @@ class EditProfileLogic {
                 var resulError = resultmap['error']['message'];
                 if (resulError == 'EMAIL_EXISTS') {
                   return 'email-already-in-use';
-                }else{
+                } else {
                   return resulError.toString();
                 }
               }
@@ -315,7 +314,7 @@ class EditProfileLogic {
                 var resulError = resultmap['error']['message'];
                 if (resulError == 'EMAIL_EXISTS') {
                   return 'email-already-in-use';
-                }else{
+                } else {
                   return resulError.toString();
                 }
               }
@@ -390,7 +389,6 @@ class EditProfileLogic {
 
   static Future<void> updateCredentials(
       String oldEmail, String oldPasword) async {
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
     authforandroid.AuthCredential credential =
         authforandroid.EmailAuthProvider.credential(
             email: oldEmail, password: oldPasword);

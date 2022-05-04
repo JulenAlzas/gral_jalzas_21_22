@@ -290,14 +290,13 @@ class _EditProfileState extends State<EditProfile> {
                           } else if (profileEditResult == 'too-many-requests' ||
                               profileEditResult ==
                                   'TOO_MANY_ATTEMPTS_TRY_LATER') {
-
                             if (!EditProfileLogic.updateForDBEmailNeeded) {
                               setState(() {
                                 _oldPassisVisible = true;
                                 _mustWriteOldPassWell = true;
                                 EditProfileLogic.updateForDBEmailNeeded = true;
                               });
-                            }else if(updateRecentLogRequired){
+                            } else if (updateRecentLogRequired) {
                               setState(() {
                                 _oldPassisVisible = true;
                                 _mustWriteOldPassWell = true;
@@ -328,8 +327,7 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   );
                                 });
-                          } 
-                          else if (profileEditResult ==
+                          } else if (profileEditResult ==
                               'email-already-in-use') {
                             setState(() {
                               wrongPassCount++;

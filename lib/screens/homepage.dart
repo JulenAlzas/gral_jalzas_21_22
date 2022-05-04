@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gral_jalzas_21_22/screens/Background.dart';
+import 'package:gral_jalzas_21_22/screens/background.dart';
 import 'package:gral_jalzas_21_22/screens/login_screen.dart';
 import 'package:gral_jalzas_21_22/screens/register_screen.dart';
 import 'package:intl/intl.dart';
-
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -47,7 +46,6 @@ class _OngiEtorriState extends State<OngiEtorri> {
   String currentDate = '';
   double loginhomeheighdistance = 0.0;
   double fontSize = 0.0;
-  
 
   @override
   void initState() {
@@ -55,16 +53,15 @@ class _OngiEtorriState extends State<OngiEtorri> {
     currentOrduMin = formatteOrduMin.format(currentTimestamp);
     var firstOrduMin = formatteOrduMin.format(currentTimestamp);
     super.initState();
-    Timer.periodic(const Duration(seconds: 1), (timer) { 
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       DateTime currentTime = DateTime.now();
       DateFormat currentOrduMinFormat = DateFormat.jm();
       var currentOrduMinEvery1s = currentOrduMinFormat.format(currentTime);
-      if(firstOrduMin != currentOrduMinEvery1s){
+      if (firstOrduMin != currentOrduMinEvery1s) {
         setState(() {
           currentOrduMin = currentOrduMinEvery1s;
         });
       }
-
     });
   }
 
@@ -75,11 +72,10 @@ class _OngiEtorriState extends State<OngiEtorri> {
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       loginhomeheighdistance = screenSize.height * 0.01;
-      fontSize = screenWidth*0.1;
-    }
-    else{
+      fontSize = screenWidth * 0.1;
+    } else {
       loginhomeheighdistance = screenSize.height * 0.005;
-      fontSize = screenWidth*0.05;
+      fontSize = screenWidth * 0.05;
     }
 
     return SingleChildScrollView(
@@ -117,7 +113,7 @@ class _OngiEtorriState extends State<OngiEtorri> {
                   style: Theme.of(context)
                       .textTheme
                       .headline2
-                      ?.copyWith(color: Colors.white,fontSize: fontSize),
+                      ?.copyWith(color: Colors.white, fontSize: fontSize),
                 ),
                 SizedBox(height: screenSize.height * 0.01),
                 CardImage(screenSize: screenSize),
@@ -129,30 +125,6 @@ class _OngiEtorriState extends State<OngiEtorri> {
         ],
       ),
     );
-
-    // return SingleChildScrollView(
-    //   child: Column(
-    //     children: [
-    //       SafeArea(
-    //         child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.center,
-    //             children: [
-    //               Text(
-    //                 'YouPlay4You',
-    //                 style: Theme.of(context)
-    //                     .textTheme
-    //                     .headline2
-    //                     ?.copyWith(color: Colors.white),
-    //               ),
-    //               const SizedBox(height: 20),
-    //               CardImage(screenWidth: screenWidth),
-    //               const SizedBox(height: 20),
-    //               const CustomButtons(),
-    //             ]),
-    //       )
-    //     ],
-    //   ),
-    // );
   }
 }
 
@@ -163,7 +135,6 @@ class CustomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -194,7 +165,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5,
-      height:  MediaQuery.of(context).size.height * 0.05,
+      height: MediaQuery.of(context).size.height * 0.05,
       child: FloatingActionButton.extended(
         heroTag: myname,
         onPressed: () {
@@ -236,7 +207,7 @@ class CardImage extends StatelessWidget {
         children: [
           FadeInImage(
             width: screenSize.width,
-            height: screenSize.height*0.3,
+            height: screenSize.height * 0.3,
             placeholder: const AssetImage('assets/loading2.gif'),
             image: const AssetImage('assets/ruleta.jpg'),
             fit: BoxFit.cover,

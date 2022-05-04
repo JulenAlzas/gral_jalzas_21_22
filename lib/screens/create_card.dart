@@ -116,7 +116,6 @@ class _CreateCardState extends State<CreateCard> {
               cardType: txartelmota,
               width: cardWidth,
               height: cardHeight,
-              // mask: getCardTypeMask(cardType: CardType.americanExpress),
             ),
             const SizedBox(
               height: 40,

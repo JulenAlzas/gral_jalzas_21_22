@@ -272,28 +272,6 @@ class _ShowCardState extends State<ShowCard> {
                                                 if (sartutakoZenb < 10) {
                                                   return 'Gutxienez 10 sartu ditzazkezu';
                                                 }
-                                                // final now = DateTime.now();
-
-                                                // String currentDate =
-                                                //     DateFormat('yMd').format(
-                                                //         now); //
-
-                                                // var dateTimestamp =
-                                                //     Timestamp.now();
-                                                // DateTime currentPhoneDate = DateTime.now(); //DateTime
-                                                // final DateFormat formatter =
-                                                //     DateFormat(
-                                                //         'dd/MM/yyyy, hh:mm:ss aa'); //your date format here
-                                                // var date =
-                                                //     dateTimestamp.toDate();
-                                                // var currentDate =
-                                                //     formatter.format(date);
-
-                                                // Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
-                                                // TransactionLogic.addTransaction(
-                                                //     transMota: 'dirua_sartu',
-                                                //     zenbat: '+$sartutakoZenb',
-                                                //     transDate: dateTimestamp);
 
                                                 return null;
                                               } else {
@@ -350,7 +328,6 @@ class _ShowCardState extends State<ShowCard> {
                               cardType: txartelmota,
                               width: cardWidth,
                               height: cardHeight,
-                              // mask: getCardTypeMask(cardType: CardType.americanExpress),
                             ),
                             SizedBox(
                               height: screenSize.height * 0.015,
@@ -516,27 +493,6 @@ class _ShowCardState extends State<ShowCard> {
           authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
       String cardId = '';
-      // await _firestore
-      //     .collection('credcard')
-      //     .where('userUID', isEqualTo: userCred)
-      //     .get()
-      //     .then((querySnapshot) {
-      //   cardId = querySnapshot.docs.first.id;
-      // });
-
-      // await FirebaseFirestore.instance
-      //     .collection('credcard')
-      //     .doc(cardId)
-      //     .get()
-      //     .then((querySnapshot) {
-      //   setState(() {
-      //     cardNumber = querySnapshot['txartelZenbakia'];
-      //     cardHolderName = querySnapshot['titularra'];
-      //     expiryDate = querySnapshot['iraungitzea'];
-      //     cvv = querySnapshot['cvv'];
-      //     txartelmota = getCardCast(querySnapshot['txartelmota']);
-      //   });
-      // });
 
       await _firestore
           .collection('users')
@@ -572,7 +528,6 @@ class _ShowCardState extends State<ShowCard> {
           .then((querySnapshot) {
         transactionDocList = querySnapshot.docs;
         for (var doc in querySnapshot.docs) {
-          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;
@@ -587,31 +542,6 @@ class _ShowCardState extends State<ShowCard> {
       String userId = auth.userId;
 
       String cardId = '';
-
-      //   await firedart.Firestore.instance
-      //       .collection('credcard')
-      //       .where('userUID', isEqualTo: userId)
-      //       .get()
-      //       .then((querySnapshot) {
-      //     if (querySnapshot.isNotEmpty) {
-      //       cardId = querySnapshot.first.id;
-      //     }
-      //   });
-
-      //   await firedart.Firestore.instance
-      //       .collection('credcard')
-      //       .document(cardId)
-      //       .get()
-      //       .then((querySnapshot) {
-      //     setState(() {
-      //       cardNumber = querySnapshot['txartelZenbakia'];
-      //       cardHolderName = querySnapshot['titularra'];
-      //       expiryDate = querySnapshot['iraungitzea'];
-      //       cvv = querySnapshot['cvv'];
-      //       txartelmota = getCardCast(querySnapshot['txartelmota']);
-      //     });
-      //   });
-      // }
 
       await firedart.Firestore.instance
           .collection('users')
@@ -693,10 +623,6 @@ class _ShowCardState extends State<ShowCard> {
   }
 
   Future<String?> updateTransactions() async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
-
     String userCred = '';
     double sumAllTransactions = 0.0;
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
@@ -715,7 +641,6 @@ class _ShowCardState extends State<ShowCard> {
           transactionDocList = querySnapshot.docs;
         });
         for (var doc in querySnapshot.docs) {
-          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
           sumAllTransactions += transDoubleValue;
@@ -751,23 +676,15 @@ class _ShowCardState extends State<ShowCard> {
         kontudirua = sumAllTransactions;
       });
     }
-
-    // setState(() {
-    //   _isLoading = false;
-    // });
   }
 }
 
 String getTime(var time) {
   if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-    //Timestamp mota da time aldagaia
-
     final DateFormat formatter = DateFormat('dd/MM/yyyy, hh:mm');
     var date = time.toDate();
     return formatter.format(date);
   } else {
-    //DateTime formatua badu data aldagaiak
-
     final DateFormat formatter = DateFormat('dd/MM/yyyy, hh:mm');
     return formatter.format(time);
   }

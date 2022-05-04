@@ -155,22 +155,17 @@ class _ChartsState extends State<Charts> {
         DateTime latestData = querySnapshot.docs.last['data'].toDate();
 
         calculateIntervals(nearestData, latestData);
-        //     var newMap = groupBy(querySnapshot.docs.toList(), (QueryDocumentSnapshot e) {
-        // return e.data;
-        // });
 
         DateTime getDate = DateTime(1555, 1, 1);
         double amountGained1day = 0.0;
         double amountLost1day = 0.0;
 
         for (var doc in querySnapshot.docs) {
-          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
 
           DateTime currentDate = doc['data'].toDate();
 
-          // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
           bool zerodaysDifference = (getDate.year == currentDate.year &&
               getDate.month == currentDate.month &&
               getDate.day == currentDate.day);
@@ -237,21 +232,15 @@ class _ChartsState extends State<Charts> {
 
         calculateIntervals(nearestData, latestData);
 
-        //     var newMap = groupBy(querySnapshot.docs.toList(), (QueryDocumentSnapshot e) {
-        // return e.data;
-        // });
-
         DateTime getDate = DateTime(1555, 1, 1);
         double amountGained1day = 0.0;
         double amountLost1day = 0.0;
 
         for (var doc in querySnapshot) {
-          //Lehenengo karakterea kendu eta zenbakia double bihurtu behar: '+50'(String) -> 50 (double)
           String getTransString = doc['zenbat'];
           double transDoubleValue = double.parse(getTransString);
           DateTime currentDate = doc['data'];
 
-          // bool zerodaysDifference = getDate.difference(currentDate).inDays == 0;
           bool zerodaysDifference = (getDate.year == currentDate.year &&
               getDate.month == currentDate.month &&
               getDate.day == currentDate.day);
@@ -299,7 +288,6 @@ class _ChartsState extends State<Charts> {
         setDonutData();
       });
     }
-    // await Future.delayed(const Duration(seconds: 3));
     setState(() {
       _isLoading = false;
     });
@@ -393,7 +381,6 @@ class _ChartsState extends State<Charts> {
     }
   }
 
-  /// The method returns line series to chart.
   List<LineSeries<_ChartData, DateTime>> _getDefaultLineSeries() {
     return <LineSeries<_ChartData, DateTime>>[
       LineSeries<_ChartData, DateTime>(
@@ -455,7 +442,6 @@ class DonutDiagrama extends StatelessWidget {
             legend: Legend(
                 isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
             series: <CircularSeries>[
-          // Renders doughnut chart
           DoughnutSeries<ChartDataDonut, String>(
               dataSource: _chartDonutData,
               pointColorMapper: (ChartDataDonut data, _) => data.color,

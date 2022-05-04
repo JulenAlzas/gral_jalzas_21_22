@@ -1,4 +1,3 @@
-// import 'package:fireverse/fireverse.dart';
 import 'package:firedart/firedart.dart' as firebasedart;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
@@ -17,7 +16,6 @@ import 'dart:io' show Platform;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- 
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
@@ -31,41 +29,23 @@ Future<void> main() async {
   } else if ((Platform.isAndroid)) {
     await Firebase.initializeApp();
   } else if (Platform.isLinux || Platform.isWindows) {
-    firebasedart.FirebaseAuth.initialize("AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA", firebasedart.VolatileStore());
-    firebasedart.Firestore.initialize( "gral-jalzas"); 
-
-    // Fire.initialize(
-    //   apiKey: "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
-    //   projectId: "gral-jalzas",
-    //   appId: "1:312983830076:web:dee094b1ff0e3803a10d39",
-    //   messagingSenderId: "312983830076",
-    // );
-   //--------Comments
+    firebasedart.FirebaseAuth.initialize(
+        "AIzaSyCcy_xzW16tX9LoUVXiP4CXZUhfvbh6SLA",
+        firebasedart.VolatileStore());
+    firebasedart.Firestore.initialize("gral-jalzas");
   }
-   //--------Comments
 
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Game',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       initialRoute: 'homepage',
@@ -75,7 +55,9 @@ class MyApp extends StatelessWidget {
         'register': (BuildContext context) => const RegisterScreen(),
         'loginhome': (BuildContext context) => const LoginHome(),
         'editprofile': (BuildContext context) => const EditProfile(),
-        'createcard': (BuildContext context) => const CreateCard(title: 'Gehitu zure txartela',),
+        'createcard': (BuildContext context) => const CreateCard(
+              title: 'Gehitu zure txartela',
+            ),
       },
     );
   }

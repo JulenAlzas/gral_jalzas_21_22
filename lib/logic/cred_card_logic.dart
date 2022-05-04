@@ -19,15 +19,6 @@ class CredCardLogic {
         String userCredential =
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
-        // await _firestore.collection('credcard').doc().set({
-        //   'txartelZenbakia': txartelZenbakia,
-        //   'iraungitzea': iraungitzea,
-        //   'cvv': cvv,
-        //   'titularra': titularra,
-        //   'userUID': userCredential,
-        //   'txartelmota': txartelmota.toString()
-        // });
-
         await _firestore
             .collection('users')
             .doc(userCredential)
@@ -51,20 +42,6 @@ class CredCardLogic {
         firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
 
         String userId = auth.userId;
-
-        // await firedart.Firestore.instance
-        //     .collection('credcard')
-        //     .document(randomId())
-        //     .set(
-        //   {
-        //     'txartelZenbakia': txartelZenbakia,
-        //     'iraungitzea': iraungitzea,
-        //     'cvv': cvv,
-        //     'titularra': titularra,
-        //     'userUID': userId,
-        //     'txartelmota': txartelmota.toString()
-        //   },
-        // );
 
         await firedart.Firestore.instance
             .collection('users')
@@ -106,15 +83,6 @@ class CredCardLogic {
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
         String docId = '';
-        // await _firestore
-        //     .collection('credcard')
-        //     .where('userUID', isEqualTo: userCredential)
-        //     .get()
-        //     .then((querySnapshot) {
-        //   if (querySnapshot.docs.isNotEmpty) {
-        //     docId = querySnapshot.docs.first.id;
-        //   }
-        // });
 
         await _firestore
             .collection('users')
@@ -141,16 +109,6 @@ class CredCardLogic {
         String userId = auth.userId;
 
         String docId = '';
-
-        // await firedart.Firestore.instance
-        //     .collection('credcard')
-        //     .where('userUID', isEqualTo: userId)
-        //     .get()
-        //     .then((querySnapshot) {
-        //   if (querySnapshot.isNotEmpty) {
-        //     docId = querySnapshot.first.id;
-        //   }
-        // });
 
         await firedart.Firestore.instance
             .collection('users')
@@ -247,24 +205,6 @@ class CredCardLogic {
             authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
 
         String docId = '';
-        // await _firestore
-        //     .collection('credcard')
-        //     .where('userUID', isEqualTo: userCredential)
-        //     .get()
-        //     .then((querySnapshot) {
-        //   if (querySnapshot.docs.isNotEmpty) {
-        //     docId = querySnapshot.docs.first.id;
-        //   }
-        // });
-
-        // await _firestore.collection('credcard').doc(docId).update({
-        //   'txartelZenbakia': txartelZenbakia,
-        //   'iraungitzea': iraungitzea,
-        //   'cvv': cvv,
-        //   'titularra': titularra,
-        //   'userUID': userCredential,
-        //   'txartelmota': txartelmota.toString()
-        // });
 
         await _firestore
             .collection('users')
@@ -302,30 +242,6 @@ class CredCardLogic {
         String userId = auth.userId;
 
         String docId = '';
-
-        // await firedart.Firestore.instance
-        //     .collection('credcard')
-        //     .where('userUID', isEqualTo: userId)
-        //     .get()
-        //     .then((querySnapshot) {
-        //   if (querySnapshot.isNotEmpty) {
-        //     docId = querySnapshot.first.id;
-        //   }
-        // });
-
-        // await firedart.Firestore.instance
-        //     .collection('credcard')
-        //     .document(docId)
-        //     .update(
-        //   {
-        //     'txartelZenbakia': txartelZenbakia,
-        //     'iraungitzea': iraungitzea,
-        //     'cvv': cvv,
-        //     'titularra': titularra,
-        //     'userUID': userId,
-        //     'txartelmota': txartelmota.toString()
-        //   },
-        // );
 
         await firedart.Firestore.instance
             .collection('users')
@@ -428,7 +344,6 @@ class CredCardLogic {
 
   static Future<void> updateCredentials(
       String oldEmail, String oldPasword) async {
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
     authforandroid.AuthCredential credential =
         authforandroid.EmailAuthProvider.credential(
             email: oldEmail, password: oldPasword);

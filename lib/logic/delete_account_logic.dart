@@ -77,9 +77,10 @@ class DeleteAccountLogic {
     }
   }
 
-  static Future<void> erabEzabatuAndWeb(FirebaseFirestore _firestore, String userCredential) async {
+  static Future<void> erabEzabatuAndWeb(
+      FirebaseFirestore _firestore, String userCredential) async {
     await _firestore.collection('users').doc(userCredential).delete();
-    
+
     await authforandroid.FirebaseAuth.instance.currentUser!.delete();
   }
 
@@ -172,7 +173,6 @@ class DeleteAccountLogic {
 
   static Future<void> updateCredentials(
       String oldEmail, String oldPasword) async {
-    // if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
     authforandroid.AuthCredential credential =
         authforandroid.EmailAuthProvider.credential(
             email: oldEmail, password: oldPasword);

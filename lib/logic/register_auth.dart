@@ -16,7 +16,7 @@ class RegisterAuth {
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
       try {
         FirebaseFirestore _firestore = FirebaseFirestore.instance;
-        //Register new user
+
         authforandroid.UserCredential userCredential = await authforandroid
             .FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
@@ -44,7 +44,7 @@ class RegisterAuth {
       try {
         var auth = firedart.FirebaseAuth.instance;
         User? currentUser;
-         await auth.signUp(email, password).then((user) {
+        await auth.signUp(email, password).then((user) {
           currentUser = user;
         });
         await auth.signIn(email, password);
@@ -62,8 +62,8 @@ class RegisterAuth {
           },
         );
         return 'erregistratua';
-      }on AuthException catch (e) {
-        if(e.errorCode == 'EMAIL_EXISTS'){
+      } on AuthException catch (e) {
+        if (e.errorCode == 'EMAIL_EXISTS') {
           return e.errorCode.toString();
         }
         return 'Errorea: $e';

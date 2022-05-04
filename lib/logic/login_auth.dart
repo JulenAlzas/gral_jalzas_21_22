@@ -25,7 +25,6 @@ class LoginAuth {
       }
     } else {
       try {
-        // await Fire.signIn(email: email, password: password);
         var auth = firedart.FirebaseAuth.instance;
         await auth.signIn(email, password);
 

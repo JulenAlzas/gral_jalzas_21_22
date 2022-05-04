@@ -126,7 +126,6 @@ class _EditCardState extends State<EditCard> {
                     cardType: txartelmota,
                     width: cardWidth,
                     height: cardHeight,
-                    // mask: getCardTypeMask(cardType: CardType.americanExpress),
                   ),
                   const SizedBox(
                     height: 40,
@@ -142,7 +141,6 @@ class _EditCardState extends State<EditCard> {
                             horizontal: 20,
                           ),
                           child: TextFormField(
-                              // initialValue: cardNumber.replaceAll(' ', ''),
                               controller: cardNumberCtrl,
                               decoration: const InputDecoration(
                                   hintText: 'Txartel zenbakia'),
@@ -229,7 +227,6 @@ class _EditCardState extends State<EditCard> {
                             horizontal: 20,
                           ),
                           child: TextFormField(
-                              // initialValue: expiryDate,
                               controller: expiryFieldCtrl,
                               decoration: const InputDecoration(
                                   hintText: 'Iraungitze-data'),
@@ -561,31 +558,6 @@ class _EditCardState extends State<EditCard> {
       String userId = auth.userId;
 
       String cardId = '';
-
-      //   await firedart.Firestore.instance
-      //       .collection('credcard')
-      //       .where('userUID', isEqualTo: userId)
-      //       .get()
-      //       .then((querySnapshot) {
-      //     if (querySnapshot.isNotEmpty) {
-      //       cardId = querySnapshot.first.id;
-      //     }
-      //   });
-
-      //   await firedart.Firestore.instance
-      //       .collection('credcard')
-      //       .document(cardId)
-      //       .get()
-      //       .then((querySnapshot) {
-      //     setState(() {
-      //       cardNumber = querySnapshot['txartelZenbakia'];
-      //       cardHolderName = querySnapshot['titularra'];
-      //       expiryDate = querySnapshot['iraungitzea'];
-      //       cvv = querySnapshot['cvv'];
-      //       txartelmota = getCardCast(querySnapshot['txartelmota']);
-      //     });
-      //   });
-      // }
 
       await firedart.Firestore.instance
           .collection('users')
