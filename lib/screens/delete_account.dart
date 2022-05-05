@@ -140,13 +140,14 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                     ],
                                   );
                                 });
-                            LoginAuth.signOut();
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()),
-                            );
+                            LoginAuth.signOut().then((value) {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()),
+                              );
+                            });
                           } else if (profileEditResult == 'wrong-password') {
                             setState(() {
                               wrongPassCount++;
@@ -183,13 +184,14 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context, 'OK');
-                                          LoginAuth.signOut();
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const Homepage()),
-                                          );
+                                          LoginAuth.signOut().then((value) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Homepage()),
+                                            );
+                                          });
                                         },
                                         child: const Text('OK'),
                                       ),

@@ -76,12 +76,13 @@ class _CreateCardState extends State<CreateCard> {
         actions: [
           TextButton.icon(
               onPressed: () {
-                LoginAuth.signOut();
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Homepage()),
-                );
+                LoginAuth.signOut().then((value) {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Homepage()),
+                  );
+                });
               },
               icon: const Icon(
                 Icons.logout,

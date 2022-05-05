@@ -314,13 +314,14 @@ class _EditProfileState extends State<EditProfile> {
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context, 'OK');
-                                          LoginAuth.signOut();
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const Homepage()),
-                                          );
+                                          LoginAuth.signOut().then((value) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Homepage()),
+                                            );
+                                          });
                                         },
                                         child: const Text('OK'),
                                       ),
@@ -595,12 +596,13 @@ class _EditProfileState extends State<EditProfile> {
       actions: [
         TextButton.icon(
             onPressed: () {
-              LoginAuth.signOut();
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Homepage()),
-              );
+              LoginAuth.signOut().then((value) {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Homepage()),
+                );
+              });
             },
             icon: const Icon(
               Icons.logout,

@@ -25,40 +25,39 @@ class _LoginBackgroundState extends State<LoginBackground> {
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-      authforandroid.FirebaseAuth.instance.authStateChanges().listen((user) {
-        if (user != null) {
-          doesThisEmailExist(user.email).then((emaiExists) {
-            if (emaiExists) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginHome()),
-              );
-            } else {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Mezua'),
-                      content: const Text('Eposta aldatu da, berlogeatu.'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'OK'),
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    );
-                  });
-              LoginAuth.signOut();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const LoginBackground()),
-              );
-            }
+      var currentUser = authforandroid.FirebaseAuth.instance.currentUser;
+      if (currentUser?.uid != null) {
+        currentUser!.reload().onError((error, stackTrace) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Mezua'),
+                  content: const Text('Eposta aldatu da, berlogeatu.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'OK'),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              });
+          LoginAuth.signOut().then((value) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Homepage()),
+            );
           });
-        }
-      });
+        }).then((value) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginHome()),
+          );
+        });
+      }
+      ;
     }
+
     final loginFormProvider = Provider.of<LoginProvider>(context);
     final screenSize = MediaQuery.of(context).size;
     final double boxPadding = (screenSize.width * 0.05);
@@ -295,35 +294,6 @@ class _LoginBackgroundState extends State<LoginBackground> {
     setState(() {
       _isHidden = !_isHidden;
     });
-  }
-
-  Future<bool> doesThisEmailExist(String? email) async {
-    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-      try {
-        String userCredential =
-            authforandroid.FirebaseAuth.instance.currentUser?.uid ?? 'no-id';
-
-        await _firestore
-            .collection('users')
-            .doc(userCredential)
-            .get()
-            .then((querySnapshot) {
-          if (querySnapshot.exists && querySnapshot['email'] == email) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-
-        return false;
-      } on authforandroid.FirebaseAuthException catch (_) {
-        return false;
-      }
-    } else {
-      return true;
-    }
   }
 }
 
