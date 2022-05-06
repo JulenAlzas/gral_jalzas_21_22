@@ -25,9 +25,13 @@ class EditCard extends StatefulWidget {
 
 class _EditCardState extends State<EditCard> {
   String cardNumber = '';
+  String oldcardNumber = '';
   String cardHolderName = '';
+  String oldcardHolderName = '';
   String expiryDate = '';
+  String oldexpiryDate = '';
   String cvv = '';
+  String oldcvv = '';
   bool showBack = false;
   CardType txartelmota = CardType.visa;
   bool _isLoading = true;
@@ -334,56 +338,88 @@ class _EditCardState extends State<EditCard> {
                             CredCardLogic.isCardCreatedForCurrentUser()
                                 .then((cardExists) {
                               if (cardExists) {
-                                CredCardLogic.editCard(
-                                        txartelZenbakia: cardNumber,
-                                        iraungitzea: expiryDate,
-                                        cvv: cvv,
-                                        titularra: cardHolderName,
-                                        txartelmota: txartelmota)
-                                    .then((result) {
-                                  if (result == 'Erab eguneratua') {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text('Mezua:'),
-                                            content: const Text(
-                                                'Kred txartela eguneratu da.'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    context, 'OK'),
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        });
+                                if (oldcardNumber == cardNumber &&
+                                    oldcardHolderName == cardHolderName &&
+                                    oldexpiryDate == expiryDate &&
+                                    oldcvv == cvv) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('Mezua:'),
+                                          content: const Text(
+                                              'Ez da txartel bera modifikatuko.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, 'OK');
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                } else {
+                                  CredCardLogic.editCard(
+                                          txartelZenbakia: cardNumber,
+                                          iraungitzea: expiryDate,
+                                          cvv: cvv,
+                                          titularra: cardHolderName,
+                                          txartelmota: txartelmota)
+                                      .then((result) {
+                                    if (result == 'Erab eguneratua') {
+                                      setState(() {
+                                        oldcardNumber = cardNumber;
+                                        oldcardHolderName = cardHolderName;
+                                        oldexpiryDate = expiryDate;
+                                        oldcvv = cvv;
+                                      });
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text('Mezua:'),
+                                              content: const Text(
+                                                  'Kred txartela eguneratu da.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          });
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const ShowCard(
-                                                title: 'Diru-zorroa',
-                                              )),
-                                    );
-                                  } else {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text('Errorea:'),
-                                            content: Text(result),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    context, 'OK'),
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  }
-                                });
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ShowCard(
+                                                  title: 'Diru-zorroa',
+                                                )),
+                                      );
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text('Errorea:'),
+                                              content: Text(result),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    }
+                                  });
+                                }
                               } else {
                                 showDialog(
                                     context: context,
@@ -543,13 +579,17 @@ class _EditCardState extends State<EditCard> {
           .then((querySnapshot) {
         setState(() {
           cardNumber = querySnapshot['txartelZenbakia'];
+          oldcardNumber = cardNumber;
           cardNumberCtrl.text = cardNumber.replaceAll(' ', '');
           cardHolderName = querySnapshot['titularra'];
+          oldcardHolderName = cardHolderName;
           expiryDate = querySnapshot['iraungitzea'];
+          oldexpiryDate = expiryDate;
           expiryFieldCtrl.text = expiryDate;
           expiryFieldCtrl.selection = TextSelection.fromPosition(
               TextPosition(offset: expiryDate.length));
           cvv = querySnapshot['cvv'];
+          oldcvv = cvv;
           txartelmota = getCardCast(querySnapshot['txartelmota']);
         });
       });
@@ -580,13 +620,17 @@ class _EditCardState extends State<EditCard> {
           .then((querySnapshot) {
         setState(() {
           cardNumber = querySnapshot['txartelZenbakia'];
+          oldcardNumber = cardNumber;
           cardNumberCtrl.text = cardNumber.replaceAll(' ', '');
           cardHolderName = querySnapshot['titularra'];
+          oldcardHolderName = cardHolderName;
           expiryDate = querySnapshot['iraungitzea'];
+          oldexpiryDate = expiryDate;
           expiryFieldCtrl.text = expiryDate;
           expiryFieldCtrl.selection = TextSelection.fromPosition(
               TextPosition(offset: expiryDate.length));
           cvv = querySnapshot['cvv'];
+          oldcvv = cvv;
           txartelmota = getCardCast(querySnapshot['txartelmota']);
         });
       });
