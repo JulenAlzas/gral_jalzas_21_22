@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as authforandroid;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +54,6 @@ class _LoginBackgroundState extends State<LoginBackground> {
           );
         });
       }
-      ;
     }
 
     final loginFormProvider = Provider.of<LoginProvider>(context);
