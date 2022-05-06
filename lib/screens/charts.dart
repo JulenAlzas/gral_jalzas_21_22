@@ -105,7 +105,7 @@ class _ChartsState extends State<Charts> {
   AppBar appBarDetails(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.pink,
-      title: const Text('Lehen jokoa'),
+      title: const Text('Diagramak'),
       elevation: 0,
       actions: [
         TextButton.icon(
