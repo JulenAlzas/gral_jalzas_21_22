@@ -12,12 +12,12 @@ Proiektu hau gradu amaierako lana burutzeko garatu da. Bertan, firebase datu-bas
 
 Inplementazioa Android, Web eta Windows/Linux sistema eragileetan burutu da. Hala ere, Windows/Linux inplementazioa API-ari eskaerak eginez burutu behar izan da firebasek ez duelako hau inplementatzeko era zuzenik. Horregatik, atal batzuk ezberdin joka dezakete. 
 Aplikazioaren exekuzioa ikusi ahal izateko hemen:
--Android - Pixel 3 XL: https://www.youtube.com/watch?v=vwdvUqen8Nw
--Android - 3 2 QVGA: https://www.youtube.com/watch?v=n1UvUnNXZEA
--Web     - Chrome: https://www.youtube.com/watch?v=d3eXQ6GKCOQ
--Web     - Edge: https://www.youtube.com/watch?v=JfutaSvzwjs
--Desktop - Windows: https://www.youtube.com/watch?v=0ejwmrIjT-Q
--Desktop - Linux: https://www.youtube.com/watch?v=DRMRTFPrMpc
+- Android - Pixel 3 XL: https://www.youtube.com/watch?v=vwdvUqen8Nw
+- Android - 3 2 QVGA: https://www.youtube.com/watch?v=n1UvUnNXZEA
+- Web     - Chrome: https://www.youtube.com/watch?v=d3eXQ6GKCOQ
+- Web     - Edge: https://www.youtube.com/watch?v=JfutaSvzwjs
+- Desktop - Windows: https://www.youtube.com/watch?v=0ejwmrIjT-Q
+- Desktop - Linux: https://www.youtube.com/watch?v=DRMRTFPrMpc
 
 
 # gral_jalzas_21_22 - Español
@@ -34,12 +34,12 @@ Este proyecto se ha desarrollado para llevar a cabo el trabajo de fin de grado. 
 
 La implementación se ha realizado en los sistemas operativos Android, Web y Windows/Linux. Sin embargo, la implementación de Windows/Linux se ha tenido que llevar a cabo mediante peticiones a la API puesto que firebase no tiene forma directa de implementarlo. Por ello, hay secciones que pueden comportarse de manera diferente.
 Para ver la ejecución de la aplicación:
--Android - Pixel 3 XL: https://www.youtube.com/watch?v=vwdvUqen8Nw
--Android - 3 2 QVGA: https://www.youtube.com/watch?v=n1UvUnNXZEA
--Web     - Chrome: https://www.youtube.com/watch?v=d3eXQ6GKCOQ
--Web     - Edge: https://www.youtube.com/watch?v=JfutaSvzwjs
--Desktop - Windows: https://www.youtube.com/watch?v=0ejwmrIjT-Q
--Desktop - Linux: https://www.youtube.com/watch?v=DRMRTFPrMpc
+- Android - Pixel 3 XL: https://www.youtube.com/watch?v=vwdvUqen8Nw
+- Android - 3 2 QVGA: https://www.youtube.com/watch?v=n1UvUnNXZEA
+- Web     - Chrome: https://www.youtube.com/watch?v=d3eXQ6GKCOQ
+- Web     - Edge: https://www.youtube.com/watch?v=JfutaSvzwjs
+- Desktop - Windows: https://www.youtube.com/watch?v=0ejwmrIjT-Q
+- Desktop - Linux: https://www.youtube.com/watch?v=DRMRTFPrMpc
 
 Advertencia: La aplicación está implementada sólo en euskera por lo que todo el contenido está en éste idioma.
 
@@ -58,12 +58,12 @@ This project has been developed to carry out the final degree project. In it, th
 
 The implementation has been carried out in Android, Web and Windows/Linux operating systems. However, the Windows/Linux implementation has had to be done through API requests since firebase has no direct way to implement it. Therefore, there are sections that can behave differently.
 To see the execution of the application:
--Android - Pixel 3 XL: https://www.youtube.com/watch?v=vwdvUqen8Nw
--Android - 3 2 QVGA: https://www.youtube.com/watch?v=n1UvUnNXZEA
--Web - Chrome: https://www.youtube.com/watch?v=d3eXQ6GKCOQ
--Web - Edge: https://www.youtube.com/watch?v=JfutaSvzwjs
--Desktop - Windows: https://www.youtube.com/watch?v=0ejwmrIjT-Q
--Desktop - Linux: https://www.youtube.com/watch?v=DRMRTFPrMpc
+- Android - Pixel 3 XL: https://www.youtube.com/watch?v=vwdvUqen8Nw
+- Android - 3 2 QVGA: https://www.youtube.com/watch?v=n1UvUnNXZEA
+- Web     - Chrome: https://www.youtube.com/watch?v=d3eXQ6GKCOQ
+- Web     - Edge: https://www.youtube.com/watch?v=JfutaSvzwjs
+- Desktop - Windows: https://www.youtube.com/watch?v=0ejwmrIjT-Q
+- Desktop - Linux: https://www.youtube.com/watch?v=DRMRTFPrMpc
 
 Warning: The application is only implemented in Basque, so all the content is in this language.
 
