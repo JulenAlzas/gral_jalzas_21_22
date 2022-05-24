@@ -1,14 +1,14 @@
 # gral_jalzas_21_22 - Euskara
 
 Proiektu hau gradu amaierako lana burutzeko garatu da. Bertan, firebase datu-basea erabiliz hurrengo erabilpen kasuak inplementatu dira:
--Erregistratzea.
--Logeatzea.
--Profila aldatu/ezabatzea.
--Kreditu txartela sortu/aldatu/ezabatzea.
--2 joko apustuak bete ahal izateko.
--Dirua sartzeko funtzionalitatea.
--Transakzioak ikusi ahal izateko atala.
--Transakzioen inguruko informazioa ikusi ahal izateko diagramen atalak.
+- Erregistratzea.
+- Logeatzea.
+- Profila aldatu/ezabatzea.
+- Kreditu txartela sortu/aldatu/ezabatzea.
+- 2 joko apustuak bete ahal izateko.
+- Dirua sartzeko funtzionalitatea.
+- Transakzioak ikusi ahal izateko atala.
+- Transakzioen inguruko informazioa ikusi ahal izateko diagramen atalak.
 
 Inplementazioa Android, Web eta Windows/Linux sistema eragileetan burutu da. Hala ere, Windows/Linux inplementazioa API-ari eskaerak eginez burutu behar izan da firebasek ez duelako hau inplementatzeko era zuzenik. Horregatik, atal batzuk ezberdin joka dezakete. 
 Aplikazioaren exekuzioa ikusi ahal izateko hemen:
