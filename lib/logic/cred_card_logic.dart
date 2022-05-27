@@ -29,7 +29,6 @@ class CredCardLogic {
           'iraungitzea': iraungitzea,
           'cvv': cvv,
           'titularra': titularra,
-          'userUID': userCredential,
           'txartelmota': txartelmota.toString()
         });
 
@@ -54,7 +53,6 @@ class CredCardLogic {
             'iraungitzea': iraungitzea,
             'cvv': cvv,
             'titularra': titularra,
-            'userUID': userId,
             'txartelmota': txartelmota.toString()
           },
         );
@@ -227,7 +225,6 @@ class CredCardLogic {
           'iraungitzea': iraungitzea,
           'cvv': cvv,
           'titularra': titularra,
-          'userUID': userCredential,
           'txartelmota': txartelmota.toString()
         });
 
@@ -265,7 +262,6 @@ class CredCardLogic {
             'iraungitzea': iraungitzea,
             'cvv': cvv,
             'titularra': titularra,
-            'userUID': userId,
             'txartelmota': txartelmota.toString()
           },
         );

@@ -28,7 +28,6 @@ class RegisterAuth {
           'username': name,
           'email': email,
           'telepNum': telepNum,
-          'uid': userCredential.user!.uid
         });
         return 'erregistratua';
       } on authforandroid.FirebaseAuthException catch (e) {
@@ -58,7 +57,6 @@ class RegisterAuth {
             'username': name,
             'email': email,
             'telepNum': telepNum,
-            'uid': userId
           },
         );
         return 'erregistratua';
