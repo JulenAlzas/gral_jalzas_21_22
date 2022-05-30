@@ -48,18 +48,4 @@ class LoginAuth {
       firedart.FirebaseAuth.instance.signOut();
     }
   }
-
-  static Future<void> deleteProfile() async {
-    if (defaultTargetPlatform == TargetPlatform.android || kIsWeb) {
-      await authforandroid.FirebaseAuth.instance.signOut();
-    } else {
-      firedart.FirebaseAuth auth = firedart.FirebaseAuth.instance;
-      firedart.FirebaseAuth.instance.deleteAccount();
-      String userId = auth.userId;
-      await firedart.Firestore.instance
-          .collection('users')
-          .document(userId)
-          .delete();
-    }
-  }
 }
