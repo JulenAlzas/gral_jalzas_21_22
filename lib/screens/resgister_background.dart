@@ -260,7 +260,7 @@ class RegisterBackground extends StatelessWidget {
                                             return AlertDialog(
                                               title: const Text('Errorea:'),
                                               content: const Text(
-                                                  'Eposta hori iada existizen da'),
+                                                  'Eposta hori jada existizen da'),
                                               actions: <Widget>[
                                                 TextButton(
                                                   onPressed: () =>
@@ -323,7 +323,7 @@ class RegisterBackground extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Iada kontua duzu?',
+                'Jada kontua duzu?',
                 style: TextStyle(fontSize: 17, color: Colors.white),
               ),
               TextButton(

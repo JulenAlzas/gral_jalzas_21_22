@@ -342,7 +342,7 @@ class _EditProfileState extends State<EditProfile> {
                                   return AlertDialog(
                                     title: const Text('Errorea:'),
                                     content: const Text(
-                                        'Eposta hori iada existizen da'),
+                                        'Eposta hori jada existizen da'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () =>
